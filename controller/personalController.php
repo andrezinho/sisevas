@@ -118,7 +118,7 @@ class PersonalController extends Controller
     {
         $obj = new Personal();
         $data = array();        
-        $field = "nompersonal";
+        $field = "nombres||' '||apellidos";
         if($_GET['tipo']==1) $field = "dni";
         $value = $obj->get($_GET["term"],$field);
 
@@ -128,7 +128,7 @@ class PersonalController extends Controller
               array_push($result, array(
                         "idpersonal"=>$val['idpersonal'],
                         "dni"=>$val['dni'],
-                        "nompersonal"=> strtoupper($val['nompersonal'])
+                        "nombres"=> strtoupper($val['nombres'])
                     )
                 );
               if ( $key > 7 ) { break; }

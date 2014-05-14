@@ -147,10 +147,9 @@ class Personal extends Main
         $statement = $this->db->prepare("SELECT 
                                             idpersonal,
                                             dni, 
-                                            nombres || ' ' || apellidos AS nompersonal
-                                                
+                                            nombres || ' ' || apellidos AS nombres                                                
                                          FROM personal
-                                         WHERE {$field} like :query and dni <> ''
+                                         WHERE {$field} ilike :query and dni <> ''
                                          limit 10");
         $statement->bindParam (":query", $query , PDO::PARAM_STR);
         $statement->execute();

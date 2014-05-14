@@ -20,6 +20,7 @@ class evaluacion extends Main
         $stmt->execute();
         $data = array();
         $c = 0;
+
         foreach($stmt->fetchAll() as $row)
         {
             $data[$c] = array('idaspecto'=>$row['idaspecto'],'descripcion'=>$row['descripcion'],'parametros'=>array());
@@ -29,7 +30,7 @@ class evaluacion extends Main
                             v.idaspecto,
                             r.idvalor as idvalorr
                     from evaluacion.resultados as r right outer join 
-                    evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1
+                    evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1 and r.idpersonal = ".$g['idp']."
                     inner join evaluacion.parametros as p on p.idparametro = v.idparametro
                     where v.idaspecto = ".$row['idaspecto']." and v.idconsultorio = ".$idconsultorio."                           
                     order by v.orden, v.idaspecto";
@@ -51,7 +52,7 @@ class evaluacion extends Main
         return $data;
     }
     
-    function getCompetencias()
+    function getCompetencias($idp)
     {
         $sql = "SELECT  t1.idcompetencia,
                     t1.descripcion,
@@ -67,6 +68,7 @@ class evaluacion extends Main
                     from evaluacion.resultados as r inner join evaluacion.valores as v  
                     on v.idvalor = r.idvalor
                     inner join evaluacion.aspectos as a on a.idaspecto = v.idaspecto
+                    where r.idpersonal = ".$idp." and r.estado = 1 
                     group by a.idcompetencia
                       ) as t2 on t1.idcompetencia = t2.idcompetencia
                     order by t1.idcompetencia";
@@ -104,7 +106,7 @@ class evaluacion extends Main
                 {
 
                     $s = $this->db->prepare('SELECT idresultado from evaluacion.resultados as r inner join 
-                                            evaluacion.valores as v on v.idvalor = r.idvalor 
+                                            evaluacion.valores as v on v.idvalor = r.idvalor and r.idpersonal = '.$idp.'
                                             where v.idaspecto='.$row->idaspecto);                    
                     $s->execute();
                     $n = $s->rowCount();                    
@@ -112,7 +114,7 @@ class evaluacion extends Main
                     {
                         foreach ($s->fetchAll() as $re) 
                         {
-                            $sql = "UPDATE evaluacion.resultados set estado = 0 where idresultado = ".$re['idresultado'];
+                            $sql = "UPDATE evaluacion.resultados set estado = 0 where idresultado = ".$re['idresultado']." and idpersonal = ".$idp;
                             $stmt = $this->db->prepare($sql);
                             $stmt->execute();
                         }
@@ -147,7 +149,7 @@ class evaluacion extends Main
 
     function reporte_detallado($g)
     {
-
+        $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
         $sql = "SELECT idarea from personal where idpersonal = :id ";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
@@ -190,13 +192,14 @@ class evaluacion extends Main
                     FROM    evaluacion.resultados as r INNER JOIN 
                         evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1
                         INNER JOIN evaluacion.aspectos as a on a.idaspecto = v.idaspecto    
-                    WHERE v.idconsultorio = :idcon AND a.idcompetencia = :idcom and v.idperiodo = :idper) as t2 on t1.idaspecto = t2.idaspecto
+                    WHERE v.idconsultorio = :idcon AND a.idcompetencia = :idcom and v.idperiodo = :idper and r.idpersonal = :idpers) as t2 on t1.idaspecto = t2.idaspecto
 
                     ORDER BY t1.idaspecto";
             $Q = $this->db->prepare($s);
             $Q->bindParam(':idcon',$idconsultorio,PDO::PARAM_INT);
             $Q->bindParam(':idcom',$row[0],PDO::PARAM_INT);
-            $Q->bindParam(':idper',$g['idp'],PDO::PARAM_INT);
+            $Q->bindParam(':idper',$idperiodo,PDO::PARAM_INT);
+            $Q->bindParam(':idpers',$g['idp'],PDO::PARAM_INT);
             $Q->execute();
             foreach ($Q->fetchAll() as $r) 
             {

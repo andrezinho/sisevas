@@ -18,6 +18,7 @@
 		<script type="text/javascript" src="js/session.js"></script>
     	<script type="text/javascript" src="js/required.js"></script>
     	<script type="text/javascript" src="js/utiles.js"></script>		
+    	<link type="text/css" href="css/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
 	</head>
 	<body>
 		<?php echo $content; ?>		

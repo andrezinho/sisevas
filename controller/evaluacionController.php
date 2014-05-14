@@ -13,7 +13,7 @@ class evaluacionController extends Controller
         $view = new View();
         $data['rows']  = $obj->edit($_GET['idp']);
         $data['competencias'] = $this->Select(array('name'=>'idcompetencia','id'=>'idcompetencia','table'=>'evaluacion.competencias','text_null'=>'Seleccione una Competencia'));
-        $data['competencias_r'] = $eva->getCompetencias();
+        $data['competencias_r'] = $eva->getCompetencias($_GET['idp']);
         $view->setData( $data );
         $view->setTemplate( '../view/evaluacion/_index.php');
         $view->setLayout('../template/evaluacion.php');

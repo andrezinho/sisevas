@@ -108,7 +108,8 @@ class valores extends Main
                                             v.valor
                                     FROM evaluacion.valores as v inner join evaluacion.parametros as p 
                                             on p.idparametro = v.idparametro 
-                                    WHERE v.idperiodo = :p1 and v.idconsultorio = :p2 and v.idaspecto = :p3");
+                                    WHERE v.idperiodo = :p1 and v.idconsultorio = :p2 and v.idaspecto = :p3
+                                    order by v.orden");
         $stmt->bindParam(':p1',$idperiodo,PDO::PARAM_INT);
         $stmt->bindParam(':p2',$idconsultorio,PDO::PARAM_INT);
         $stmt->bindParam(':p3',$idaspecto,PDO::PARAM_INT);

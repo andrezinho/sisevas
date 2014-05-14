@@ -55,11 +55,12 @@ class parametros extends Main
     function get($query,$field)
     {
         $query = "%".$query."%";
-        $statement = $this->db->prepare("SELECT idparametro, 
-                                                descripcion
-                                         FROM evaluacion.parametros
-                                         WHERE {$field} ilike :query and estado = 1
-                                         limit 10");
+        $s = "SELECT idparametro, 
+                    descripcion
+             FROM evaluacion.parametros
+             WHERE {$field} ilike :query and estado = 1
+             limit 10";        
+        $statement = $this->db->prepare($s);
         $statement->bindParam (":query", $query , PDO::PARAM_STR);
         $statement->execute();
         return $statement->fetchAll();

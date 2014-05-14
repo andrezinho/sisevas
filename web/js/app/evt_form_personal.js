@@ -6,7 +6,7 @@ $(function()
     $( "#idgradinstruccion, #idespecialidad,#idtipopersonal, #idperfil" ).css({'width':'210px'});
     $( "#idcargo, #idestado_civil,#idconsultorio, #iddocumento_identidad" ).css({'width':'210px'});
     $("#estados").buttonset();
-    $("#fechanaci, #fechaing").datepicker({dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true});
+    $("#fechanaci, #fechaing, #cumpleesposa, #cumplehijo").datepicker({dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true});
     /*$("#ruc").change(function(){
       esrucok($.(this).val());
 

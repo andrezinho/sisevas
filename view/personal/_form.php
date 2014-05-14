@@ -59,7 +59,7 @@
             <li><a href="#tabs-2">Información Laboral</a></li>
             <li><a href="#tabs-3">Otros</a></li>
             <li><a href="#tabs-4">File</a></li>
-            <li><a href="#tabs-5">Medica</a></li>
+            <li><a href="#tabs-5">Salud Ocupacional</a></li>
         </ul>
         <div id="tabs-1">
 
@@ -156,6 +156,13 @@
 
             <label for="ruc" class="labels">Cod. Essalud:</label>
             <input id="codessalud" name="codessalud" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->codessalud; ?>"  />
+            <br/>
+            
+            <label for="fechanaci" class="labeless">Cumpleaños Espo.:</label>
+            <input type="text" id="cumpleesposa" maxlength="10" name="cumpleesposa" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->cumpleesposa=='') echo date('d/m/Y'); else echo fdate($obj->cumpleesposa,'ES'); ?>" />
+            
+            <label for="fechanaci" class="labeless">Cumpleaños Hijo.:</label>
+            <input type="text" id="cumplehijo" maxlength="10" name="cumplehijo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->cumplehijo=='') echo date('d/m/Y'); else echo fdate($obj->cumplehijo,'ES'); ?>" />
             <br/>
         </div>
         <div id="tabs-4">            

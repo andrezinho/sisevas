@@ -4,17 +4,20 @@
 
    
 <form id="frm" >
-    <input type="hidden" name="controller" value="TipoVivienda" />
+    <input type="hidden" name="controller" value="Innovacion" />
 
     <input type="hidden" name="action" value="save" />
     
-        <label for="idtipovivienda" class="labels">Codigo:</label>
-            <input id="idtipovivienda" name="idtipovivienda" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->idtipovivienda; ?>" readonly />
+        <label for="idinnovacion" class="labels">Codigo:</label>
+        <input id="idinnovacion" name="idinnovacion" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->idinnovacion; ?>" readonly />
         <br/>
         
+        <label for="idinnovacion" class="labels">Personal:</label>
+        <?php $personal; ?>
+        <br/>
         <label for="descripcion" class="labels">Descripcion:</label>
-            <input id="descripcion" maxlength="100" name="descripcion" onkeypress="return permite(event,'car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->descripcion; ?>" />
-            <br>
+        <textarea name="descripcion" id="descripcion" style="width: 80%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="80" rows="6"></textarea>
+        <br/>
         
         <label for="estado" class="labels">Activo:</label>
                 <?php                   

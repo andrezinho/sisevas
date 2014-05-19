@@ -1,14 +1,15 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/tipovivienda.php';
+require_once '../model/innovacion.php';
 
-class TipoViviendaController extends Controller
+class InnovacionController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'idtipovivienda','align'=>'center','width'=>'20'),
-                        2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),
-                        3 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'30','align'=>'center')
+                        1 => array('Name'=>'Codigo','NameDB'=>'idinnovacion','align'=>'center','width'=>'20'),
+                        2 => array('Name'=>'Personal','NameDB'=>"p.nombres||' '||p.apellidos",'width'=>'100','search'=>true),
+                        3 => array('Name'=>'Innovacion','NameDB'=>'descripcion','align'=>'center'),
+                        4 => array('Name'=>'Fecha','NameDB'=>'fechain','width'=>'30','align'=>'center')
                      );
     public function index() 
     {
@@ -48,7 +49,7 @@ class TipoViviendaController extends Controller
         $data = array();
         $view = new View();        
         $view->setData($data);
-        $view->setTemplate( '../view/tipovivienda/_form.php' );
+        $view->setTemplate( '../view/innovacion/_form.php' );
         echo $view->renderPartial();
     }
 
@@ -59,7 +60,7 @@ class TipoViviendaController extends Controller
         $obj = $obj->edit($_GET['id']);
         $data['obj'] = $obj;        
         $view->setData($data);
-        $view->setTemplate( '../view/tipovivienda/_form.php' );
+        $view->setTemplate( '../view/innovacion/_form.php' );
         echo $view->renderPartial();
         
     }
@@ -68,7 +69,7 @@ class TipoViviendaController extends Controller
     {
         $obj = new TipoVivienda();
         $result = array();        
-        if ($_POST['idtipovivienda']=='') 
+        if ($_POST['idinnovacion']=='') 
             $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                

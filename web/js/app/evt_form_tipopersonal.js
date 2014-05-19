@@ -8,12 +8,12 @@ $(function()
             'formData'     : {
                     'timestamp' : '44',
                     'token'     : '33',
-                    'controller': 'Personal',
+                    'controller': 'TipoPersonal',
                     'action':'loadfile'
             },
-            'buttonText': 'Archivo',
+            'buttonText': 'Subir Perfil',
             'swf'      : 'uploadify.swf',
-            'uploader' : 'index.php?controller=Personal&action=loadfile',
+            'uploader' : 'index.php?controller=TipoPersonal&action=loadfile',
             onUploadSuccess : function(file, data, response) {
                         if(response)
                         {
@@ -23,7 +23,7 @@ $(function()
                             {
                                 alert('El archivo fue subido correctamente');
                                 $("#archivo").val(r[1]);
-                                $("#VerImagennn").attr("href","files/"+r[1]);
+                                $("#VerImagennn").attr("href","tipoperfil/"+r[1]);
                                 $("#VerImagennn").css("display","inline");
                             }
                             else 

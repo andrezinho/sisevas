@@ -8,7 +8,8 @@ class TipoPersonalController extends Controller
     var $cols = array(
                         1 => array('Name'=>'Codigo','NameDB'=>'idTipoPersonal','align'=>'center','width'=>'20'),
                         2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),
-                        3 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'30','align'=>'center')
+                        3 => array('Name'=>'File','NameDB'=>'','align'=>'center','width'=>20),
+                        4 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'30','align'=>'center')
                      );
     public function index() 
     {

@@ -1,16 +1,17 @@
 $(function() 
 {    
     $( "#descripcion" ).focus();
-    $( "#idtipovivienda" ).css({'width':'210px'});
+    $( "#idpersonal" ).css({'width':'230px'});
     $("#div_activo").buttonset();
 });
 
 function save()
 {
-  bval = true;        
+  bval = true;
+  bval = bval && $( "#idpersonal" ).required();   
   bval = bval && $( "#descripcion" ).required();        
-  //bval = bval && $( "#orden" ).required();
-  var str = $("#frm").serialize();
+  
+  var str = $("#frm_innovacion").serialize();
   if ( bval ) 
   {
       $.post('index.php',str,function(res)

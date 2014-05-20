@@ -8,7 +8,7 @@ class Innovacion extends Main
             i.idinnovacion,
             p.nombres||' '||p.apellidos,
             i.descripcion,
-            i.fechain,
+            substr(cast(i.fechain as text),9,2)||'/'||substr(cast(i.fechain as text),6,2)||'/'||substr(cast(i.fechain as text),1,4),
             i.horain
             FROM
             evaluacion.innovacion AS i
@@ -27,6 +27,7 @@ class Innovacion extends Main
     function insert($_P ) {
         $stmt = $this->db->prepare("INSERT INTO evaluacion.innovacion (idpersonal, descripcion, fechain, horain) 
                         VALUES(:p1,:p2,:p3,:p4)");
+                        
         $stmt->bindParam(':p1', $_P['idpersonal'] , PDO::PARAM_INT);
         $stmt->bindParam(':p2', $_P['descripcion'] , PDO::PARAM_STR);
         $stmt->bindParam(':p3', $_P['fechain'] , PDO::PARAM_STR);
@@ -40,14 +41,13 @@ class Innovacion extends Main
     function update($_P ) {
         $stmt = $this->db->prepare("UPDATE evaluacion.innovacion set 
                             idpersonal = :p1, 
-                            descripcion = :p2,
-                            fechain = :p1, 
-                            horain = :p2 
+                            descripcion = :p2
+                            
                     WHERE idinnovacion = :idinnovacion");
         $stmt->bindParam(':p1', $_P['idpersonal'] , PDO::PARAM_INT);
         $stmt->bindParam(':p2', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p3', $_P['fechain'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p4', $_P['horain'] , PDO::PARAM_STR);
+        //$stmt->bindParam(':p3', $_P['fechain'] , PDO::PARAM_STR);
+        //$stmt->bindParam(':p4', $_P['horain'] , PDO::PARAM_STR);
         
         $stmt->bindParam(':idinnovacion', $_P['idinnovacion'] , PDO::PARAM_INT);
         $p1 = $stmt->execute();

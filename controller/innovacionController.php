@@ -92,7 +92,19 @@ class InnovacionController extends Controller
         else $result = array(2,$p[1]);
         print_r(json_encode($result));
     }
-   
+    
+    //imprmir reporte
+    public function reporte_detallado()
+    {
+        $obj = new Innovacion();
+        $data = array();
+        $view = new View();
+        $data['rows'] = $obj->ViewResultado($_GET);
+        $view->setData($data);
+        $view->setTemplate( '../view/innovacion/_pdfrpt.php' );
+        $view->setLayout( '../template/empty.php' );
+        echo $view->renderPartial();
+    }
    
 }
 

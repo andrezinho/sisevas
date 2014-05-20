@@ -1,10 +1,12 @@
 <div class="div_container">
-<h6 class="ui-widget-header ui-state-hover">&nbsp;</h6>
+<!-- <h6 class="ui-widget-header ui-state-hover">&nbsp;</h6>-->
 	
     <div class="contain-left">
         <!--<p class="titleind"><strong><a href="">MISI&Oacute;N</a></strong></p>
         <p class="titleind"><strong><a href="">VISI&Oacute;N</strong></a></p>
         <p class="titleind"><strong><a href="">ORGANIGRAMA</strong></a></p>-->
+        <br /><br />
+        <img border="0" src="images/Leyendo.gif" />
     </div>
     <div class="contain-der">
         

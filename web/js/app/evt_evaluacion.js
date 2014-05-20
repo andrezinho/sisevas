@@ -53,6 +53,11 @@ $(document).ready(function()
 			var idp   = $("#idpersonal").val();
 			popup('index.php?controller=evaluacion&action=reporte_detallado&idp='+idp,500,500);
 		});
+        
+        $("#reporte_in").click(function(){
+			var idp   = $("#idpersonal").val();
+			popup('index.php?controller=innovacion&action=reporte_detallado&idp='+idp,500,500);
+		});
 
 		var $floatingbox = $('#mp-menu'); 
            if($('.container').length > 0)

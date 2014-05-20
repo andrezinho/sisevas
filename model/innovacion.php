@@ -41,12 +41,12 @@ class Innovacion extends Main
     function update($_P ) {
         $stmt = $this->db->prepare("UPDATE evaluacion.innovacion set 
                             idpersonal = :p1, 
-                            descripcion = :p2
-                            
+                            descripcion = :p2,
+                            fechain = :p3
                     WHERE idinnovacion = :idinnovacion");
         $stmt->bindParam(':p1', $_P['idpersonal'] , PDO::PARAM_INT);
         $stmt->bindParam(':p2', $_P['descripcion'] , PDO::PARAM_STR);
-        //$stmt->bindParam(':p3', $_P['fechain'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p3', $_P['fechain'] , PDO::PARAM_STR);
         //$stmt->bindParam(':p4', $_P['horain'] , PDO::PARAM_STR);
         
         $stmt->bindParam(':idinnovacion', $_P['idinnovacion'] , PDO::PARAM_INT);
@@ -61,6 +61,45 @@ class Innovacion extends Main
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
+    }
+    
+    //Reporte
+    function ViewResultado($_G)
+    {
+        $idpersonal =$_G['idper'];
+        $fechai = $this->fdate($_G['fechai'], 'EN');
+        $fechaf = $this->fdate($_G['fechaf'], 'EN');
+        
+        if($idpersonal==0)
+        {   
+            $sql="SELECT
+                s.descripcion,
+                pr.serie,
+                pr.numero,
+                c.nombres || ' ' || c.apepaterno || ' ' || c.apematerno AS nomcliente,
+                substr(cast(pr.fecha as text),9,2)||'/'||substr(cast(pr.fecha as text),6,2)||'/'||substr(cast(pr.fecha as text),1,4) AS fecha,
+                p.nombres || ' ' || p.apellidos AS vendedor,
+                case 
+                    when pr.estado=0 then 'REGISTRADO' 
+                    when pr.estado=1 then 'ANULADO'
+                    else 'PASO A SOLICITUD' 
+                end AS estado
+            FROM
+                facturacion.proforma AS pr
+                INNER JOIN cliente AS c ON c.idcliente = pr.idcliente
+                INNER JOIN sucursales AS s ON s.idsucursal = pr.idsucursal
+                INNER JOIN personal AS p ON p.idpersonal = pr.idvendedor
+            WHERE
+                pr.fecha BETWEEN CAST(:p1 AS DATE) AND CAST(:p2 AS DATE)
+            ORDER BY pr.idcliente ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':p1', $fechai , PDO::PARAM_STR);
+            $stmt->bindParam(':p2', $fechaf, PDO::PARAM_STR);
+
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+        
     }
 }
 ?>

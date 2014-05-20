@@ -118,7 +118,7 @@ class PersonalController extends Controller
     {
         $obj = new Personal();
         $data = array();        
-        $field = "nompersonal";
+        $field = "nombres";
         if($_GET['tipo']==1) $field = "dni";
         $value = $obj->get($_GET["term"],$field);
 

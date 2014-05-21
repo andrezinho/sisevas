@@ -6,7 +6,7 @@ class TipoPersonal extends Main
     {
         $sql = "SELECT idtipopersonal,
                descripcion,
-               '<a href=\"\" target=\"_blank\" class=\"btn-evaluar box-boton boton-recibido\"></a>',
+               '<a href=\"tipoperfil/'||file||'\" target=\"_blank\" class=\"btn-evaluar box-boton boton-recibido\"></a>',
                case estado when 1 then 'ACTIVO' else 'INCANTIVO' end
                 from tipo_personal";    
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);

@@ -1,14 +1,14 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/cierre.php';
+require_once '../model/ejecap.php';
 
-class CierreController extends Controller
+class ejecapController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'s.idcierre','align'=>'center','width'=>'20'),
-                        2 => array('Name'=>'Descripcion','NameDB'=>'s.descripcion','search'=>true),
-                        3 => array('Name'=>'Estado','NameDB'=>'s.estado','width'=>'30','align'=>'center','color'=>'#FFFFFF')
+                        1 => array('Name'=>'Codigo','NameDB'=>'idejecapacitacion','align'=>'center','width'=>'80'),
+                        2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),                        
+                        3 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'30','align'=>'center')
                      );
     public function index() 
     {
@@ -29,7 +29,7 @@ class CierreController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new Cierre();        
+        $obj = new ejecap();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -45,43 +45,45 @@ class CierreController extends Controller
     public function create()
     {
         $data = array();
-        $view = new View();
+        $view = new View();        
+        //$data['Area'] = $this->Select(array('id'=>'idarea','name'=>'idarea','text_null'=>'Seleccione...','table'=>'vista_area'));       
         $view->setData($data);
-        $view->setTemplate( '../view/cierre/_form.php' );
+        $view->setTemplate( '../view/ejecap/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() {
-        $obj = new Cierre();
+        $obj = new ejecap();
         $data = array();
         $view = new View();
-        $obj = $obj->edit($_GET['id']);
-        $data['obj'] = $obj;    
+        $rows = $obj->edit($_GET['id']);
+        $data['obj'] = $rows; 
+        //$data['rowsd'] = $obj->getDetails($rows->idejecapacitacion);
         $view->setData($data);
-        $view->setTemplate( '../view/cierre/_form.php' );
+        $view->setTemplate( '../view/ejecap/_form.php' );
         echo $view->renderPartial();
         
     }
 
     public function save()
     {
-        $obj = new Cierre();
+        $obj = new ejecap();
         $result = array();        
-        if ($_POST['idcierre']=='') 
-            $p = $obj->insert($_POST);                        
+        if ($_POST['idejecapacitacion']=='') 
+        
+        $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                
-        if ($p[0])                
-            $result = array(1,'');                
+        if ($p[0]==1)                
+            $result = array(1,'',$p[2]);                
         else                 
-            $result = array(2,$p[1]);
+            $result = array(2,$p[1],'');
         print_r(json_encode($result));
 
     }
-    
     public function delete()
     {
-        $obj = new Cierre();
+        $obj = new ejecap();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);
@@ -89,7 +91,13 @@ class CierreController extends Controller
         print_r(json_encode($result));
     }
    
-   
+    public function Recejecap()
+    {
+        $obj = new ejecap();        
+        $rows = $obj->Rejecap($_GET['idfinanc']);                               
+        print_r(json_encode($rows));
+    }
+
 }
 
 ?>

@@ -112,7 +112,7 @@
         </div>
         <div id="tabs-2">
 
-            <label for="tipopersonal" class="labels">Tipo Personal:</label>        
+            <label for="tipopersonal" class="labels">Perfil Ocupac.:</label>        
             <?php echo $tipopersonal; ?>
 
             <label for="Especialidad" class="labels">Especialidad:</label>
@@ -126,10 +126,10 @@
             <?php echo $idcargo; ?>
             <br/>
 
-            <label for="estcivil" class="labels">Consultorio:</label>        
+            <label for="estcivil" class="labels">Unidad Operativa:</label>        
             <?php echo $consultorio; ?>
 
-            <label for="perfil" class="labels">Perfil:</label>
+            <label for="perfil" class="labels">Perfil de Eva.:</label>
             <?php echo $Perfil; ?>   
             <br/>
 

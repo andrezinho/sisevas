@@ -30,7 +30,7 @@
                 ?>
             <div id="queue"></div>
             <input id="file_upload" name="file_upload" type="file" multiple="true">    
-            <a target="_blank" href="files/<?php echo $obj->file ?>" style="display:<?php echo $d; ?>;cursor:pointer; font-size: 11px;" id="VerImagennn"><img src="images/pdf.png" />Abrir Archivo</a>
+            <a target="_blank" href="tipoperfil/<?php echo $obj->file ?>" style="display:<?php echo $d; ?>;cursor:pointer; font-size: 11px;" id="VerImagennn"><img src="images/pdf.png" />Abrir Archivo</a>
             
         </div>
         <br />

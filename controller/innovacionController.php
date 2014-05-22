@@ -1,14 +1,15 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/cierre.php';
+require_once '../model/innovacion.php';
 
-class CierreController extends Controller
+class InnovacionController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'s.idcierre','align'=>'center','width'=>'20'),
-                        2 => array('Name'=>'Descripcion','NameDB'=>'s.descripcion','search'=>true),
-                        3 => array('Name'=>'Estado','NameDB'=>'s.estado','width'=>'30','align'=>'center','color'=>'#FFFFFF')
+                        1 => array('Name'=>'Codigo','NameDB'=>'idinnovacion','align'=>'center','width'=>'20'),
+                        2 => array('Name'=>'Personal','NameDB'=>"p.nombres||' '||p.apellidos",'width'=>'75','search'=>true),
+                        3 => array('Name'=>'Innovacion','NameDB'=>'descripcion','align'=>'left'),
+                        4 => array('Name'=>'Fecha','NameDB'=>'fechain','width'=>'25','align'=>'center')
                      );
     public function index() 
     {
@@ -18,6 +19,7 @@ class CierreController extends Controller
         $data['cmb_search'] = $this->Select(array('id'=>'fltr','name'=>'fltr','text_null'=>'','table'=>$this->getColsSearch($this->cols)));
         $data['controlador'] = $_GET['controller'];
 
+        //(nuevo,editar,eliminar,ver)
         $data['actions'] = array(true,true,true,false);
 
         $view = new View();
@@ -29,7 +31,7 @@ class CierreController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new Cierre();        
+        $obj = new Innovacion();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -46,28 +48,31 @@ class CierreController extends Controller
     {
         $data = array();
         $view = new View();
+        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>':: Seleccione ::','table'=>'vista_personal'));     
         $view->setData($data);
-        $view->setTemplate( '../view/cierre/_form.php' );
+        $view->setTemplate( '../view/innovacion/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() {
-        $obj = new Cierre();
+        $obj = new Innovacion();
         $data = array();
         $view = new View();
         $obj = $obj->edit($_GET['id']);
-        $data['obj'] = $obj;    
+        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal','code'=>$obj->idpersonal));        
+        
+        $data['obj'] = $obj;        
         $view->setData($data);
-        $view->setTemplate( '../view/cierre/_form.php' );
+        $view->setTemplate( '../view/innovacion/_form.php' );
         echo $view->renderPartial();
         
     }
 
     public function save()
     {
-        $obj = new Cierre();
+        $obj = new Innovacion();
         $result = array();        
-        if ($_POST['idcierre']=='') 
+        if ($_POST['idinnovacion']=='') 
             $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                
@@ -78,17 +83,28 @@ class CierreController extends Controller
         print_r(json_encode($result));
 
     }
-    
     public function delete()
     {
-        $obj = new Cierre();
+        $obj = new Innovacion();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);
         else $result = array(2,$p[1]);
         print_r(json_encode($result));
     }
-   
+    
+    //imprmir reporte
+    public function reporte_detallado()
+    {
+        $obj = new Innovacion();
+        $data = array();
+        $view = new View();
+        $data['rows'] = $obj->ViewResultado($_GET);
+        $view->setData($data);
+        $view->setTemplate( '../view/innovacion/_pdfrpt.php' );
+        $view->setLayout( '../template/empty.php' );
+        echo $view->renderPartial();
+    }
    
 }
 

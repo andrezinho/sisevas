@@ -1,16 +1,15 @@
 $(function() 
 {    
     $( "#descripcion" ).focus();
-    $( "#idtipovivienda" ).css({'width':'210px'});
-    $("#div_activo").buttonset();
+    $("#estados").buttonset();
 });
 
 function save()
 {
   bval = true;        
   bval = bval && $( "#descripcion" ).required();        
-  //bval = bval && $( "#orden" ).required();
-  var str = $("#frm").serialize();
+
+  var str = $("#frm_fuentecap").serialize();
   if ( bval ) 
   {
       $.post('index.php',str,function(res)

@@ -17,14 +17,14 @@ $(document).ready(function()
 	        select: function( event, ui ) 
 	        {
 	            $("#idp").val(ui.item.idpersonal);	            
-	            $("#personal_name" ).val( ui.item.nombres );
+	            $("#personal_name" ).val( ui.item.nompersonal );
 	            $("#load_personal").focus();
 	            return false;
 	        }
 	     }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {        
 	        return $( "<li></li>" )
 	            .data( "item.autocomplete", item )
-	            .append( "<a>"+ item.dni +" - " + item.nombres + "</a>" )
+	            .append( "<a>"+ item.dni +" - " + item.nompersonal + "</a>" )
 	            .appendTo(ul);
 	      };
 
@@ -52,6 +52,11 @@ $(document).ready(function()
 		$("#reporte_as").click(function(){
 			var idp   = $("#idpersonal").val();
 			popup('index.php?controller=evaluacion&action=reporte_detallado&idp='+idp,500,500);
+		});
+        
+        $("#reporte_in").click(function(){
+			var idp   = $("#idpersonal").val();
+			popup('index.php?controller=innovacion&action=reporte_detallado&idp='+idp,500,500);
 		});
 
 		var $floatingbox = $('#mp-menu'); 

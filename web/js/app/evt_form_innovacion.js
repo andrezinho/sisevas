@@ -1,15 +1,18 @@
 $(function() 
 {    
     $( "#descripcion" ).focus();
-    $("#estados").buttonset();
+    $( "#idpersonal" ).css({'width':'230px'});
+    $("#fechain").datepicker({dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true});
+    $("#div_activo").buttonset();
 });
 
 function save()
 {
-  bval = true;        
+  bval = true;
+  bval = bval && $( "#idpersonal" ).required();   
   bval = bval && $( "#descripcion" ).required();        
-
-  var str = $("#frm").serialize();
+  
+  var str = $("#frm_innovacion").serialize();
   if ( bval ) 
   {
       $.post('index.php',str,function(res)

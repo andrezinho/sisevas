@@ -50,6 +50,7 @@
 				?>
 			</ul>
 			<div style="text-align:center; padding:10px 0;">
+                <a href="#" id="reporte_in" class="myButton">Innovaciones</a>
 				<a href="#" id="reporte_as" class="myButton">Reporte</a>
 				<a href="#" id="save_as" class="myButton">Grabar</a>
 			</div>

@@ -3,15 +3,15 @@
 ?>
 
    
-<form id="frm" >
-    <input type="hidden" name="controller" value="Cierre" />
+<form id="frm_fuentecap" >
+    <input type="hidden" name="controller" value="fuentecap" />
 
     <input type="hidden" name="action" value="save" />
-    <input type="hidden" id="idcierre" name="idcierre" value="<?php echo $obj->idcierre; ?>" />
+    <input type="hidden" id="idfuentecapacitacion" name="idfuentecapacitacion" value="<?php echo $obj->idfuentecapacitacion; ?>" />
                 
         <label for="descripcion" class="labels">Descripcion:</label>
         <input id="descripcion" maxlength="100" name="descripcion" onkeypress="return permite(event,'car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->descripcion; ?>" />
-        <br>
+        <br />
         
         <label for="estado" class="labels">Activo:</label>
         <div id="estados" style="display:inline">

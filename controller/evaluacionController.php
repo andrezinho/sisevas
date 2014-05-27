@@ -44,11 +44,13 @@ class evaluacionController extends Controller
         $obj = new evaluacion();
         $data = array();
         $result = $obj->reporte_detallado($_GET);
-        $data['rows'] = $result;
-        
+        $data['rows'] = $result;        
         $view = new View();
         $view->setData($data);
-        $view->setTemplate('../view/evaluacion/_reporte.php');
+        if($_GET['tipo']=="pdf")
+            $view->setTemplate('../view/evaluacion/_reporte_pdf.php');
+        else
+            $view->setTemplate('../view/evaluacion/_reporte.php');
         $view->setLayout('../template/empty.php');
         return $view->render();
     }

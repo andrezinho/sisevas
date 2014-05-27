@@ -57,3 +57,9 @@
 		</div>
 	</nav>
 </div>
+<div id="dialog-reporte">
+	<div style="text-align:center; padding:30px 0 0">
+		<a id="reporte_as_pdf" target="_blank" href="index.php?controller=evaluacion&action=reporte_detallado&idp=<?php echo $rows->idpersonal; ?>&tipo=pdf" style="font-weight:bold;font-size:14px;color:#00588A">PDF</a>
+		<a id="reporte_as_excel" href="#" style="font-weight:bold;font-size:14px;color:#00588A;margin-left:20px;">EXCEL</a>
+	</div>
+</div>

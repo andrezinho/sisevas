@@ -3,7 +3,7 @@ include_once("Main.php");
 class evaluacion extends Main
 {    
     function getAspectos($g)
-    {   
+    {
         //Obtengo el consultorio al cual pertenece el personal a ser evaluado
         $sql = "SELECT idarea from personal where idpersonal = :id ";
         $stmt = $this->db->prepare($sql);
@@ -20,6 +20,7 @@ class evaluacion extends Main
         $stmt->execute();
         $data = array();
         $c = 0;
+
 
         foreach($stmt->fetchAll() as $row)
         {
@@ -51,7 +52,10 @@ class evaluacion extends Main
         }
         return $data;
     }
-    
+    function getEvaluaciones()
+    {
+        
+    }
     function getCompetencias($idp)
     {
         $sql = "SELECT  t1.idcompetencia,
@@ -159,6 +163,7 @@ class evaluacion extends Main
 
         $sql = "SELECT idcompetencia,descripcion 
                 from evaluacion.competencias order by idcompetencia";
+                
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $data = array();
@@ -210,9 +215,6 @@ class evaluacion extends Main
             }
             $c += 1;
         }
-
-
-
         return $data;
     }
 }

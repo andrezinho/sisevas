@@ -1,5 +1,10 @@
 $(document).ready(function()
 	{	
+		$("#dialog-reporte").dialog({
+			title:'Elija el Formato del Reporte',
+			autoOpen:false,
+			modal:true
+		});
 		$("#personal_name").focus();
 		$("#load_personal").click(function(){			
 			$("#form-search").submit();
@@ -49,9 +54,13 @@ $(document).ready(function()
 			},'json')
 		});
 
-		$("#reporte_as").click(function(){
+		$("#reporte_as").click(function()
+		{
+			$("#dialog-reporte").dialog('open');			
+		});
+		$("#reporte_as_excel").click(function(){
 			var idp   = $("#idpersonal").val();
-			popup('index.php?controller=evaluacion&action=reporte_detallado&idp='+idp,500,500);
+			popup('index.php?controller=evaluacion&action=reporte_detallado&tipo=excel&idp='+idp,500,500);
 		});
         
         $("#reporte_in").click(function(){

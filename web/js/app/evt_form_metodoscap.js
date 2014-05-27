@@ -8,9 +8,8 @@ $(function()
 function save()
 {
   bval = true;        
-  bval = bval && $( "#descripcion" ).required();        
-  bval = bval && $( "#idunidad_medida" ).required();
-  var str = $("#frm").serialize();
+  bval = bval && $( "#descripcion" ).required();
+  var str = $("#frm_metodos").serialize();
   if ( bval ) 
   {
       $.post('index.php',str,function(res)

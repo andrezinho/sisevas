@@ -1,18 +1,15 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/madera.php';
+require_once '../model/metodoscap.php';
 
-class MaderaController extends Controller 
+class metodoscapController extends Controller 
 {   
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'p.idproducto','align'=>'center','width'=>50),
-                        2 => array('Name'=>'Descripcion','NameDB'=>'p.descripcion','width'=>250,'search'=>true),
-                        3 => array('Name'=>'Unidad Medida','NameDB'=>'u.simbolo','search'=>true),
-                        4 => array('Name'=>'Precio Unitario','NameDB'=>'u.precio_u','align'=>'right','width'=>100),
-                        5 => array('Name'=>'Stok','NameDB'=>'p.stock','align'=>'right','width'=>100),
-                        6 => array('Name'=>'Estado','NameDB'=>'p.estado','align'=>'center','width'=>70)
-                     );
+            1 => array('Name'=>'Codigo','NameDB'=>'idmetodoscapacitacion','align'=>'center','width'=>50),
+            2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','width'=>250,'search'=>true),
+            3 => array('Name'=>'Estado','NameDB'=>'estado','align'=>'center','width'=>70)
+         );
     public function index() 
     {
         $data = array();                               
@@ -33,7 +30,7 @@ class MaderaController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new Madera();        
+        $obj = new metodoscap();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -50,30 +47,30 @@ class MaderaController extends Controller
     {
         $data = array();
         $view = new View();
-        $data['idunidad_medida'] = $this->Select(array('id'=>'idunidad_medida','name'=>'idunidad_medida','table'=>'vista_unidadmedida','code'=>$obj->idunidad_medida));
+        //$data['idunidad_medida'] = $this->Select(array('id'=>'idunidad_medida','name'=>'idunidad_medida','table'=>'vista_unidadmedida','code'=>$obj->idunidad_medida));
         $view->setData($data);
-        $view->setTemplate( '../view/madera/_form.php' );
+        $view->setTemplate( '../view/metodoscap/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() 
     {
-        $obj = new Madera();
+        $obj = new metodoscap();
         $data = array();
         $view = new View();
         $obj = $obj->edit($_GET['id']);
         $data['obj'] = $obj;
-        $data['idunidad_medida'] = $this->Select(array('id'=>'idunidad_medida','name'=>'idunidad_medida','table'=>'vista_unidadmedida','code'=>$obj->idunidad_medida));
+        //$data['idunidad_medida'] = $this->Select(array('id'=>'idunidad_medida','name'=>'idunidad_medida','table'=>'vista_unidadmedida','code'=>$obj->idunidad_medida));
         $view->setData($data);
-        $view->setTemplate( '../view/madera/_form.php' );
+        $view->setTemplate( '../view/metodoscap/_form.php' );
         echo $view->renderPartial();
     }
 
     public function save()
     {
-        $obj = new Madera();
+        $obj = new metodoscap();
         $result = array();        
-        if ($_POST['idproducto']=='') 
+        if ($_POST['idmetodoscapacitacion']=='') 
             $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                
@@ -86,7 +83,7 @@ class MaderaController extends Controller
 
     public function delete()
     {
-        $obj = new Madera();
+        $obj = new metodoscap();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);
@@ -96,13 +93,13 @@ class MaderaController extends Controller
 
     public function getPrice()
     {
-        $obj = new Madera();        
+        $obj = new metodoscap();        
         $p = $obj->getPrice($_GET['id']);
         echo $p;
     }  
     public function getStock()
     {
-        $obj = new Madera();
+        $obj = new metodoscap();
         $idmadera = (int)$_GET['id'];
         $idalmacen = (int)$_GET['a'];
         $p = $obj->getStock($idmadera,$idalmacen);

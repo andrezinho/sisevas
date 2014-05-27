@@ -6,7 +6,7 @@ require_once '../model/ejecap.php';
 class ejecapController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'idejecapacitacion','align'=>'center','width'=>'80'),
+                        1 => array('Name'=>'Codigo','NameDB'=>'idejecapacitacion','align'=>'center','width'=>'20'),
                         2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),                        
                         3 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'30','align'=>'center')
                      );

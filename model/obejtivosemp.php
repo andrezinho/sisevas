@@ -1,31 +1,29 @@
 <?php
 include_once("Main.php");
-class Maderba extends Main
+class obejtivosemp extends Main
 {
     function indexGrid($page,$limit,$sidx,$sord,$filtro,$query,$cols)
     {
         $sql = "SELECT
-            s.idmaderba,
+            s.idobejtivosemp,
             s.descripcion,
-            s.espesor,
-            l.descripcion,
             case s.estado when 1 then 'ACTIVO' else 'INCANTIVO' end
             FROM
             produccion.linea AS l
-            INNER JOIN produccion.maderba AS s ON l.idlinea = s.idlinea ";    
+            INNER JOIN obejtivosemp AS s ON l.idlinea = s.idlinea ";    
             
             return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
 
     function edit($id ) {
-        $stmt = $this->db->prepare("SELECT * FROM produccion.maderba WHERE idmaderba = :id");
+        $stmt = $this->db->prepare("SELECT * FROM obejtivosemp WHERE idobejtivosemp = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchObject();
     }
 
     function insert($_P ) {
-        $stmt = $this->db->prepare("INSERT INTO produccion.maderba (descripcion,espesor, estado,idlinea) 
+        $stmt = $this->db->prepare("INSERT INTO obejtivosemp (descripcion,espesor, estado,idlinea) 
                     VALUES(:p1,:p2,:p3,:p4)");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
         $stmt->bindParam(':p2', $_P['espesor'] , PDO::PARAM_STR);
@@ -35,7 +33,7 @@ class Maderba extends Main
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         
-        $stmt = $this->db->prepare("SELECT max(idmaderba) as cod from produccion.maderba");
+        $stmt = $this->db->prepare("SELECT max(idobejtivosemp) as cod from obejtivosemp");
         $stmt->execute();
         $row = $stmt->fetchObject();
 
@@ -43,23 +41,23 @@ class Maderba extends Main
     }
 
     function update($_P ) {
-        $stmt = $this->db->prepare("UPDATE produccion.maderba 
+        $stmt = $this->db->prepare("UPDATE obejtivosemp 
                 set descripcion = :p1, 
                 espesor= :p2, estado = :p3, idlinea = :p4
-                WHERE idmaderba = :idmaderba");
+                WHERE idobejtivosemp = :idobejtivosemp");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
         $stmt->bindParam(':p2', $_P['espesor'] , PDO::PARAM_STR);
         $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_INT);
         $stmt->bindParam(':p4', $_P['idlinea'] , PDO::PARAM_INT);
 
-        $stmt->bindParam(':idmaderba', $_P['idmaderba'] , PDO::PARAM_INT);
+        $stmt->bindParam(':idobejtivosemp', $_P['idobejtivosemp'] , PDO::PARAM_INT);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
     }
     
     function delete($_P ) {
-        $stmt = $this->db->prepare("DELETE FROM produccion.maderba WHERE idmaderba = :p1");
+        $stmt = $this->db->prepare("DELETE FROM obejtivosemp WHERE idobejtivosemp = :p1");
         $stmt->bindParam(':p1', $_P , PDO::PARAM_INT);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -68,7 +66,7 @@ class Maderba extends Main
 
     function getList($idmad=null)
     {
-        $sql = "SELECT idmaderba, descripcion from produccion.maderba ";
+        $sql = "SELECT idobejtivosemp, descripcion from obejtivosemp ";
         if($idmad!=null)
         {
             $sql .= " WHERE idlinea = {$idmad}";
@@ -78,7 +76,7 @@ class Maderba extends Main
         $data = array();
         foreach($stmt->fetchAll() as $r)
         {
-            $data[] = array('idmaderba'=>$r[0],'descripcion'=>$r[1]);
+            $data[] = array('idobejtivosemp'=>$r[0],'descripcion'=>$r[1]);
         }
         return $data;
     }

@@ -1,17 +1,15 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/maderba.php';
+require_once '../model/obejtivosemp.php';
 
-class MaderbaController extends Controller
+class obejtivosempController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'s.idmaderba','align'=>'center','width'=>70),
-                        2 => array('Name'=>'Descripcion','NameDB'=>'s.descripcion','search'=>true),
-                        3 => array('Name'=>'Espesor','NameDB'=>'s.espesor','search'=>true),
-                        4 => array('Name'=>'Linea','NameDB'=>'l.descripcion','search'=>true),
-                        5 => array('Name'=>'Estado','NameDB'=>'s.estado','width'=>'30','align'=>'center','color'=>'#FFFFFF')
-                     );
+            1 => array('Name'=>'Codigo','NameDB'=>'s.idmaderba','align'=>'center','width'=>70),
+            2 => array('Name'=>'Descripcion','NameDB'=>'s.descripcion','search'=>true),
+            3 => array('Name'=>'Estado','NameDB'=>'s.estado','width'=>'30','align'=>'center')
+         );
     public function index() 
     {
         $data = array();                               
@@ -31,7 +29,7 @@ class MaderbaController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new Maderba();        
+        $obj = new obejtivosemp();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -48,28 +46,28 @@ class MaderbaController extends Controller
     {
         $data = array();
         $view = new View();        
-        $data['idlinea'] = $this->Select(array('id'=>'idlinea','name'=>'idlinea','text_null'=>'Seleccione...','table'=>'produccion.vista_linea'));       
+        //$data['idlinea'] = $this->Select(array('id'=>'idlinea','name'=>'idlinea','text_null'=>'Seleccione...','table'=>'produccion.vista_linea'));       
         $view->setData($data);
-        $view->setTemplate( '../view/maderba/_form.php' );
+        $view->setTemplate( '../view/obejtivosemp/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() {
-        $obj = new Maderba();
+        $obj = new obejtivosemp();
         $data = array();
         $view = new View();
         $obj = $obj->edit($_GET['id']);
         $data['obj'] = $obj; 
-        $data['idlinea'] = $this->Select(array('id'=>'idlinea','name'=>'idlinea','table'=>'produccion.vista_linea','code'=>$obj->idlinea));   
+        //$data['idlinea'] = $this->Select(array('id'=>'idlinea','name'=>'idlinea','table'=>'produccion.vista_linea','code'=>$obj->idlinea));   
         $view->setData($data);
-        $view->setTemplate( '../view/maderba/_form.php' );
+        $view->setTemplate( '../view/obejtivosemp/_form.php' );
         echo $view->renderPartial();
         
     }
 
     public function save()
     {
-        $obj = new Maderba();
+        $obj = new obejtivosemp();
         $result = array();        
         if ($_POST['idmaderba']=='') 
             $p = $obj->insert($_POST);                        
@@ -84,7 +82,7 @@ class MaderbaController extends Controller
     }
     public function delete()
     {
-        $obj = new Maderba();
+        $obj = new obejtivosemp();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);
@@ -94,7 +92,7 @@ class MaderbaController extends Controller
    
     public function getList()
     {
-        $obj = new Maderba();
+        $obj = new obejtivosemp();
         $idmaderba = (int)$_GET['idmad'];
         $rows = $obj->getList($idmaderba);
         print_r(json_encode($rows));

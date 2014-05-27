@@ -1,27 +1,20 @@
 <?php
 include_once("Main.php");
-class Madera extends Main
+class metodoscap extends Main
 {    
     function indexGrid($page,$limit,$sidx,$sord,$filtro,$query,$cols)
     {
-        $sql = "SELECT  p.idproducto,
-                    p.descripcion,
-                    u.simbolo,
-                    p.precio_u,
-                    p.stock,
-                    case p.estado when 1 then 'ACTIVO' else 'INACTIVO' end ,
-                    p.idtipoproducto,
-                    p.idunidad_medida
-                from produccion.producto as p 
-                    inner join produccion.maderba as m on p.idmaderba = m.idmaderba
-                    inner join unidad_medida as u on u.idunidad_medida = p.idunidad_medida
-                where p.idtipoproducto = 1  ";
+        $sql = "SELECT 
+                idmetodoscapacitacion, 
+                descripcion, 
+                case estado when 1 then 'ACTIVO' else 'INCANTIVO' end
+            FROM capacitacion.metodoscapacitacion";
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
 
     function edit($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM produccion.producto WHERE idproducto = :id");
+        $stmt = $this->db->prepare("SELECT * FROM capacitacion.metodoscapacitacion WHERE idmetodoscapacitacion = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchObject();
@@ -31,17 +24,11 @@ class Madera extends Main
     {
         $tipopro=1;
         $idmaderb= 1;
-        $stmt = $this->db->prepare("INSERT into produccion.producto(tipoproducto,descripcion,idmaderba,
-                                    precio_u,idunidad_medida,stock,estado)
-                                    values(:p1,:p2,:p3,:p5,:p6,:p7)");
-              
-        $stmt->bindParam(':p1', $tipopro , PDO::PARAM_INT);
-        $stmt->bindParam(':p2', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p3', $idmaderb , PDO::PARAM_INT);        
-        $stmt->bindParam(':p4', $_P['precio_u'] , PDO::PARAM_INT);
-        $stmt->bindParam(':p5', $_P['idunidad_medida'] , PDO::PARAM_INT);
-        $stmt->bindParam(':p6', $_P['stock'] , PDO::PARAM_INT);
-        $stmt->bindParam(':p7', $_P['activo'] , PDO::PARAM_INT);
+        $stmt = $this->db->prepare("INSERT into capacitacion.metodoscapacitacion(descripcion,estado)
+                                    values(:p1,:p2)");
+        
+        $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
         
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -51,24 +38,18 @@ class Madera extends Main
     }
     function update($_P ) 
     {
-        $sql = "UPDATE produccion.producto 
+        $sql = "UPDATE capacitacion.metodoscapacitacion 
                     set     
-                        descripcion=:p2,
-                        precio_u=:p3,
-                        idunidad_medida=:p5,
-                        stock=:p6,
-                        estado=:p7
+                        descripcion=:p1,                        
+                        estado=:p2
 
-                WHERE idproducto = :idproducto";
+                WHERE idmetodoscapacitacion = :idmetodoscapacitacion";
         $stmt = $this->db->prepare($sql);
         
-        $stmt->bindParam(':p2', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p3', $_P['precio_u'] , PDO::PARAM_INT);        
-        $stmt->bindParam(':p5', $_P['idunidad_medida'] , PDO::PARAM_INT);
-        $stmt->bindParam(':p6', $_P['stock'] , PDO::PARAM_INT);
-        $stmt->bindParam(':p7', $_P['activo'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
 
-        $stmt->bindParam(':idproducto', $_P['idproducto'] , PDO::PARAM_INT);            
+        $stmt->bindParam(':idmetodoscapacitacion', $_P['idmetodoscapacitacion'] , PDO::PARAM_INT);            
             
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -77,7 +58,7 @@ class Madera extends Main
     
     function delete($p) 
     {
-        $stmt = $this->db->prepare("DELETE FROM produccion.producto WHERE idproducto = :p1");
+        $stmt = $this->db->prepare("DELETE FROM capacitacion.metodoscapacitacion WHERE idmetodoscapacitacion = :p1");
         $stmt->bindParam(':p1', $p, PDO::PARAM_INT);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -86,7 +67,7 @@ class Madera extends Main
     
     function getPrice($id)
     {
-        $stmt = $this->db->prepare("SELECT precio_u from produccion.producto WHERE idproducto = :p1");
+        $stmt = $this->db->prepare("SELECT precio_u from capacitacion.metodoscapacitacion WHERE idmetodoscapacitacion = :p1");
         $stmt->bindParam(':p1', $id, PDO::PARAM_INT);
         $stmt->execute();
         $r = $stmt->fetchObject();
@@ -99,7 +80,7 @@ class Madera extends Main
                 from (
                 SELECT max(idmovimiento) as idm ,ctotal_current as c, item
                 FROM movimientosdetalle
-                where idtipoproducto = 1 and idproducto = :idp and idalmacen = :ida 
+                where idtipoproducto = 1 and idmetodoscapacitacion = :idp and idalmacen = :ida 
                 group by ctotal_current,item,idmovimiento
                 order by idmovimiento desc
                 limit 1) as t

@@ -2,38 +2,39 @@
 session_start();
 require("../lib/fpdf/fpdf.php");
 class PDF extends FPDF
-{        
-        var $periodo;
-        var $maxw;
-        var $widths;
-        
-        public function setValues($periodo,$maxw)
-        {
-            $this->periodo = $periodo;            
-            $this->maxw = $maxw;            
-        }
-        
+{
+    var $periodo;
+    var $personal;
+    var $consultorio;
+    var $maxw;
+    var $widths;
+    
+    public function setValues($datos,$maxw)
+    {
+        $this->personal = $datos[0];
+        $this->consultorio = $datos[1];
+        $this->periodo = $datos[2];
+        $this->maxw = $maxw;
+    }
+    
 	function Header()
 	{                
-        $maxw = $this->maxw;
-                
+        $maxw = $this->maxw;                
         $this->SetMargins(20,20,20);
         $this->SetFont('Arial','B',12);
         $this->Ln();         
         $this->Cell(0, 5,'REPORTE DE RESULTADOS DE EVALUACION', 0, 0, 'L', false);
         $this->Ln();        
-        $this->SetFont('Times','',9);
-        
-        $this->Cell(0, 3,'PERIODO', 0, 0, 'L', false);
-        
-        $this->SetFont('Times','',7);
-        $this->SetXY($maxw-17,12);
+        $this->SetFont('Times','',9);        
+        $this->Cell(0, 3, strtoupper(utf8_decode($this->periodo.' | CONSULTORIO: '.$this->consultorio)), 0, 0, 'L', false);                
+        $this->SetXY($maxw-20,12);
         $fecha = date('d-M-Y');
         $this->Write(0,$fecha);
         $this->Ln(2);
         $this->Cell(0,5,'','B',0,'C',false);
+        $this->Ln(6);
+        $this->Cell(0, 3,utf8_decode('Personal: '.$this->personal), 0, 0, 'L', false);
         $this->Ln(10);
-
 	}
 	
 	function Footer()
@@ -51,7 +52,6 @@ class PDF extends FPDF
 
 	function FancyTable($rows)
 	{
-        
         $i = 0;
         $h = 5;
         $border = 'BLT';
@@ -80,19 +80,37 @@ class PDF extends FPDF
 	            $this->Cell(15, $h,(int)$r['valor_max'], 1, 0, 'C', $fill);
 	            $this->Ln();
 			}
+			
+			$this->SetFont('Arial','B',9);
+			$this->Cell(140, $h,'', 0, 0, 'L', $fill);
+            $this->Cell(15, $h,(int)$s, 1, 0, 'C', $fill);
+            $this->Cell(15, $h,(int)$sm, 1, 0, 'C', $fill);
+            $this->Ln();
+
+			$st += $s;
+			$smt += $sm;
+
 			$this->Ln();
 		}
-                        
+
+			$this->Cell(140, $h,'TOTALES   ', 0, 0, 'R', $fill);
+            $this->Cell(15, $h,(int)$st, 1, 0, 'C', $fill);
+            $this->Cell(15, $h,(int)$smt, 1, 0, 'C', $fill);
+            $this->Ln();
+            $this->Cell(140, $h,'PORCENTAJE   ', 0, 0, 'R', $fill);
+            $this->Cell(30, $h,number_format($st*100/$smt,0).' %', 1, 0, 'C', $fill);
+            $this->Ln();
 	}
 }
 
 $pdf=new PDF();
 
 $maxw=190;
-$pdf->setValues("Periodo 2014-I", $maxw);
+$pdf->setValues($datos, $maxw);
 $orientacion = 'P';
 $pdf->AddPage($orientacion);
 $pdf->AliasNbPages();
 $pdf->FancyTable($rows);
 $pdf->Output();
+
 ?>

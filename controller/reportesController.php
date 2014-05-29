@@ -11,7 +11,7 @@ class reportesController extends Controller
         $view = new View();
         $data['periodo'] = $this->Select(array('name'=>'idperiodo','id'=>'idperiodo','table'=>'evaluacion.vperiodo'));
         $view->setData($data);
-        $view->setTemplate( '../view/reportes/_rep01.php' );       
+        $view->setTemplate( '../view/reportes/_rep01.php' );
         $view->setLayout( '../template/layout.php' );
         $view->render();
     }

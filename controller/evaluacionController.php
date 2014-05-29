@@ -44,7 +44,8 @@ class evaluacionController extends Controller
         $obj = new evaluacion();
         $data = array();
         $result = $obj->reporte_detallado($_GET);
-        $data['rows'] = $result;        
+        $data['datos'] = $result[1];
+        $data['rows'] = $result[0];
         $view = new View();
         $view->setData($data);
         if($_GET['tipo']=="pdf")

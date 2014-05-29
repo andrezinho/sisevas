@@ -9,13 +9,13 @@
 		<h1>
 			Buscar Personal
 		</h1>
-			<form name="form-search" id="form-search" action="index.php" method="get">
-				<input type="hidden" name="idp" id="idp" value="" />
-				<input type="hidden" name="controller" id="controller" value="evaluacion" />
-				<input type="text" name="personal_name" id="personal_name" value="" placeholder="Nombre del Personal" style="width:65%" class="text" />
-				<a href="#" id="load_personal" class="myButton">Cargar</a>
-				<a href="#" id="btn-close-search-personal" class="myButton">Cerrar</a>
-			</form>
+		<form name="form-search" id="form-search" action="index.php" method="get">
+			<input type="hidden" name="idp" id="idp" value="" />
+			<input type="hidden" name="controller" id="controller" value="evaluacion" />
+			<input type="text" name="personal_name" id="personal_name" value="" placeholder="Nombre del Personal" style="width:65%" class="text" />
+			<a href="#" id="load_personal" class="myButton">Cargar</a>
+			<a href="#" id="btn-close-search-personal" class="myButton">Cerrar</a>
+		</form>
 	</header>	
 	<nav id="mp-menu" class="mp-menu">		
 		<div class="mp-level">		

@@ -98,12 +98,14 @@ class InnovacionController extends Controller
     {
         $obj = new Innovacion();
         $data = array();
+        $result = $obj->reporte_detallado($_GET);
+        $data['datos'] = $result[1];
+        $data['rows'] = $result[0];        
         $view = new View();
-        $data['rows'] = $obj->ViewResultado($_GET);
         $view->setData($data);
-        $view->setTemplate( '../view/innovacion/_pdfrpt.php' );
-        $view->setLayout( '../template/empty.php' );
-        echo $view->renderPartial();
+        $view->setTemplate('../view/innovacion/_reporte.php');
+        $view->setLayout('../template/evaluacion.php');
+        return $view->render();
     }
    
 }

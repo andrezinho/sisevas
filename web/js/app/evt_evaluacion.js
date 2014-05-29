@@ -10,8 +10,8 @@ $(document).ready(function()
 			$("#form-search").submit();
 		})
 
-		$("#btn-search-personal").click(function(){	$("header").fadeIn(); $("#personal_name").focus();})
-		$("#btn-close-search-personal").click(function(){	$("header").fadeOut(); })
+		$("#btn-search-personal").click(function(){	$("header").fadeIn(); $("#personal_name").focus();});
+		$("#btn-close-search-personal").click(function(){	$("header").fadeOut(); });
 		$("#personal_name").autocomplete({
 	        minLength: 0,
 	        source: 'index.php?controller=personal&action=get&tipo=0',

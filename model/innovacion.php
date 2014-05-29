@@ -101,5 +101,42 @@ class Innovacion extends Main
         }
         
     }
+
+    function reporte_detallado($g)
+    {
+        $periodo = (!isset($_SESSION['periodo'])) ? 'PERIODO 2014-I' : $_SESSION['periodo'];
+        $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
+        $sql = "SELECT p.idarea,p.nombres,p.apellidos,c.descripcion as consultorio 
+                FROM personal as p inner join consultorio as c on 
+                    c.idconsultorio = p.idarea
+                WHERE p.idpersonal = :id ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+        $stmt->execute();
+        $r = $stmt->fetchObject();
+
+        $idconsultorio = $r->idarea;
+        $personal = $r->nombres.' '.$r->apellidos;
+        $consultorio = $r->consultorio;
+
+        $datos = array($personal, $consultorio, $periodo);
+
+        $sql = "SELECT descripcion
+                from evaluacion.innovacion 
+                where idpersonal = :id
+                order by idinnovacion ";
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+        $stmt->execute();
+        $data = array();
+        
+        foreach ($stmt->fetchAll() as $row) 
+        {
+            $data[] = array('descripcion'=>$row[0]);            
+        }
+       
+        return array($data,$datos);
+    }
 }
 ?>

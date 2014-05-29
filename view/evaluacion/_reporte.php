@@ -39,7 +39,7 @@ foreach ($rows as $k => $v)
 				<td style="border-bottom:1px dotted #000000;border-right:1px dotted #000000;vertical-align:middle;" align="center"><?php echo (int)$r['valor_max']; ?></td>
 			</tr>
 			<?php
-		}	
+		}
 		$st += $s;
 		$smt += $sm;	
 		?>

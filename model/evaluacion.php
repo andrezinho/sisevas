@@ -153,13 +153,21 @@ class evaluacion extends Main
 
     function reporte_detallado($g)
     {
+        $periodo = (!isset($_SESSION['periodo'])) ? 'PERIODO 2014-I' : $_SESSION['periodo'];
         $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
-        $sql = "SELECT idarea from personal where idpersonal = :id ";
+        $sql = "SELECT p.idarea,p.nombres,p.apellidos,c.descripcion as consultorio 
+                FROM personal as p inner join consultorio as c on 
+                    c.idconsultorio = p.idarea
+                WHERE p.idpersonal = :id ";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
         $stmt->execute();
         $r = $stmt->fetchObject();
         $idconsultorio = $r->idarea;
+        $personal = $r->nombres.' '.$r->apellidos;
+        $consultorio = $r->consultorio;
+
+        $datos = array($personal, $consultorio, $periodo);
 
         $sql = "SELECT idcompetencia,descripcion 
                 from evaluacion.competencias order by idcompetencia";
@@ -177,17 +185,17 @@ class evaluacion extends Main
                            );
 
             $s = "SELECT  t1.idaspecto,
-                        t1.aspecto,
-                        coalesce(t2.valor,0) as valor,
-                        t1.valor_max
+                          t1.aspecto,
+                          coalesce(t2.valor,0) as valor,
+                          t1.valor_max
                     FROM (
-                    SELECT  a.idaspecto as idaspecto,
-                        a.descripcion as aspecto,
-                        coalesce(max(v.valor),0) as valor_max
-                    FROM evaluacion.valores as v RIGHT OUTER JOIN evaluacion.aspectos as a on
-                    a.idaspecto = v.idaspecto and v.idperiodo = :idper and v.idconsultorio = :idcon
-                    WHERE a.idcompetencia = :idcom
-                    GROUP BY a.idaspecto,a.descripcion ) as t1
+                        SELECT  a.idaspecto as idaspecto,
+                            a.descripcion as aspecto,
+                            coalesce(max(v.valor),0) as valor_max
+                        FROM evaluacion.valores as v RIGHT OUTER JOIN evaluacion.aspectos as a on
+                        a.idaspecto = v.idaspecto and v.idperiodo = :idper and v.idconsultorio = :idcon
+                        WHERE a.idcompetencia = :idcom
+                        GROUP BY a.idaspecto,a.descripcion ) as t1
 
                     LEFT OUTER JOIN
 
@@ -215,7 +223,7 @@ class evaluacion extends Main
             }
             $c += 1;
         }
-        return $data;
+        return array($data,$datos);
     }
 }
 ?>

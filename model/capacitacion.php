@@ -1,6 +1,6 @@
 <?php
 include_once("Main.php");
-class Rutas extends Main
+class capacitacion extends Main
 {
     function indexGrid($page,$limit,$sidx,$sord,$filtro,$query,$cols)
     {

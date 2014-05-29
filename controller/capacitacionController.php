@@ -1,12 +1,12 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/rutas.php';
+require_once '../model/capacitacion.php';
 
-class RutasController extends Controller
+class capacitacionController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'s.idrutas','align'=>'center','width'=>'20'),
+                        1 => array('Name'=>'Codigo','NameDB'=>'s.idcapacitacion','align'=>'center','width'=>'20'),
                         2 => array('Name'=>'Descripcion','NameDB'=>'s.descripcion','search'=>true),
                         3 => array('Name'=>'Estado','NameDB'=>'s.estado','width'=>'30','align'=>'center','color'=>'#FFFFFF')
                      );
@@ -49,7 +49,7 @@ class RutasController extends Controller
         $data = array();
         $view = new View();                        
         $view->setData($data);
-        $view->setTemplate( '../view/rutas/_form.php' );
+        $view->setTemplate( '../view/capacitacion/_form.php' );
         echo $view->renderPartial();
     }
 
@@ -61,7 +61,7 @@ class RutasController extends Controller
         $data['obj'] = $obj;        
         $data['more_options'] = $this->more_options('area');
         $view->setData($data);
-        $view->setTemplate( '../view/rutas/_form.php' );
+        $view->setTemplate( '../view/capacitacion/_form.php' );
         echo $view->renderPartial();
         
     }
@@ -70,7 +70,7 @@ class RutasController extends Controller
     {
         $obj = new Rutas();
         $result = array();        
-        if ($_POST['idrutas']=='') 
+        if ($_POST['idcapacitacion']=='') 
             $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                

@@ -1,15 +1,14 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/zona.php';
+require_once '../model/objetivoscap.php';
 
-class ZonaController extends Controller
+class objetivoscapController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'s.idzona','align'=>'center','width'=>'40'),
-                        2 => array('Name'=>'Ubigeo','NameDB'=>'u.descripcion','search'=>true),
-                        3 => array('Name'=>'Zona','NameDB'=>'s.descripcion','search'=>true),
-                        4 => array('Name'=>'Estado','NameDB'=>'s.estado','width'=>'40','align'=>'center')
+                        1 => array('Name'=>'Codigo','NameDB'=>'idobejtivoscap','align'=>'center','width'=>'20'),
+                        2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),
+                        3 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'20','align'=>'center')
                      );
     
     public function index() 
@@ -19,7 +18,7 @@ class ZonaController extends Controller
         $data['colsModels'] = $this->getColsModel($this->cols);        
         $data['cmb_search'] = $this->Select(array('id'=>'fltr','name'=>'fltr','text_null'=>'','table'=>$this->getColsSearch($this->cols)));
         $data['controlador'] = $_GET['controller'];
-
+        $data['titulo'] = "Objetivos de la Capacitacion";
         //(nuevo,editar,eliminar,ver)
         $data['actions'] = array(true,true,true,false);
 
@@ -32,7 +31,7 @@ class ZonaController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new Zona();        
+        $obj = new objetivoscap();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -49,30 +48,30 @@ class ZonaController extends Controller
     {
         $data = array();
         $view = new View();
-        $data['Distritos'] = $this->Select(array('id'=>'idubigeo','name'=>'idubigeo','text_null'=>'Seleccione...','table'=>'vista_distrito'));                                       
+        //$data['Distritos'] = $this->Select(array('id'=>'idubigeo','name'=>'idubigeo','text_null'=>'Seleccione...','table'=>'vista_distrito'));                                       
         $view->setData($data);
-        $view->setTemplate( '../view/zona/_form.php' );
+        $view->setTemplate( '../view/objetivoscap/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() {
-        $obj = new Zona();
+        $obj = new objetivoscap();
         $data = array();
         $view = new View();
         $obj = $obj->edit($_GET['id']);
         $data['obj'] = $obj;
-        $data['Distritos'] = $this->Select(array('id'=>'idubigeo','name'=>'idubigeo','text_null'=>'Seleccione...','table'=>'vista_distrito','code'=>$obj->idubigeo));                                       
+        //$data['Distritos'] = $this->Select(array('id'=>'idubigeo','name'=>'idubigeo','text_null'=>'Seleccione...','table'=>'vista_distrito','code'=>$obj->idubigeo));                                       
         $view->setData($data);
-        $view->setTemplate( '../view/zona/_form.php' );
+        $view->setTemplate( '../view/objetivoscap/_form.php' );
         echo $view->renderPartial();
         
     }
 
     public function save()
     {
-        $obj = new Zona();
+        $obj = new objetivoscap();
         $result = array();        
-        if ($_POST['idzona']=='') 
+        if ($_POST['idobejtivoscap']=='') 
             $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                
@@ -86,7 +85,7 @@ class ZonaController extends Controller
 
     public function delete()
     {
-        $obj = new Zona();
+        $obj = new objetivoscap();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);
@@ -96,9 +95,9 @@ class ZonaController extends Controller
    
     public function getList()
     {
-        $obj = new Zona();
-        $idzona = (int)$_GET['IdZo'];
-        $rows = $obj->getList($idzona);
+        $obj = new objetivoscap();
+        $idobejtivoscap = (int)$_GET['IdZo'];
+        $rows = $obj->getList($idobejtivoscap);
         print_r(json_encode($rows));
     }
 }

@@ -1,16 +1,15 @@
 <?php
 include_once("Main.php");
-class obejtivosemp extends Main
+class objetivosemp extends Main
 {
     function indexGrid($page,$limit,$sidx,$sord,$filtro,$query,$cols)
     {
         $sql = "SELECT
-            s.idobejtivosemp,
-            s.descripcion,
-            case s.estado when 1 then 'ACTIVO' else 'INCANTIVO' end
-            FROM
-            produccion.linea AS l
-            INNER JOIN obejtivosemp AS s ON l.idlinea = s.idlinea ";    
+                idobejtivosemp,
+                descripcion,
+                case estado when 1 then 'ACTIVO' else 'INCANTIVO' end
+                FROM
+                public.obejtivosemp ";    
             
             return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
@@ -23,12 +22,10 @@ class obejtivosemp extends Main
     }
 
     function insert($_P ) {
-        $stmt = $this->db->prepare("INSERT INTO obejtivosemp (descripcion,espesor, estado,idlinea) 
-                    VALUES(:p1,:p2,:p3,:p4)");
+        $stmt = $this->db->prepare("INSERT INTO obejtivosemp (descripcion,estado) 
+                    VALUES(:p1,:p2)");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $_P['espesor'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_INT);
-        $stmt->bindParam(':p4', $_P['idlinea'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
 
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -42,13 +39,12 @@ class obejtivosemp extends Main
 
     function update($_P ) {
         $stmt = $this->db->prepare("UPDATE obejtivosemp 
-                set descripcion = :p1, 
-                espesor= :p2, estado = :p3, idlinea = :p4
+                set 
+                    descripcion = :p1, 
+                    estado = :p2
                 WHERE idobejtivosemp = :idobejtivosemp");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $_P['espesor'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_INT);
-        $stmt->bindParam(':p4', $_P['idlinea'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
 
         $stmt->bindParam(':idobejtivosemp', $_P['idobejtivosemp'] , PDO::PARAM_INT);
         $p1 = $stmt->execute();

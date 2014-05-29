@@ -1,17 +1,15 @@
 $(function() 
 {    
     $( "#descripcion" ).focus();
-    $( "#idubigeo" ).css({'width':'210px'});
     $("#estados").buttonset();
 });
 
 function save()
 {
   bval = true;        
-  bval = bval && $( "#descripcion" ).required();        
-  bval = bval && $( "#idubigeo" ).required();
+  bval = bval && $( "#descripcion" ).required();
   
-  var str = $("#frm_zona").serialize();
+  var str = $("#frm_objcap").serialize();
   if ( bval ) 
   {
       $.post('index.php',str,function(res)

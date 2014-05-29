@@ -1,14 +1,14 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/obejtivosemp.php';
+require_once '../model/objetivosemp.php';
 
-class obejtivosempController extends Controller
+class objetivosempController extends Controller
 {
     var $cols = array(
-            1 => array('Name'=>'Codigo','NameDB'=>'s.idmaderba','align'=>'center','width'=>70),
-            2 => array('Name'=>'Descripcion','NameDB'=>'s.descripcion','search'=>true),
-            3 => array('Name'=>'Estado','NameDB'=>'s.estado','width'=>'30','align'=>'center')
+            1 => array('Name'=>'Codigo','NameDB'=>'idobejtivosemp','align'=>'center','width'=>30),
+            2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),
+            3 => array('Name'=>'Estado','NameDB'=>'estado','width'=>30,'align'=>'center')
          );
     public function index() 
     {
@@ -17,7 +17,8 @@ class obejtivosempController extends Controller
         $data['colsModels'] = $this->getColsModel($this->cols);        
         $data['cmb_search'] = $this->Select(array('id'=>'fltr','name'=>'fltr','text_null'=>'','table'=>$this->getColsSearch($this->cols)));
         $data['controlador'] = $_GET['controller'];
-
+        $data['titulo'] = "Obejetivos de la Empresa";
+        
         $data['actions'] = array(true,true,true,false);
 
         $view = new View();
@@ -29,7 +30,7 @@ class obejtivosempController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new obejtivosemp();        
+        $obj = new objetivosemp();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -48,28 +49,28 @@ class obejtivosempController extends Controller
         $view = new View();        
         //$data['idlinea'] = $this->Select(array('id'=>'idlinea','name'=>'idlinea','text_null'=>'Seleccione...','table'=>'produccion.vista_linea'));       
         $view->setData($data);
-        $view->setTemplate( '../view/obejtivosemp/_form.php' );
+        $view->setTemplate( '../view/objetivosemp/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() {
-        $obj = new obejtivosemp();
+        $obj = new objetivosemp();
         $data = array();
         $view = new View();
         $obj = $obj->edit($_GET['id']);
         $data['obj'] = $obj; 
         //$data['idlinea'] = $this->Select(array('id'=>'idlinea','name'=>'idlinea','table'=>'produccion.vista_linea','code'=>$obj->idlinea));   
         $view->setData($data);
-        $view->setTemplate( '../view/obejtivosemp/_form.php' );
+        $view->setTemplate( '../view/objetivosemp/_form.php' );
         echo $view->renderPartial();
         
     }
 
     public function save()
     {
-        $obj = new obejtivosemp();
+        $obj = new objetivosemp();
         $result = array();        
-        if ($_POST['idmaderba']=='') 
+        if ($_POST['idobejtivosemp']=='') 
             $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                
@@ -82,7 +83,7 @@ class obejtivosempController extends Controller
     }
     public function delete()
     {
-        $obj = new obejtivosemp();
+        $obj = new objetivosemp();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);
@@ -92,9 +93,9 @@ class obejtivosempController extends Controller
    
     public function getList()
     {
-        $obj = new obejtivosemp();
-        $idmaderba = (int)$_GET['idmad'];
-        $rows = $obj->getList($idmaderba);
+        $obj = new objetivosemp();
+        $idobejtivosemp = (int)$_GET['idmad'];
+        $rows = $obj->getList($idobejtivosemp);
         print_r(json_encode($rows));
     }
 

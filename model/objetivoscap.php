@@ -1,33 +1,29 @@
 <?php
 include_once("Main.php");
-class Zona extends Main
+class objetivoscap extends Main
 {
     function indexGrid($page,$limit,$sidx,$sord,$filtro,$query,$cols)
     {
         $sql = "SELECT 
-            s.idzona,
-            u.descripcion AS ubigeo,
-            s.descripcion AS zona,
+            idobejtivoscap,
+            descripcion,
+            case estado when 1 then 'ACTIVO' else 'INCANTIVO' end
 
-            case s.estado when 1 then 'ACTIVO' else 'INCANTIVO' end
-
-            from zona AS s
-            INNER JOIN ubigeo as u ON u.idubigeo = s.idubigeo ";    
+            from capacitacion.obejtivoscap ";    
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
 
     function edit($id ) {
-        $stmt = $this->db->prepare("SELECT * FROM zona WHERE idzona = :id");
+        $stmt = $this->db->prepare("SELECT * FROM capacitacion.obejtivoscap WHERE idobejtivoscap = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchObject();
     }
 
     function insert($_P ) {
-        $stmt = $this->db->prepare("INSERT INTO zona (descripcion, estado, idubigeo) VALUES(:p1,:p2,:p3)");
+        $stmt = $this->db->prepare("INSERT INTO capacitacion.obejtivoscap (descripcion, estado) VALUES(:p1,:p2)");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
         $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
-        $stmt->bindParam(':p3', $_P['idubigeo'] , PDO::PARAM_STR);
         
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -35,18 +31,17 @@ class Zona extends Main
     }
 
     function update($_P ) {
-        $stmt = $this->db->prepare("UPDATE zona 
+        $stmt = $this->db->prepare("UPDATE capacitacion.obejtivoscap 
                     set 
                         descripcion = :p1, 
-                        estado = :p2,
-                        idubigeo= :p3 
-                    WHERE idzona = :idzona");
+                        estado = :p2
+                        
+                    WHERE idobejtivoscap = :idobejtivoscap");
 
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
         $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
-        $stmt->bindParam(':p3', $_P['idubigeo'] , PDO::PARAM_STR);
 
-        $stmt->bindParam(':idzona', $_P['idzona'] , PDO::PARAM_INT);
+        $stmt->bindParam(':idobejtivoscap', $_P['idobejtivoscap'] , PDO::PARAM_INT);
 
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -54,7 +49,7 @@ class Zona extends Main
     }
 
     function delete($_P ) {
-        $stmt = $this->db->prepare("DELETE FROM zona WHERE idzona = :p1");
+        $stmt = $this->db->prepare("DELETE FROM capacitacion.obejtivoscap WHERE idobejtivoscap = :p1");
         $stmt->bindParam(':p1', $_P , PDO::PARAM_INT);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -63,7 +58,7 @@ class Zona extends Main
 
     function getList($IdZo=null)
     {
-        $sql = "SELECT idzona, descripcion from zona ";
+        $sql = "SELECT idobejtivoscap, descripcion from capacitacion.obejtivoscap ";
         if($IdZo!=null)
         {
             $sql .= " WHERE idubigeo = '{$IdZo}' ";
@@ -73,7 +68,7 @@ class Zona extends Main
         $data = array();
         foreach($stmt->fetchAll() as $r)
         {
-            $data[] = array('idzona'=>$r[0],'descripcion'=>$r[1]);
+            $data[] = array('idobejtivoscap'=>$r[0],'descripcion'=>$r[1]);
         }
         return $data;
     }

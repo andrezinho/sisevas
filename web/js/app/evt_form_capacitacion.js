@@ -1,7 +1,7 @@
 $(function() 
 {    
     $( "#descripcion" ).focus();
-    /*$( "#idperfil" ).css({'width':'210px'});*/
+    $( "#idfuentecapacitacion, #idejecapacitacion,#idobejtivosemp,#idobejtivoscap" ).css({'width':'220px'});
     $("#div_activo").buttonset();
 });
 

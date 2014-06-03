@@ -7,7 +7,7 @@ $(document).ready(function(){
         minLength: 0,
         source: 'index.php?controller=personal&action=get&tipo=0',
         focus: function( event, ui ) 
-        {               
+        {
             return false;
         },
         select: function( event, ui ) 
@@ -29,7 +29,7 @@ $(document).ready(function(){
         if(valid())
             {
                 var str = $("#frm").serialize();
-                window.open('index.php?controller=evaluacion&action=reporte_detallado&tipo=excel&'+str,"Reporte");
+                window.open('index.php?controller=reportes&action=data_rep02&tipo=excel&'+str,"Reporte");
             }
     });
     $("#pdf").click(function()
@@ -37,7 +37,7 @@ $(document).ready(function(){
         if(valid())
             {
                 var str = $("#frm").serialize();
-                window.open('index.php?controller=evaluacion&action=reporte_detallado&tipo=pdf&'+str,"Reporte");
+                window.open('index.php?controller=reportes&action=data_rep02&tipo=pdf&'+str,"Reporte");
             }
     });
 });
@@ -50,11 +50,11 @@ function valid()
 }
 </script>
 <div class="div_container">
-<h6 class="ui-widget-header ui-state-hover">Reporte Resultados de Evaluacion por Periodo</h6>
+<h6 class="ui-widget-header ui-state-hover">Reporte Resultados de Evaluacion Anual</h6>
 <div style="padding: 20px;" class="ui-widget-content">
     <form name="frm" id="frm" action="" method="get">
-        <label class="labels" for="idperiodo">Periodo: </label>
-        <?php echo $periodo; ?>
+        <label class="labels" for="idperiodo">Año: </label>
+        <input type="text" name="anio" id="anio" value="<?php echo date('Y') ?>" class="ui-widget-content ui-corner-all text" style="width:100px; text-align:center" maxlength="4" onkeypress="return permite(event,'num')"/>
         <br/>
         <label class="labels" for="personal">Personal: </label>        
         <input type="hidden" name="idp" id="idp" value="" />        

@@ -153,8 +153,20 @@ class evaluacion extends Main
 
     function reporte_detallado($g)
     {
-        $periodo = (!isset($_SESSION['periodo'])) ? 'PERIODO 2014-I' : $_SESSION['periodo'];
-        $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
+        //$periodo = (!isset($_SESSION['periodo'])) ? 'PERIODO 2014-I' : $_SESSION['periodo'];
+
+        if(isset($g['idperiodo'])&&$g['idperiodo']!="")
+            $idperiodo = $g['idperiodo'];
+        else 
+            $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
+
+        $s = "SELECT descripcion from evaluacion.periodo where idperiodo = ".$idperiodo;
+        $stmt = $this->db->prepare($s);
+        $stmt->execute();
+        $rec = $stmt->fetchObject();
+
+        $periodo = $rec->descripcion;
+
         $sql = "SELECT p.idarea,p.nombres,p.apellidos,c.descripcion as consultorio 
                 FROM personal as p inner join consultorio as c on 
                     c.idconsultorio = p.idarea
@@ -206,7 +218,6 @@ class evaluacion extends Main
                         evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1
                         INNER JOIN evaluacion.aspectos as a on a.idaspecto = v.idaspecto    
                     WHERE v.idconsultorio = :idcon AND a.idcompetencia = :idcom and v.idperiodo = :idper and r.idpersonal = :idpers) as t2 on t1.idaspecto = t2.idaspecto
-
                     ORDER BY t1.idaspecto";
             $Q = $this->db->prepare($s);
             $Q->bindParam(':idcon',$idconsultorio,PDO::PARAM_INT);

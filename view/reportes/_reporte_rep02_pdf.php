@@ -3,7 +3,7 @@ session_start();
 require("../lib/fpdf/fpdf.php");
 class PDF extends FPDF
 {
-    var $periodo;
+    var $anio;
     var $personal;
     var $consultorio;
     var $maxw;
@@ -13,7 +13,7 @@ class PDF extends FPDF
     {
         $this->personal = $datos[0];
         $this->consultorio = $datos[1];
-        $this->periodo = $datos[2];
+        $this->anio = $datos[2];
         $this->maxw = $maxw;
     }
     
@@ -23,10 +23,10 @@ class PDF extends FPDF
         $this->SetMargins(20,20,20);
         $this->SetFont('Arial','B',12);
         $this->Ln();         
-        $this->Cell(0, 5,'REPORTE DE RESULTADOS DE EVALUACION - PERIODO', 0, 0, 'L', false);
+        $this->Cell(0, 5,'REPORTE DE RESULTADOS DE EVALUACION - ANUAL', 0, 0, 'L', false);
         $this->Ln();        
         $this->SetFont('Times','',9);        
-        $this->Cell(0, 3, strtoupper(utf8_decode($this->periodo.' | CONSULTORIO: '.$this->consultorio)), 0, 0, 'L', false);                
+        $this->Cell(0, 3, strtoupper(utf8_decode($this->anio.' | CONSULTORIO: '.$this->consultorio)), 0, 0, 'L', false);                
         $this->SetXY($maxw-20,12);
         $fecha = date('d-M-Y');
         $this->Write(0,$fecha);

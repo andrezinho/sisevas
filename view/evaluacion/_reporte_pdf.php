@@ -26,7 +26,7 @@ class PDF extends FPDF
         $this->Cell(0, 5,'REPORTE DE RESULTADOS DE EVALUACION - PERIODO', 0, 0, 'L', false);
         $this->Ln();        
         $this->SetFont('Times','',9);        
-        $this->Cell(0, 3, strtoupper(utf8_decode($this->periodo.' | CONSULTORIO: '.$this->consultorio)), 0, 0, 'L', false);                
+        $this->Cell(0, 3, strtoupper(utf8_decode($this->periodo.' | PERFIL: '.$this->consultorio)), 0, 0, 'L', false);                
         $this->SetXY($maxw-20,12);
         $fecha = date('d-M-Y');
         $this->Write(0,$fecha);

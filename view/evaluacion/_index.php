@@ -30,7 +30,7 @@
 			<div class="title-head">
 				<input type="hidden" name="idpersonal" id="idpersonal" value="<?php echo $rows->idpersonal; ?>" />
 				<h1><?php echo $rows->nombres." ".$rows->apellidos; ?>					
-					<span><?php echo strtoupper($rows->consult); ?><br/></span>
+					<span><?php echo strtoupper($rows->perfil); ?><br/></span>
 					<p>Evaluador: <?php echo $_SESSION['name']; ?></p>
 				</h1>
 			</div>

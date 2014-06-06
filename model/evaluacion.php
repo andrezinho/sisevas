@@ -4,13 +4,13 @@ class evaluacion extends Main
 {    
     function getAspectos($g)
     {
-        //Obtengo el consultorio al cual pertenece el personal a ser evaluado
-        $sql = "SELECT idarea from personal where idpersonal = :id ";
+        //Obtengo el perfil al cual pertenece el personal a ser evaluado
+        $sql = "SELECT idperfil from personal where idpersonal = :id ";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
         $stmt->execute();
         $r = $stmt->fetchObject();
-        $idconsultorio = $r->idarea;
+        $idperfil = $r->idperfil;
 
         $sql=" SELECT * FROM evaluacion.aspectos 
                WHERE idcompetencia = :c 
@@ -33,7 +33,7 @@ class evaluacion extends Main
                     from evaluacion.resultados as r right outer join 
                     evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1 and r.idpersonal = ".$g['idp']."
                     inner join evaluacion.parametros as p on p.idparametro = v.idparametro
-                    where v.idaspecto = ".$row['idaspecto']." and v.idconsultorio = ".$idconsultorio."                           
+                    where v.idaspecto = ".$row['idaspecto']." and v.idperfil = ".$idperfil."                           
                     order by v.orden, v.idaspecto";
             
             $stmt2 = $this->db->prepare($s);
@@ -99,7 +99,7 @@ class evaluacion extends Main
             foreach ($valores as $v) 
             {
 
-                $data = $this->db->prepare('SELECT idconsultorio,valor,idaspecto
+                $data = $this->db->prepare('SELECT idperfil,valor,idaspecto
                                             from evaluacion.valores where idvalor = :id and estado = 1 and idperiodo = '.$idperiodo);
                 $data->bindParam(':id',$v,PDO::PARAM_INT);
                 $data->execute();
@@ -125,12 +125,12 @@ class evaluacion extends Main
                     }
                     
                     $sql = "INSERT INTO evaluacion.resultados(
-                                idperiodo, idpersonal, idconsultorio, idevaluador, 
+                                idperiodo, idpersonal, idperfil, idevaluador, 
                                 idvalor, fecha_reg, hora_reg, estado,valor) values(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9)";
                     $stmt = $this->db->prepare($sql);
                     $stmt->bindParam(':p1',$idperiodo,PDO::PARAM_INT);
                     $stmt->bindParam(':p2',$idp,PDO::PARAM_INT);
-                    $stmt->bindParam(':p3',$row->idconsultorio,PDO::PARAM_INT);
+                    $stmt->bindParam(':p3',$row->idperfil,PDO::PARAM_INT);
                     $stmt->bindParam(':p4',$idusuario,PDO::PARAM_INT);
                     $stmt->bindParam(':p5',$v,PDO::PARAM_INT);
                     $stmt->bindParam(':p6',$fecha_reg,PDO::PARAM_STR);
@@ -167,19 +167,19 @@ class evaluacion extends Main
 
         $periodo = $rec->descripcion;
 
-        $sql = "SELECT p.idarea,p.nombres,p.apellidos,c.descripcion as consultorio 
-                FROM personal as p inner join consultorio as c on 
-                    c.idconsultorio = p.idarea
+        $sql = "SELECT p.idperfil,p.nombres,p.apellidos,c.descripcion as perfil 
+                FROM personal as p inner join seguridad.perfil as c on 
+                    c.idperfil = p.idperfil
                 WHERE p.idpersonal = :id ";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
         $stmt->execute();
         $r = $stmt->fetchObject();
-        $idconsultorio = $r->idarea;
+        $idperfil = $r->idperfil;
         $personal = $r->nombres.' '.$r->apellidos;
-        $consultorio = $r->consultorio;
+        $perfil = $r->perfil;
 
-        $datos = array($personal, $consultorio, $periodo);
+        $datos = array($personal, $perfil, $periodo);
 
         $sql = "SELECT idcompetencia,descripcion 
                 from evaluacion.competencias order by idcompetencia";
@@ -205,7 +205,7 @@ class evaluacion extends Main
                             a.descripcion as aspecto,
                             coalesce(max(v.valor),0) as valor_max
                         FROM evaluacion.valores as v RIGHT OUTER JOIN evaluacion.aspectos as a on
-                        a.idaspecto = v.idaspecto and v.idperiodo = :idper and v.idconsultorio = :idcon
+                        a.idaspecto = v.idaspecto and v.idperiodo = :idper and v.idperfil = :idcon
                         WHERE a.idcompetencia = :idcom
                         GROUP BY a.idaspecto,a.descripcion ) as t1
 
@@ -217,10 +217,10 @@ class evaluacion extends Main
                     FROM    evaluacion.resultados as r INNER JOIN 
                         evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1
                         INNER JOIN evaluacion.aspectos as a on a.idaspecto = v.idaspecto    
-                    WHERE v.idconsultorio = :idcon AND a.idcompetencia = :idcom and v.idperiodo = :idper and r.idpersonal = :idpers) as t2 on t1.idaspecto = t2.idaspecto
+                    WHERE v.idperfil = :idcon AND a.idcompetencia = :idcom and v.idperiodo = :idper and r.idpersonal = :idpers) as t2 on t1.idaspecto = t2.idaspecto
                     ORDER BY t1.idaspecto";
             $Q = $this->db->prepare($s);
-            $Q->bindParam(':idcon',$idconsultorio,PDO::PARAM_INT);
+            $Q->bindParam(':idcon',$idperfil,PDO::PARAM_INT);
             $Q->bindParam(':idcom',$row[0],PDO::PARAM_INT);
             $Q->bindParam(':idper',$idperiodo,PDO::PARAM_INT);
             $Q->bindParam(':idpers',$g['idp'],PDO::PARAM_INT);

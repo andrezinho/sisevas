@@ -7,7 +7,7 @@
 		$("#add").click(function(){ addItem(); });
 		$("#idaspecto").change(function(){getValores();});
 		$("#save_change").click(function(){save();})
-		$("#idconsultorio").change(function(){getValores();});
+		$("#idperfil").change(function(){getValores();});
 		$( "#parametro" ).autocomplete({
         minLength: 0,
         source: 'index.php?controller=parametros&action=get',
@@ -32,7 +32,7 @@
 	});
 	function loading()
 	{
-		$("#idcompetencia,#idconsultorio").css("width","auto");
+		$("#idcompetencia,#idperfil").css("width","auto");
 		$("#idaspecto").css("width","250px");
 	}
 	function loadAspectos(idc)
@@ -95,7 +95,7 @@
 	function save()
 	{
         var items = new Array(),
-        	idc = $("#idconsultorio").val(),
+        	idc = $("#idperfil").val(),
         	ida = $("#idaspecto").val(),
             c = 0;
         $("#sortable li").each(function(i,j){
@@ -103,13 +103,13 @@
                     idparam = $(j).find('.id-param-item').val(),
                     idvalor = $(j).find('.id-valor-item').val(),
                     order = (i+1),
-                    idconsultorio = $("#idconsultorio").val(),
+                    idperfil = $("#idperfil").val(),
                     idaspecto = $("#idaspecto").val();
                 items[c] = {	'idvalor':idvalor,
                                 'idparam':idparam,
                                 'valor':valor,
                                 'order':order,
-                                'idconsultorio':idconsultorio,
+                                'idperfil':idperfil,
                                 'idaspecto':idaspecto };
                 c += 1;
         });		
@@ -124,12 +124,12 @@
 	function getValores()
 	{
 		$("#sortable").empty();
-		var idconsultorio = $("#idconsultorio").val(),
+		var idperfil = $("#idperfil").val(),
         	idaspecto = $("#idaspecto").val(),
         	newItem = '';
-       	if(idconsultorio!="")
+       	if(idperfil!="")
        	{
-       		$.get('index.php','controller=valores&action=getValores&idconsultorio='+idconsultorio+'&idaspecto='+idaspecto,function(rows){
+       		$.get('index.php','controller=valores&action=getValores&idperfil='+idperfil+'&idaspecto='+idaspecto,function(rows){
 	        	$.each(rows,function(i,j)
 	        	{        		
 					newItem += '<li class="ui-state-default"><span class="box-boton-x"><a class="boton-x">X</a></span>';
@@ -172,8 +172,8 @@
 				</select>
 			</div>
 			<div>
-				<label class="labels" style="width:auto;">Consultorio :</label><br/>
-				<?php echo $consultorios; ?>
+				<label class="labels" style="width:auto;">Perfil :</label><br/>
+				<?php echo $perfiles; ?>
 			</div>
 			<div style="clear:both; float:none"></div>
 			<div>

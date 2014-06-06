@@ -18,19 +18,19 @@ class reportes extends Main
 
         $periodo = $rec->descripcion;
 
-        $sql = "SELECT p.idarea,p.nombres,p.apellidos,c.descripcion as consultorio 
-                FROM personal as p inner join consultorio as c on 
-                    c.idconsultorio = p.idarea
+        $sql = "SELECT p.idperfil,p.nombres,p.apellidos,c.descripcion as perfil 
+                FROM personal as p inner join seguridad.perfil as c on 
+                    c.idperfil = p.idperfil
                 WHERE p.idpersonal = :id ";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
         $stmt->execute();
         $r = $stmt->fetchObject();
-        $idconsultorio = $r->idarea;
+        $idperfil = $r->idperfil;
         $personal = $r->nombres.' '.$r->apellidos;
-        $consultorio = $r->consultorio;
+        $perfil = $r->perfil;
 
-        $datos = array($personal, $consultorio, $anio);
+        $datos = array($personal, $perfil, $anio);
 
         $sql = "SELECT idcompetencia,descripcion 
                 from evaluacion.competencias order by idcompetencia";
@@ -57,7 +57,7 @@ class reportes extends Main
                             coalesce(max(v.valor),0) as valor_max
                         FROM evaluacion.valores as v inner join evaluacion.periodo as p on p.idperiodo = v.idperiodo
                         	 RIGHT OUTER JOIN evaluacion.aspectos as a on
-                        a.idaspecto = v.idaspecto and p.anio = :anio and v.idconsultorio = :idcon
+                        a.idaspecto = v.idaspecto and p.anio = :anio and v.idperfil = :idcon
                         WHERE a.idcompetencia = :idcom
                         GROUP BY a.idaspecto,a.descripcion ) as t1
 
@@ -69,10 +69,10 @@ class reportes extends Main
                     FROM evaluacion.resultados as r inner join evaluacion.periodo as p on p.idperiodo = r.idperiodo 
                     	INNER JOIN evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1
                         INNER JOIN evaluacion.aspectos as a on a.idaspecto = v.idaspecto    
-                    WHERE v.idconsultorio = :idcon AND a.idcompetencia = :idcom and p.anio = :anio and r.idpersonal = :idpers) as t2 on t1.idaspecto = t2.idaspecto
+                    WHERE v.idperfil = :idcon AND a.idcompetencia = :idcom and p.anio = :anio and r.idpersonal = :idpers) as t2 on t1.idaspecto = t2.idaspecto
                     ORDER BY t1.idaspecto";
             $Q = $this->db->prepare($s);
-            $Q->bindParam(':idcon',$idconsultorio,PDO::PARAM_INT);
+            $Q->bindParam(':idcon',$idperfil,PDO::PARAM_INT);
             $Q->bindParam(':idcom',$row[0],PDO::PARAM_INT);
             $Q->bindParam(':anio',$anio,PDO::PARAM_INT);
             $Q->bindParam(':idpers',$g['idp'],PDO::PARAM_INT);

@@ -14,8 +14,7 @@ class Personal extends Main
             p.direccion,
             c.descripcion,
             case p.estado when 1 then 'ACTIVO' else 'INCANTIVO' end,
-            '<a href=\"index.php?controller=evaluacion&idp='||p.idpersonal||'\" target=\"_blank\" class=\"btn-evaluar box-boton boton-recibido\"></a>'
-            
+            '<a href=\"index.php?controller=evaluacion&idp='||p.idpersonal||'\" target=\"_blank\" class=\"btn-evaluar box-boton boton-recibido\"></a>'            
             FROM
             public.personal AS p
             INNER JOIN public.estado_civil AS e ON e.idestado_civil = p.idestado_civil
@@ -27,9 +26,11 @@ class Personal extends Main
     function edit($id)
     {
         $stmt = $this->db->prepare("SELECT  p.*,
-                                            c.descripcion as consult
+                                            c.descripcion as consult,
+                                            p2.descripcion as perfil
                                     FROM personal as p inner join consultorio as c
                                         on c.idconsultorio = p.idarea 
+                                        inner join seguridad.perfil as p2 on p.idperfil = p2.idperfil
                                     WHERE p.idpersonal = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_INT);
         $stmt->execute();

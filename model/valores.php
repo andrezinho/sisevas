@@ -31,10 +31,10 @@ class valores extends Main
                 if($v->idvalor!="")
                     $ids .= $v->idvalor.",";
                 //$ida = $v->idaspecto;
-                //$idc = $v->idconsultorio;
+                //$idc = $v->idperfil;
             }
             $ids .= "0";
-            $delete_query = "DELETE FROM evaluacion.valores where idvalor not in (".$ids.") and idaspecto = ".$ida." and idconsultorio = ".$idc;
+            $delete_query = "DELETE FROM evaluacion.valores where idvalor not in (".$ids.") and idaspecto = ".$ida." and idperfil = ".$idc;
             $delete = $this->db->prepare($delete_query);
             //echo $delete_query;
             $delete->execute();
@@ -52,7 +52,7 @@ class valores extends Main
 
                         $insert = $this->db->prepare("INSERT INTO evaluacion.valores (idaspecto,
                                                                                       idparametro,
-                                                                                      idconsultorio,
+                                                                                      idperfil,
                                                                                       orden,
                                                                                       valor,
                                                                                       fecha_reg,
@@ -61,7 +61,7 @@ class valores extends Main
                                                         VALUES (:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8); ");
                         $insert->bindParam(':p1',$v->idaspecto,PDO::PARAM_INT);
                         $insert->bindParam(':p2',$v->idparam,PDO::PARAM_INT);
-                        $insert->bindParam(':p3',$v->idconsultorio,PDO::PARAM_INT);
+                        $insert->bindParam(':p3',$v->idperfil,PDO::PARAM_INT);
                         $insert->bindParam(':p4',$v->order,PDO::PARAM_INT);
                         $insert->bindParam(':p5',$v->valor,PDO::PARAM_INT);
                         $insert->bindParam(':p6',$fecha_reg,PDO::PARAM_STR);
@@ -98,7 +98,7 @@ class valores extends Main
     function getValores($_G)
     {
         $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
-        $idconsultorio = $_G['idconsultorio'];
+        $idperfil = $_G['idperfil'];
         $idaspecto = $_G['idaspecto'];
 
         $stmt = $this->db->prepare("SELECT  v.idvalor,
@@ -108,10 +108,10 @@ class valores extends Main
                                             v.valor
                                     FROM evaluacion.valores as v inner join evaluacion.parametros as p 
                                             on p.idparametro = v.idparametro 
-                                    WHERE v.idperiodo = :p1 and v.idconsultorio = :p2 and v.idaspecto = :p3
+                                    WHERE v.idperiodo = :p1 and v.idperfil = :p2 and v.idaspecto = :p3
                                     order by v.orden");
         $stmt->bindParam(':p1',$idperiodo,PDO::PARAM_INT);
-        $stmt->bindParam(':p2',$idconsultorio,PDO::PARAM_INT);
+        $stmt->bindParam(':p2',$idperfil,PDO::PARAM_INT);
         $stmt->bindParam(':p3',$idaspecto,PDO::PARAM_INT);
         $stmt->execute();
         $data = array();

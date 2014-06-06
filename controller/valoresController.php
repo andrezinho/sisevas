@@ -9,7 +9,7 @@ class valoresController extends Controller
         $data = array();
         $view = new View();
         $data['competencias'] = $this->Select(array('id'=>'idcompetencia','name'=>'idcompetencia','table'=>'evaluacion.competencias'));
-        $data['consultorios'] = $this->Select(array('id'=>'idconsultorio','name'=>'idconsultorio','table'=>'vista_consultorio'));
+        $data['perfiles'] = $this->Select(array('id'=>'idperfil','name'=>'idperfil','table'=>'seguridad.perfil'));
         $view->setData( $data );
         $view->setTemplate( '../view/valores/_index.php' );
         $view->setLayout( '../template/layout.php');

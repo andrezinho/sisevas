@@ -9,7 +9,8 @@ class Innovacion extends Main
             p.nombres||' '||p.apellidos,
             i.descripcion,
             substr(cast(i.fechain as text),9,2)||'/'||substr(cast(i.fechain as text),6,2)||'/'||substr(cast(i.fechain as text),1,4),
-            i.horain
+            substr(cast(i.horain as text),0,9)
+            
             FROM
             evaluacion.innovacion AS i
             INNER JOIN public.personal AS p ON p.idpersonal = i.idpersonal ";
@@ -25,13 +26,14 @@ class Innovacion extends Main
     }
 
     function insert($_P ) {
-        $stmt = $this->db->prepare("INSERT INTO evaluacion.innovacion (idpersonal, descripcion, fechain, horain) 
-                        VALUES(:p1,:p2,:p3,:p4)");
+        $stmt = $this->db->prepare("INSERT INTO evaluacion.innovacion (idpersonal, descripcion, fechain, horain,palabraclave) 
+                        VALUES(:p1,:p2,:p3,:p4,:p5)");
                         
         $stmt->bindParam(':p1', $_P['idpersonal'] , PDO::PARAM_INT);
         $stmt->bindParam(':p2', $_P['descripcion'] , PDO::PARAM_STR);
         $stmt->bindParam(':p3', $_P['fechain'] , PDO::PARAM_STR);
         $stmt->bindParam(':p4', $_P['horain'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p5', $_P['palabraclave'] , PDO::PARAM_STR);
         
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -42,12 +44,14 @@ class Innovacion extends Main
         $stmt = $this->db->prepare("UPDATE evaluacion.innovacion set 
                             idpersonal = :p1, 
                             descripcion = :p2,
-                            fechain = :p3
+                            fechain = :p3,
+                            palabraclave = :p4
+                            
                     WHERE idinnovacion = :idinnovacion");
         $stmt->bindParam(':p1', $_P['idpersonal'] , PDO::PARAM_INT);
         $stmt->bindParam(':p2', $_P['descripcion'] , PDO::PARAM_STR);
         $stmt->bindParam(':p3', $_P['fechain'] , PDO::PARAM_STR);
-        //$stmt->bindParam(':p4', $_P['horain'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p4', $_P['palabraclave'] , PDO::PARAM_STR);
         
         $stmt->bindParam(':idinnovacion', $_P['idinnovacion'] , PDO::PARAM_INT);
         $p1 = $stmt->execute();

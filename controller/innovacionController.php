@@ -9,7 +9,8 @@ class InnovacionController extends Controller
                         1 => array('Name'=>'Codigo','NameDB'=>'idinnovacion','align'=>'center','width'=>'20'),
                         2 => array('Name'=>'Personal','NameDB'=>"p.nombres||' '||p.apellidos",'width'=>'75','search'=>true),
                         3 => array('Name'=>'Innovacion','NameDB'=>'descripcion','align'=>'left'),
-                        4 => array('Name'=>'Fecha','NameDB'=>'fechain','width'=>'25','align'=>'center')
+                        4 => array('Name'=>'Fecha','NameDB'=>'fechain','width'=>'25','align'=>'center'),
+                        5 => array('Name'=>'Hora','NameDB'=>'horain','width'=>'25','align'=>'center')
                      );
     public function index() 
     {

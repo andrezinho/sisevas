@@ -2,47 +2,9 @@
        include("../view/header_form.php");
 ?>
 <style type="text/css">
-.custom-input-file {
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-    border: 1px solid #58ACFA;
-    border-radius: 5px;
-    background-color: #58ACFA;
-    color: #000;
-    text-align: center;
-    font-family: verdana;
-    font-size: 12pt;
-    width: 200px;
-    min-height: 40px;
-    margin-left: 35%;
-    margin-right: 5%;
-}
-.custom-input-file:hover {
-    background-color: #58ACFA;
-    color: #fff;
-}
-.custom-input-file .input-file {
-    margin: 0;
-    padding: 0;outline:0;
-    font-size: 10000px;
-    border: 10000px solid transparent;
-    opacity: 0;
-    filter: alpha(opacity=0);
-    position: absolute;
-    right: -1000px;
-    top: -1000px;
-    cursor: pointer;
-}
-.custom-input-file .archivo {
-    background-color: #000;
-    color: #fff;
-    font-size: 7pt;
-    overflow: hidden;
-}
-.custom-input-file:hover .archivo {
-    background-color: #fff;
-    color: #000;   
+.subir_file{
+    margin-left: 20%;
+    /*margin-top: 2%;*/
 }
 
 </style>
@@ -135,14 +97,31 @@
 
             <label for="fechaing" class="labels">Fecha Ingreso:</label>
             <input type="text" id="fechaing" maxlength="10" name="fechaing" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->fechareg=='') echo date('d/m/Y'); else echo fdate($obj->fechareg,'ES'); ?>" />
+            
+            <label for="fechaing" class="labels">Asumir Cargo:</label>
+            <input type="text" id="asumircargo" maxlength="10" name="asumircargo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->asumircargo=='') echo date('d/m/Y'); else echo fdate($obj->asumircargo,'ES'); ?>" />
             <br/>
 
             <label for="user" class="labels">Usuario:</label>
-            <input id="usuario" name="usuario" value="<?php echo $obj->usuario; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;"  />
+            <input id="usuario" name="usuario" value="<?php echo $obj->usuario; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" />
             
-            <label for="clae" class="labels">Clave:</label>
-            <input type="password" id="clave" name="clave" value="<?php echo $obj->clave; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;"  />
+            <label for="clae" class="labels">Clave:</label>            
+            <input type="password" id="clave" name="clave" value="<?php echo $obj->clave; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" />
+            <br/>
             
+            <label for="clae" class="labels">Contrato:</label>
+            <div class="subir_file">
+                <input type="hidden" name="contrato" id="contrato" value="<?php echo $obj->contrato; ?>" />
+                    <?php
+                        if($obj->file!="")
+                            $d = "inline";
+                        else
+                            $d = "none";
+                    ?>
+                <div id="queue"></div>
+                <input id="file_contrato" name="file_contrato" type="file" multiple="true">    
+                <a target="_blank" href="files/contratos/<?php echo $obj->contrato ?>" style="display:<?php echo $d; ?>;cursor:pointer; font-size: 11px;" id="VerC"><img src="images/pdf.png" />Abrir Archivo</a>
+            </div>
         </div>
 
         <div id="tabs-3">
@@ -174,7 +153,7 @@
                         $d = "none";
                 ?>
             <div id="queue"></div>
-            <input id="file_upload" name="file_upload" type="file" multiple="true">    
+            <input id="file_upload" name="file_upload" type="file" multiple="true" />    
                 <a target="_blank" href="files/<?php echo $obj->file ?>" style="display:<?php echo $d; ?>;cursor:pointer; font-size: 11px;" id="VerImagennn"><img src="images/pdf.png" />Abrir Archivo</a>
         </div>
         <div id="tabs-5">            

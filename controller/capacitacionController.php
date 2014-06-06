@@ -51,7 +51,7 @@ class capacitacionController extends Controller
         $data['fuente'] = $this->Select(array('id'=>'idfuentecapacitacion','name'=>'idfuentecapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_fuentecap'));
         $data['eje'] = $this->Select(array('id'=>'idejecapacitacion','name'=>'idejecapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_ejecap'));
         $data['objemp'] = $this->Select(array('id'=>'idobejtivosemp','name'=>'idobejtivosemp','text_null'=>':: Seleccione ::','table'=>' vista_obejtivosemp'));
-        $data['objcap'] = $this->Select(array('id'=>'idobejtivoscap','name'=>'idobejtivoscap','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_objetivosca'));
+        $data['objcap'] = $this->Select(array('id'=>'idobejtivoscap','name'=>'idobejtivoscap','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_objetivoscap'));
                                
         $view->setData($data);
         $view->setTemplate( '../view/capacitacion/_form.php' );

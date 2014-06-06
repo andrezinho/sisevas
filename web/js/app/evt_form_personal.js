@@ -25,7 +25,7 @@ $(function()
                     'controller': 'Personal',
                     'action':'loadfile'
             },
-            'buttonText': 'Archivo',
+            'buttonText': 'Subir CV',
             'swf'      : 'uploadify.swf',
             'uploader' : 'index.php?controller=Personal&action=loadfile',
             onUploadSuccess : function(file, data, response) {
@@ -60,7 +60,7 @@ $(function()
                     'controller': 'Personal',
                     'action':'loadfilehc'
             },
-            'buttonText': 'Archivo',
+            'buttonText': 'Subir HC',
             'swf'      : 'uploadify.swf',
             'uploader' : 'index.php?controller=Personal&action=loadfilehc',
             onUploadSuccess : function(file, data, response) {
@@ -74,6 +74,42 @@ $(function()
                                 $("#archivo_hc").val(r[1]);
                                 $("#VerHc").attr("href","files_hc/"+r[1]);
                                 $("#VerHc").css("display","inline");
+                            }
+                            else 
+                            {
+                                alert(r[1]+' '+data);
+                            }                            
+                        }
+                        else 
+                        {
+                            alert("Ha ocurrido un error al intentar subir el archivo "+file.name);
+                        }
+                        
+                    }
+    });
+    
+    
+    $('#file_contrato').uploadify({
+            'formData'     : {
+                    'timestamp' : '44',
+                    'token'     : '33',
+                    'controller': 'Personal',
+                    'action':'loadfilecontra'
+            },
+            'buttonText': 'Subir Contrato',
+            'swf'      : 'uploadify.swf',
+            'uploader' : 'index.php?controller=Personal&action=loadfilecontra',
+            onUploadSuccess : function(file, data, response) {
+                        if(response)
+                        {
+                            
+                            r = data.split("###");
+                            if(r[0]==1)
+                            {
+                                alert('El archivo fue subido correctamente');
+                                $("#contrato").val(r[1]);
+                                $("#VerC").attr("href","files/contratos/"+r[1]);
+                                $("#VerC").css("display","inline");
                             }
                             else 
                             {

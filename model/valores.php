@@ -46,7 +46,7 @@ class valores extends Main
                 if($v->idvalor=="")
                 {
                     //*** New                    
-                    $n = $this->vParametro($v->idparam);
+                    $n = $this->vParametro(array($v->idparam,$v->idperfil));
                     if($n==0)
                     {
 
@@ -125,13 +125,14 @@ class valores extends Main
         }
         return $data;
     }
-    function vParametro($idparametro)
+    function vParametro($g)
     {
         $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
         $stmt = $this->db->prepare("SELECT count(*) as n from evaluacion.valores 
-                                    where idparametro = :p1 and idperiodo = :p2");
-        $stmt->bindParam(':p1',$idparametro,PDO::PARAM_INT);
-        $stmt->bindParam(':p2',$idperiodo,PDO::PARAM_INT);
+                                    where idparametro = :p1 and idperfil = :p2 and idperiodo = :p3");
+        $stmt->bindParam(':p1',$g['idparametro'],PDO::PARAM_INT);
+        $stmt->bindParam(':p2',$g['idperfil'],PDO::PARAM_INT);
+        $stmt->bindParam(':p3',$idperiodo,PDO::PARAM_INT);
         $stmt->execute();
         $r = $stmt->fetchObject();
         return $r->n;

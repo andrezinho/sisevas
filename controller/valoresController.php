@@ -9,7 +9,7 @@ class valoresController extends Controller
         $data = array();
         $view = new View();
         $data['competencias'] = $this->Select(array('id'=>'idcompetencia','name'=>'idcompetencia','table'=>'evaluacion.competencias'));
-        $data['perfiles'] = $this->Select(array('id'=>'idperfil','name'=>'idperfil','table'=>'seguridad.perfil'));
+        $data['perfiles'] = $this->Select(array('id'=>'idperfil','name'=>'idperfil','table'=>'seguridad.perfil','text_null'=>'Todos'));
         $view->setData( $data );
         $view->setTemplate( '../view/valores/_index.php' );
         $view->setLayout( '../template/layout.php');
@@ -35,7 +35,7 @@ class valoresController extends Controller
     function vParametro()
     {
         $obj = new valores();
-        $n = $obj->vParametro($_GET['idparametro']);
+        $n = $obj->vParametro($_GET);
         echo $n;
     }
 }

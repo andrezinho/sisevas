@@ -51,10 +51,11 @@
 		var newItem = '',
 			param = $("#parametro").val(),
 			idparam = parseInt($("#idparametro").val()),
-			val = $("#valor").val();
+			val = $("#valor").val(),
+			idperfil=$("#idperfil").val();
         if(!verifar_item(idparam))
         {        	
-        	$.get('index.php','controller=valores&action=vParametro&idparametro='+idparam,function(d)
+        	$.get('index.php','controller=valores&action=vParametro&idparametro='+idparam+'&idp='+idperfil,function(d)
 				{						
 					if(d==0)
 					{

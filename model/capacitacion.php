@@ -12,16 +12,35 @@ class capacitacion extends Main
     }
 
     function edit($id ) {
-        $stmt = $this->db->prepare("SELECT * FROM rutas WHERE idrutas = :id");
+        $stmt = $this->db->prepare("SELECT * FROM capacitacion.capacitacion WHERE idcapacitacion = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchObject();
     }
 
     function insert($_P ) {
-        $stmt = $this->db->prepare("INSERT INTO rutas (descripcion, estado) VALUES(:p1,:p2)");
-        $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_BOOL);
+        
+        $stmt = $this->db->prepare("INSERT INTO capacitacion.capacitacion(
+            idfuentecapacitacion, idejecapacitacion, tema, idobejtivosemp, idmetodoscapacitacion, idtipoevaluacion, idalcance, 
+            propuesta, referencias, palabrasclaves, externo, idpersonal, expositor, fecha, hora)
+            VALUES(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13,:p14,:p15) ");
+            
+        $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p2', $_P['idejecapacitacion'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p3', $_P['tema'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p4', $_P['idobejtivosemp'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p5', $_P['idmetodoscapacitacion'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p6', $_P['idtipoevaluacion'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p7', $_P['idalcance'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p8', $_P['propuesta'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p9', $_P['referencias'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p10', $_P['palabrasclaves'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p11', $_P['externo'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p12', $_P['idpersonal'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p13', $_P['expositor'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p14', $_P['fecha'] , PDO::PARAM_BOOL);
+        $stmt->bindParam(':p15', $_P['hora'] , PDO::PARAM_BOOL);
+        
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);

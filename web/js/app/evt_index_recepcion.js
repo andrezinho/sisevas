@@ -1,6 +1,7 @@
 $(function() 
 {   //alert("SW");
     $(".div_container").append("<div id='derivardoc'></div>");
+    
     $("#derivardoc").dialog({
         autoOpen: false,
         modal: true, width:800,height:450,

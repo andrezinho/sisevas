@@ -127,7 +127,7 @@ class PersonalController extends Controller
         {
               array_push($result, array(
                         "idpersonal"=>$val['idpersonal'],
-                        "dni"=>$val['dni'],
+                        "mail"=>$val['mail'],
                         "nompersonal"=> strtoupper($val['nompersonal'])
                     )
                 );

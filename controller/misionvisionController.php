@@ -1,16 +1,15 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/innovacion.php';
+require_once '../model/tipopersonal.php';
 
-class InnovacionController extends Controller
+class TipoPersonalController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'idinnovacion','align'=>'center','width'=>'20'),
-                        2 => array('Name'=>'Personal','NameDB'=>"p.nombres||' '||p.apellidos",'width'=>'100','search'=>true),
-                        3 => array('Name'=>'Innovacion','NameDB'=>'descripcion','align'=>'left'),                        
-                        5 => array('Name'=>'Palabras','NameDB'=>'palabraclave','align'=>'center'),
-                        4 => array('Name'=>'Fecha','NameDB'=>'fechain','width'=>'35','align'=>'center')
+                        1 => array('Name'=>'Codigo','NameDB'=>'idTipoPersonal','align'=>'center','width'=>'20'),
+                        2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),
+                        3 => array('Name'=>'File','NameDB'=>'','align'=>'center','width'=>20),
+                        4 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'30','align'=>'center')
                      );
     public function index() 
     {
@@ -19,7 +18,8 @@ class InnovacionController extends Controller
         $data['colsModels'] = $this->getColsModel($this->cols);        
         $data['cmb_search'] = $this->Select(array('id'=>'fltr','name'=>'fltr','text_null'=>'','table'=>$this->getColsSearch($this->cols)));
         $data['controlador'] = $_GET['controller'];
-
+		$data['titulo'] = "Perfiles Ocupacionales";
+		
         //(nuevo,editar,eliminar,ver)
         $data['actions'] = array(true,true,true,false);
 
@@ -32,7 +32,7 @@ class InnovacionController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new Innovacion();        
+        $obj = new TipoPersonal();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -48,32 +48,29 @@ class InnovacionController extends Controller
     public function create()
     {
         $data = array();
-        $view = new View();
-        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>':: Seleccione ::','table'=>'vista_personal'));     
+        $view = new View();        
         $view->setData($data);
-        $view->setTemplate( '../view/innovacion/_form.php' );
+        $view->setTemplate( '../view/tipopersonal/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() {
-        $obj = new Innovacion();
+        $obj = new TipoPersonal();
         $data = array();
         $view = new View();
         $obj = $obj->edit($_GET['id']);
-        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal','code'=>$obj->idpersonal));        
-        
         $data['obj'] = $obj;        
         $view->setData($data);
-        $view->setTemplate( '../view/innovacion/_form.php' );
+        $view->setTemplate( '../view/tipopersonal/_form.php' );
         echo $view->renderPartial();
         
     }
 
     public function save()
     {
-        $obj = new Innovacion();
+        $obj = new TipoPersonal();
         $result = array();        
-        if ($_POST['idinnovacion']=='') 
+        if ($_POST['idtipopersonal']=='') 
             $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                
@@ -86,7 +83,7 @@ class InnovacionController extends Controller
     }
     public function delete()
     {
-        $obj = new Innovacion();
+        $obj = new TipoPersonal();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);
@@ -94,19 +91,49 @@ class InnovacionController extends Controller
         print_r(json_encode($result));
     }
     
-    //imprmir reporte
-    public function reporte_detallado()
+    public function loadfile()
     {
-        $obj = new Innovacion();
-        $data = array();
-        $result = $obj->reporte_detallado($_GET);
-        $data['datos'] = $result[1];
-        $data['rows'] = $result[0];        
-        $view = new View();
-        $view->setData($data);
-        $view->setTemplate('../view/innovacion/_reporte.php');
-        $view->setLayout('../template/evaluacion.php');
-        return $view->render();
+        
+        if (!empty($_FILES)) 
+        {
+            $tempFile = $_FILES['Filedata']['tmp_name'];                          // 1
+            $fileparts = pathinfo($_FILES['Filedata']['name']);
+            $ext = $fileparts['extension'];
+
+            //$targetPath = 'doc/';  
+            $targetPath = 'tipoperfil/';  
+            $filetypes = array("pdf","doc","png","jpeg","jpg");
+            $flag = false;
+            foreach($filetypes as $typ)
+            {
+                if($typ==strtolower($ext))
+                {
+                        $flag = true;
+                }
+            }    
+            if($flag)
+            {
+                $targetFile =  str_replace('//','/',$targetPath).str_replace(' ','_',$_FILES['Filedata']['name']);
+                $name = str_replace(' ','_',$_FILES['Filedata']['name']);
+                if( move_uploaded_file($tempFile,$targetFile))
+                {	
+                    echo "1###".$name;
+                    chmod($targetFile, 0777);
+                }
+                else
+                {
+                    echo "0###Error";
+                }
+            }
+            else 
+            {
+                echo "0###Extension no apcetada ".$typ;
+            }    
+
+        }
+        else {
+            echo "KO";
+        }
     }
    
 }

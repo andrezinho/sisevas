@@ -138,6 +138,10 @@
     .tabsindex .content p{
         font-size: 15px;
     }
+    
+    .tabsindex .content h2{
+        font-size: 14px;
+    }
 </style>
 
 </head>

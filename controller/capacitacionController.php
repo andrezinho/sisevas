@@ -6,10 +6,13 @@ require_once '../model/capacitacion.php';
 class capacitacionController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'s.idcapacitacion','align'=>'center','width'=>'20'),
-                        2 => array('Name'=>'Descripcion','NameDB'=>'s.descripcion','search'=>true),
-                        3 => array('Name'=>'Estado','NameDB'=>'s.estado','width'=>'30','align'=>'center','color'=>'#FFFFFF')
-                     );
+                1 => array('Name'=>'Item','NameDB'=>'s.idcapacitacion','align'=>'center','width'=>'20'),
+                2 => array('Name'=>'Tema','NameDB'=>'tema','search'=>true,'width'=>'150'),
+                4 => array('Name'=>'Fuente','NameDB'=>'f.descripcion','width'=>'150'),
+                5 => array('Name'=>'Expositor','NameDB'=>'expositor','width'=>'150'),
+                6 => array('Name'=>'Fecha Cap.','NameDB'=>'fecha','width'=>'45','align'=>'center')
+                
+             );
     
     public function index() 
     {
@@ -31,7 +34,7 @@ class capacitacionController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new Rutas();        
+        $obj = new capacitacion();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -52,19 +55,33 @@ class capacitacionController extends Controller
         $data['eje'] = $this->Select(array('id'=>'idejecapacitacion','name'=>'idejecapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_ejecap'));
         $data['objemp'] = $this->Select(array('id'=>'idobejtivosemp','name'=>'idobejtivosemp','text_null'=>':: Seleccione ::','table'=>' vista_obejtivosemp'));
         $data['objcap'] = $this->Select(array('id'=>'idobejtivoscap','name'=>'idobejtivoscap','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_objetivoscap'));
-                               
+        $data['perfilocup'] = $this->Select(array('id'=>'idtipopersonal','name'=>'idtipopersonal','text_null'=>':: Seleccione ::','table'=>'vista_tipopersonal'));
+        $data['tipoeva'] = $this->Select(array('id'=>'idperfil','name'=>'idperfil','text_null'=>':: Seleccione ::','table'=>'seguridad.vista_perfil'));
+        $data['metodo'] = $this->Select(array('id'=>'idmetodoscapacitacion','name'=>'idmetodoscapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_metodoscap'));
+                             
         $view->setData($data);
         $view->setTemplate( '../view/capacitacion/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() {
-        $obj = new Rutas();
+        $obj = new capacitacion();
         $data = array();
         $view = new View();
-        $obj = $obj->edit($_GET['id']);
-        $data['obj'] = $obj;        
-        $data['more_options'] = $this->more_options('area');
+        //$obj = $obj->edit($_GET['id']);
+        $rows = $obj->edit($_GET['id']);  
+        //$data['obj'] = $obj;
+        $data['obj'] = $rows;
+        //print_r($rows);
+        $data['fuente'] = $this->Select(array('id'=>'idfuentecapacitacion','name'=>'idfuentecapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_fuentecap','code'=>$rows->idfuentecapacitacion));
+        $data['eje'] = $this->Select(array('id'=>'idejecapacitacion','name'=>'idejecapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_ejecap','code'=>$rows->idejecapacitacion));
+        $data['objemp'] = $this->Select(array('id'=>'idobejtivosemp','name'=>'idobejtivosemp','text_null'=>':: Seleccione ::','table'=>' vista_obejtivosemp'));
+        $data['objcap'] = $this->Select(array('id'=>'idobejtivoscap','name'=>'idobejtivoscap','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_objetivoscap','code'=>$rows->idobejtivoscap));
+        $data['perfilocup'] = $this->Select(array('id'=>'idtipopersonal','name'=>'idtipopersonal','text_null'=>':: Seleccione ::','table'=>'vista_tipopersonal','code'=>$rows->idalcance));
+        $data['tipoeva'] = $this->Select(array('id'=>'idperfil','name'=>'idperfil','text_null'=>':: Seleccione ::','table'=>'seguridad.vista_perfil','code'=>$rows->idtipoevaluacion));
+        $data['metodo'] = $this->Select(array('id'=>'idmetodoscapacitacion','name'=>'idmetodoscapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_metodoscap','code'=>$rows->idmetodoscapacitacion));
+        
+        $data['rowsd'] = $obj->getDetails($rows->idcapacitacion);
         $view->setData($data);
         $view->setTemplate( '../view/capacitacion/_form.php' );
         echo $view->renderPartial();
@@ -73,7 +90,7 @@ class capacitacionController extends Controller
 
     public function save()
     {
-        $obj = new Rutas();
+        $obj = new capacitacion();
         $result = array();        
         if ($_POST['idcapacitacion']=='') 
             $p = $obj->insert($_POST);                        
@@ -89,7 +106,7 @@ class capacitacionController extends Controller
 
     public function delete()
     {
-        $obj = new Rutas();
+        $obj = new capacitacion();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);

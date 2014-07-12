@@ -1,5 +1,7 @@
-<?php  include("../lib/helpers.php"); 
-       include("../view/header_form.php");
+<?php  
+    include("../lib/helpers.php"); 
+    include("../view/header_form.php");       
+    
 ?>
    
 <form id="frm_cap" >
@@ -15,11 +17,15 @@
         </ul>
         <div id="tabs-1">
             <div id="table-per">
-            
-                <label for="fuente" class="labeless">Fuente de cap.:</label> 
+                
+                <label for="fechanaci" class="labels">Fecha Cap:</label>
+                <input type="text" id="fechacap" name="fechacap" value="<?php if($obj->fecha=='') echo date('d/m/Y'); else echo fdate($obj->fecha,'ES'); ?>" class="text ui-widget-content ui-corner-all" style=" width: 70px; text-align: center;" />
+                -<input type="text" name="horacap" id="horacap" value="<?php if($obj->hora!=""){echo fdate($obj->hora,'ES');} else {echo date('H:i:s');} ?>" class="ui-widget-content ui-corner-all text" style="width:70px; text-align:center" />
+                
+                <label for="fuente" class="labels">Fuente de cap.:</label> 
                 <?php echo $fuente; ?>
                 
-                <label for="eje" class="labeless">Eje de capac.:</label> 
+                <label for="eje" class="labels">Eje de capac.:</label> 
                 <?php echo $eje; ?>
                 <br />
                   
@@ -47,16 +53,11 @@
                             if(count($rowsd)>0)
                             {    
                                 foreach ($rowsd as $i => $r) 
-                                {       
-                                    $nro= $r['nromeses'];
-                                    $men= $r['cuota'];                                        
-                                    $ini= $r['inicial'];
-                                    $subt= (floatval($nro) * floatval($men))+ $ini;
-                                        
+                                {                                          
                                     ?>
                                     <tr class="tr-detalle">
-                                        <td align="left"><?php echo $r['descripcion']; ?><input type="hidden" name="idtipopago[]" value="<?php echo $r['tipo']; ?>" /></td>
-                                        <td>&nbsp;</td>
+                                        <td align="left"><?php echo $r['descripcion']; ?><input type="hidden" name="idobejtivosemp[]" value="<?php echo $r['idobejtivosemp']; ?>" /></td>
+                                        <td align="center"><a class="box-boton boton-delete" href="#" title="Quitar" ></a></td>
                                     </tr>
                                     <?php    
                                     }  
@@ -71,20 +72,33 @@
                     </tfoot>
                 </table>
                 <br />
+                
+                <label for="objcap" class="labels">Metodo:</label> 
+                <?php echo $metodo; ?>
+                
+                <label for="objcap" class="labels">Tipo Evaluacion:</label> 
+                <?php echo $tipoeva; ?>
+                
+                <label for="objcap" class="labels">Alcance:</label> 
+                <?php echo $perfilocup; ?>
+                <br />
+                
                 <label for="ref" class="labeless">Referencia Biblio.:</label><br />
-                <textarea name="referencias" id="referencias" style="width: 70%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="10" rows="4" ><?php echo $obj->referencias; ?></textarea>
+                <textarea name="referencias" id="referencias" style="width: 70%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="10" rows="3" ><?php echo $obj->referencias; ?></textarea>
                 <br />
                 
                 <label for="ref" class="labeless">Palabras Claves:</label><br />
-                <textarea name="palabrasclaves" id="palabrasclaves" style="width: 70%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="10" rows="4" ><?php echo $obj->palabrasclaves; ?></textarea>
+                <textarea name="palabrasclaves" id="palabrasclaves" style="width: 70%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="10" rows="3" ><?php echo $obj->palabrasclaves; ?></textarea>
                 <br />
                 
                 <label for="estado" class="labeless">Expositor:</label>
                 <input id="expositor" name="expositor" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->expositor; ?>" />    
                 <input type="hidden" id="idpersonal" name="idpersonal" value="<?php echo $obj->idpersonal; ?>" />
+                <input type="checkbox" name="externo" value="1" />
+                Externo
                 
                 <label for="estado" class="labeless">Email Exposit.:</label>
-                <input id="emailexp" name="emailexp" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->emailexp; ?>" />  
+                <input id="emailexp" name="emailexp" value="<?php echo $obj->mail; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" />  
                 
             </div>
         </div>

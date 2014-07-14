@@ -440,5 +440,54 @@ class Envio extends Main
             return $row->c;
         else return '0.000';
     }
+
+    function reporte_detallado($g)
+    {
+        $periodo = (!isset($_SESSION['periodo'])) ? 'PERIODO 2014-I' : $_SESSION['periodo'];
+        $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
+        $sql = "SELECT p.idarea,p.nombres,p.apellidos,c.descripcion as consultorio 
+                FROM personal as p inner join consultorio as c on 
+                    c.idconsultorio = p.idarea
+                WHERE p.idpersonal = :id ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+        $stmt->execute();
+        $r = $stmt->fetchObject();
+
+        $idconsultorio = $r->idarea;
+        $personal = $r->nombres.' '.$r->apellidos;
+        $consultorio = $r->consultorio;
+
+        $datos = array($personal, $consultorio, $periodo);
+
+        $sql = "SELECT  asunto,
+                        problema,
+                        codigo,
+                        fechainicio,
+                        estado
+                from evaluacion.tramite
+                where idtipo_documento = 1
+                      and idtramite in ( select idtramite 
+                                         from evaluacion.derivaciones 
+                                         where idpersonal = :id
+                                        )
+                order by idtramite ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+        $stmt->execute();
+        $data = array();
+        
+        foreach ($stmt->fetchAll() as $row) 
+        {
+            $data[] = array('asunto'=>$row[0],
+                            'problema'=>$row[1],
+                            'codigo'=>$row[2],
+                            'fechainicio'=>$this->fdate($row[3],'ES'),
+                            'estado'=>$row[4]);            
+        }
+       
+        return array($data,$datos);
+    }
 }
 ?>

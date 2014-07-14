@@ -169,6 +169,10 @@
             <div id="barra-session">                      
                 <span class="item-top"><?php echo strtoupper($_SESSION['area']); ?></span>
             </div>
+            <p>PERIODO</p>
+            <div id="barra-session">                      
+                <span class="item-top"><?php echo strtoupper($_SESSION['periodo']); ?> (<?php echo strtoupper($_SESSION['periodo_estado']); ?>) </span>
+            </div>
             <!-- 
             <p>MENSAJES</p>
             <div id="barra-session">                           

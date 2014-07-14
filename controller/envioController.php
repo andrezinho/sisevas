@@ -99,8 +99,8 @@ class EnvioController extends Controller
         else                 
             $result = array(2,$p[1]);
         print_r(json_encode($result));
-
     }
+
     public function delete()
     {
         $obj = new Envio();
@@ -115,8 +115,20 @@ class EnvioController extends Controller
     {
         $obj = new Envio();
         print_r(json_encode($obj->nuevos()));
-        
     }
-   
+
+    public function reporte_detallado()
+    {
+        $obj = new Envio();
+        $data = array();
+        $result = $obj->reporte_detallado($_GET);
+        $data['datos'] = $result[1];
+        $data['rows'] = $result[0];        
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/envio/_reporte.php');
+        $view->setLayout('../template/evaluacion.php');
+        return $view->render();
+    }
 }
 ?>

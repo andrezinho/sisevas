@@ -2,11 +2,13 @@
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
 require_once '../model/user.php';
+require_once '../model/periodo.php';
 
 class UserController extends Controller {
     public static function  login() 
     {
-        $obj = new User();        
+        $obj = new User();    
+        $objp = new periodo();
         $_p = $obj->Start();
         $obj = $_p['obj'];           
         if ($obj->login != '') 
@@ -22,6 +24,18 @@ class UserController extends Controller {
             $_SESSION['idconsultorio'] = $obj->idoficina;
             $_SESSION['sucursal'] = $obj->sede;
             $_SESSION['idsucursal'] = $obj->idsucursal;
+
+            //Obtenemos los datos del periodo
+            $p = $objp->getPeriodo();
+            $_SESSION['idperiodo'] = $p->idperiodo;
+            $_SESSION['periodo'] = $p->descripcion;
+            $_SESSION['anio'] = $p->anio;
+            if($p->estado==1)
+              $_SESSION['periodo_estado'] = "ACTIVO";
+            else
+                $_SESSION['periodo_estado'] = "CERRADO";
+
+            $_SESSION['estado'] = $p->estado;
             header('location:index.php');
         }
         else

@@ -5,4 +5,6 @@ class Index {
         return array('body'=>'<p>CUERPO DE LA PAGINA :) </p>');
     }
 }
+
+
 ?>

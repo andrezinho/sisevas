@@ -1,16 +1,15 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/innovacion.php';
+require_once '../model/valoresemp.php';
 
-class InnovacionController extends Controller
+class valoresempController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'idinnovacion','align'=>'center','width'=>'20'),
-                        2 => array('Name'=>'Personal','NameDB'=>"p.nombres||' '||p.apellidos",'width'=>'100','search'=>true),
-                        3 => array('Name'=>'Innovacion','NameDB'=>'descripcion','align'=>'left'),                        
-                        5 => array('Name'=>'Palabras','NameDB'=>'palabraclave','align'=>'center'),
-                        4 => array('Name'=>'Fecha','NameDB'=>'fechain','width'=>'35','align'=>'center')
+                        1 => array('Name'=>'Codigo','NameDB'=>'idvaloresemp','align'=>'center','width'=>'40'),
+                        2 => array('Name'=>'Valor','NameDB'=>'valor','width'=>'100','search'=>true),
+                        3 => array('Name'=>'Descripcion','NameDB'=>'descripcion','align'=>'left'),                       
+                        4 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'50','align'=>'center')
                      );
     public function index() 
     {
@@ -19,7 +18,7 @@ class InnovacionController extends Controller
         $data['colsModels'] = $this->getColsModel($this->cols);        
         $data['cmb_search'] = $this->Select(array('id'=>'fltr','name'=>'fltr','text_null'=>'','table'=>$this->getColsSearch($this->cols)));
         $data['controlador'] = $_GET['controller'];
-
+        $data['titulo'] = "Valores de la Empresa";
         //(nuevo,editar,eliminar,ver)
         $data['actions'] = array(true,true,true,false);
 
@@ -32,7 +31,7 @@ class InnovacionController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new Innovacion();        
+        $obj = new valoresemp();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -48,32 +47,30 @@ class InnovacionController extends Controller
     public function create()
     {
         $data = array();
-        $view = new View();
-        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>':: Seleccione ::','table'=>'vista_personal'));     
+        $view = new View();    
         $view->setData($data);
-        $view->setTemplate( '../view/innovacion/_form.php' );
+        $view->setTemplate( '../view/valoresemp/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() {
-        $obj = new Innovacion();
+        $obj = new valoresemp();
         $data = array();
         $view = new View();
         $obj = $obj->edit($_GET['id']);
-        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal','code'=>$obj->idpersonal));        
         
         $data['obj'] = $obj;        
         $view->setData($data);
-        $view->setTemplate( '../view/innovacion/_form.php' );
+        $view->setTemplate( '../view/valoresemp/_form.php' );
         echo $view->renderPartial();
         
     }
 
     public function save()
     {
-        $obj = new Innovacion();
+        $obj = new valoresemp();
         $result = array();        
-        if ($_POST['idinnovacion']=='') 
+        if ($_POST['idvaloresemp']=='') 
             $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                
@@ -86,7 +83,7 @@ class InnovacionController extends Controller
     }
     public function delete()
     {
-        $obj = new Innovacion();
+        $obj = new valoresemp();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);
@@ -97,14 +94,14 @@ class InnovacionController extends Controller
     //imprmir reporte
     public function reporte_detallado()
     {
-        $obj = new Innovacion();
+        $obj = new valoresemp();
         $data = array();
         $result = $obj->reporte_detallado($_GET);
         $data['datos'] = $result[1];
         $data['rows'] = $result[0];        
         $view = new View();
         $view->setData($data);
-        $view->setTemplate('../view/innovacion/_reporte.php');
+        $view->setTemplate('../view/valoresemp/_reporte.php');
         $view->setLayout('../template/evaluacion.php');
         return $view->render();
     }

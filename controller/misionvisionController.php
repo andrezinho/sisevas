@@ -1,14 +1,14 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/tipopersonal.php';
+require_once '../model/misionvision.php';
 
-class TipoPersonalController extends Controller
+class misionvisionController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'idTipoPersonal','align'=>'center','width'=>'20'),
-                        2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),
-                        3 => array('Name'=>'File','NameDB'=>'','align'=>'center','width'=>20),
+                        1 => array('Name'=>'Codigo','NameDB'=>'idmisionvision','align'=>'center','width'=>'20'),
+                        2 => array('Name'=>'Mision','NameDB'=>'mision','search'=>true),
+                        3 => array('Name'=>'Vision','NameDB'=>'Vision','search'=>true),
                         4 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'30','align'=>'center')
                      );
     public function index() 
@@ -18,7 +18,7 @@ class TipoPersonalController extends Controller
         $data['colsModels'] = $this->getColsModel($this->cols);        
         $data['cmb_search'] = $this->Select(array('id'=>'fltr','name'=>'fltr','text_null'=>'','table'=>$this->getColsSearch($this->cols)));
         $data['controlador'] = $_GET['controller'];
-		$data['titulo'] = "Perfiles Ocupacionales";
+		$data['titulo'] = "Mison y Vision";
 		
         //(nuevo,editar,eliminar,ver)
         $data['actions'] = array(true,true,true,false);
@@ -32,7 +32,7 @@ class TipoPersonalController extends Controller
 
     public function indexGrid() 
     {
-        $obj = new TipoPersonal();        
+        $obj = new misionvision();        
         $page = (int)$_GET['page'];
         $limit = (int)$_GET['rows']; 
         $sidx = $_GET['sidx'];
@@ -50,27 +50,27 @@ class TipoPersonalController extends Controller
         $data = array();
         $view = new View();        
         $view->setData($data);
-        $view->setTemplate( '../view/tipopersonal/_form.php' );
+        $view->setTemplate( '../view/misionvision/_form.php' );
         echo $view->renderPartial();
     }
 
     public function edit() {
-        $obj = new TipoPersonal();
+        $obj = new misionvision();
         $data = array();
         $view = new View();
         $obj = $obj->edit($_GET['id']);
         $data['obj'] = $obj;        
         $view->setData($data);
-        $view->setTemplate( '../view/tipopersonal/_form.php' );
+        $view->setTemplate( '../view/misionvision/_form.php' );
         echo $view->renderPartial();
         
     }
 
     public function save()
     {
-        $obj = new TipoPersonal();
+        $obj = new misionvision();
         $result = array();        
-        if ($_POST['idtipopersonal']=='') 
+        if ($_POST['idmisionvision']=='') 
             $p = $obj->insert($_POST);                        
         else         
             $p = $obj->update($_POST);                                
@@ -83,7 +83,7 @@ class TipoPersonalController extends Controller
     }
     public function delete()
     {
-        $obj = new TipoPersonal();
+        $obj = new misionvision();
         $result = array();        
         $p = $obj->delete($_GET['id']);
         if ($p[0]) $result = array(1,$p[1]);
@@ -101,7 +101,52 @@ class TipoPersonalController extends Controller
             $ext = $fileparts['extension'];
 
             //$targetPath = 'doc/';  
-            $targetPath = 'tipoperfil/';  
+            $targetPath = 'images/index/';  
+            $filetypes = array("pdf","doc","png","jpeg","jpg");
+            $flag = false;
+            foreach($filetypes as $typ)
+            {
+                if($typ==strtolower($ext))
+                {
+                        $flag = true;
+                }
+            }    
+            if($flag)
+            {
+                $targetFile =  str_replace('//','/',$targetPath).str_replace(' ','_',$_FILES['Filedata']['name']);
+                $name = str_replace(' ','_',$_FILES['Filedata']['name']);
+                if( move_uploaded_file($tempFile,$targetFile))
+                {	
+                    echo "1###".$name;
+                    chmod($targetFile, 0777);
+                }
+                else
+                {
+                    echo "0###Error";
+                }
+            }
+            else 
+            {
+                echo "0###Extension no apcetada ".$typ;
+            }    
+
+        }
+        else {
+            echo "KO";
+        }
+    }
+    
+    public function loadfile_v()
+    {
+        
+        if (!empty($_FILES)) 
+        {
+            $tempFile = $_FILES['Filedata']['tmp_name'];                          // 1
+            $fileparts = pathinfo($_FILES['Filedata']['name']);
+            $ext = $fileparts['extension'];
+
+            //$targetPath = 'doc/';  
+            $targetPath = 'images/index/';  
             $filetypes = array("pdf","doc","png","jpeg","jpg");
             $flag = false;
             foreach($filetypes as $typ)

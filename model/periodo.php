@@ -22,11 +22,23 @@ class periodo extends Main
         return $stmt->fetchObject();
     }
 
+    function edit_() 
+    {
+        $stmt = $this->db->prepare("SELECT * FROM evaluacion.periodo WHERE idperiodo = :id");
+        $stmt->bindParam(':id', $_SESSION['idperiodo'] , PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchObject();
+    }
+
     function insert($_P ) 
     {
-        $stmt = $this->db->prepare("INSERT INTO evaluacion.periodo (descripcion, estado) VALUES(:p1,:p2)");
+        $fecha = date('Y-m-d');
+        $anio = date('Y');
+        $stmt = $this->db->prepare("INSERT INTO evaluacion.periodo (descripcion, fecha_apertura, estado, anio) VALUES(:p1,:p2,:p3,:p4)");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_BOOL);
+        $stmt->bindParam(':p2', $fecha , PDO::PARAM_STR);
+        $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_BOOL);
+        $stmt->bindParam(':p4', $anio , PDO::PARAM_INT);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
@@ -47,6 +59,22 @@ class periodo extends Main
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
+    }
+
+    function getPeriodo()
+    {
+        $stmt = $this->db->prepare("SELECT * from evaluacion.periodo order by idperiodo desc limit 1");
+        $stmt->execute();
+        return $stmt->fetchObject();
+    }
+
+    function closeok()
+    {
+        $fecha = date('Y-m-d');
+        $stmt = $this->db->prepare("update evaluacion.periodo set estado = 2, fecha_cierre = '".$fecha."' where idperiodo = :id");
+        $stmt->bindParam(':id',$_SESSION['idperiodo'],PDO::PARAM_INT);
+        $p1 = $stmt->execute();
+        return array($p1, 1);
     }
 }
 ?>

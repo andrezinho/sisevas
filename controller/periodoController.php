@@ -1,3 +1,4 @@
+
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
@@ -89,6 +90,30 @@ class periodoController extends Controller
         $obj = new periodo();
         $result = array();        
         $p = $obj->delete($_GET['id']);
+        if ($p[0]) $result = array(1,$p[1]);
+        else $result = array(2,$p[1]);
+        print_r(json_encode($result));
+    }
+    
+    public function close()
+    {
+        //Cierre de periodo
+        $obj = new periodo();        
+        $data = array();
+        $view = new View();
+        $obj = $obj->edit_();
+        $data['obj'] = $obj;
+        $view->setData($data);
+        $view->setTemplate( '../view/periodo/_close.php' );
+        $view->setLayout( '../template/layout.php' );
+        $view->render();
+    }
+
+    public function closeok()
+    {
+        $obj = new periodo();
+        $result = array();        
+        $p = $obj->closeok();
         if ($p[0]) $result = array(1,$p[1]);
         else $result = array(2,$p[1]);
         print_r(json_encode($result));

@@ -2,6 +2,7 @@ $(function()
 {
     $("#tabs").tabs({ collapsible: false });
     $( "#descripcion" ).focus();
+    $( "#dos" ).css({'width':'700px'});
     $( "#idfuentecapacitacion, #idejecapacitacion" ).css({'width':'200px'});
     $( "#idperfil, #idtipopersonal, #idmetodoscapacitacion  " ).css({'width':'180px'});
     $( "#fechacap" ).datepicker({dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true});

@@ -12,20 +12,21 @@
     <div id="tabs">
         <ul style="background:#DADADA !important; border:0 !important">
             <li><a href="#tabs-1">Informaci&oacute;n B&aacute;sica</a></li>
-            <li><a href="#tabs-2">Costos</a></li>
-            <li><a href="#tabs-3">Anexos</a></li>
+            <li><a href="#tabs-2">Propuesta</a></li>
+            <!--<li><a href="#tabs-2">Costos</a></li>
+            <li><a href="#tabs-3">Anexos</a></li>-->
         </ul>
         <div id="tabs-1">
             <div id="table-per">
-                
+                <!--
                 <label for="fechanaci" class="labels">Fecha Cap:</label>
                 <input type="text" id="fechacap" name="fechacap" value="<?php if($obj->fecha=='') echo date('d/m/Y'); else echo fdate($obj->fecha,'ES'); ?>" class="text ui-widget-content ui-corner-all" style=" width: 70px; text-align: center;" />
                 -<input type="text" name="horacap" id="horacap" value="<?php if($obj->hora!=""){echo fdate($obj->hora,'ES');} else {echo date('H:i:s');} ?>" class="ui-widget-content ui-corner-all text" style="width:70px; text-align:center" />
-                
-                <label for="fuente" class="labels">Fuente de cap.:</label> 
+                -->
+                <label for="fuente" class="labeless">Fuente de cap.:</label> 
                 <?php echo $fuente; ?>
                 
-                <label for="eje" class="labels">Eje de capac.:</label> 
+                <label for="eje" class="labeless">Eje de capac.:</label> 
                 <?php echo $eje; ?>
                 <br />
                   
@@ -81,15 +82,7 @@
                 
                 <label for="objcap" class="labels">Alcance:</label> 
                 <?php echo $perfilocup; ?>
-                <br />
-                
-                <label for="ref" class="labeless">Referencia Biblio.:</label><br />
-                <textarea name="referencias" id="referencias" style="width: 70%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="10" rows="3" ><?php echo $obj->referencias; ?></textarea>
-                <br />
-                
-                <label for="ref" class="labeless">Palabras Claves:</label><br />
-                <textarea name="palabrasclaves" id="palabrasclaves" style="width: 70%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="10" rows="3" ><?php echo $obj->palabrasclaves; ?></textarea>
-                <br />
+                <br />                
                 
                 <label for="estado" class="labeless">Expositor:</label>
                 <input id="expositor" name="expositor" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->expositor; ?>" />    
@@ -101,8 +94,26 @@
                 <input id="emailexp" name="emailexp" value="<?php echo $obj->mail; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" />  
                 
             </div>
+            
         </div>
-        
+                
+        <div id="tabs-2">
+            <div id="dos">
+            
+                <label for="ref" class="labeless">Propuesta :</label><br />
+                <textarea name="propuesta" id="propuesta" style="width: 70%; margin-left:16%;" class="ui-widget-content ui-corner-all" cols="10" rows="5" ><?php echo $obj->propuesta; ?></textarea>
+                <br />
+                
+                <label for="ref" class="labeless">Referencia Biblio.:</label><br />
+                <textarea name="referencias" id="referencias" style="width: 70%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="10" rows="3" ><?php echo $obj->referencias; ?></textarea>
+                <br />
+                
+                <label for="ref" class="labeless">Palabras Claves:</label><br />
+                <textarea name="palabrasclaves" id="palabrasclaves" style="width: 70%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="10" rows="3" ><?php echo $obj->palabrasclaves; ?></textarea>
+                <br />
+            </div>
+        </div>
+        <!--
         <div id="tabs-2">
         </div>
         <div id="tabs-3">
@@ -112,6 +123,7 @@
             <br />
             
         </div>
+        -->
     </div>
     
     

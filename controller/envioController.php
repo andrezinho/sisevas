@@ -99,9 +99,8 @@ class EnvioController extends Controller
         else                 
             $result = array(2,$p[1]);
         print_r(json_encode($result));
-
     }
-    
+
     public function delete()
     {
         $obj = new Envio();
@@ -116,8 +115,8 @@ class EnvioController extends Controller
     {
         $obj = new Envio();
         print_r(json_encode($obj->nuevos()));
-        
     }
-   
+
+    
 }
 ?>

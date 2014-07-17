@@ -22,7 +22,7 @@ class periodoController extends Controller
         $data['cmb_search'] = $this->Select(array('id'=>'fltr','name'=>'fltr','text_null'=>'','table'=>$this->getColsSearch($this->cols)));
         $data['controlador'] = $_GET['controller'];
         //$data['script'] = "evt_index_periodo.js";
-        //(nuevo,editar,eliminar,ver)
+        //(nuevo,editar,eliminar,ver);
         $data['actions'] = array(true,true,false,false);
 
         $view = new View();
@@ -68,7 +68,6 @@ class periodoController extends Controller
         $view->setData($data);
         $view->setTemplate( '../view/periodo/_form.php' );
         echo $view->renderPartial();
-        
     }
 
     public function save()
@@ -85,6 +84,7 @@ class periodoController extends Controller
             $result = array(2,$p[1]);
         print_r(json_encode($result));
     }
+
     public function delete()
     {
         $obj = new periodo();
@@ -95,28 +95,6 @@ class periodoController extends Controller
         print_r(json_encode($result));
     }
     
-    public function close()
-    {
-        //Cierre de periodo
-        $obj = new periodo();        
-        $data = array();
-        $view = new View();
-        $obj = $obj->edit_();
-        $data['obj'] = $obj;
-        $view->setData($data);
-        $view->setTemplate( '../view/periodo/_close.php' );
-        $view->setLayout( '../template/layout.php' );
-        $view->render();
-    }
-
-    public function closeok()
-    {
-        $obj = new periodo();
-        $result = array();        
-        $p = $obj->closeok();
-        if ($p[0]) $result = array(1,$p[1]);
-        else $result = array(2,$p[1]);
-        print_r(json_encode($result));
-    }
+    
 }
 ?>

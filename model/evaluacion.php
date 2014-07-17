@@ -1,7 +1,7 @@
 <?php
 include_once("Main.php");
 class evaluacion extends Main
-{    
+{
     function getAspectos($g)
     {
         //Obtengo el perfil al cual pertenece el personal a ser evaluado
@@ -90,64 +90,68 @@ class evaluacion extends Main
         $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
         $idusuario = $_SESSION['idusuario'];
         $estado = 1;
-
-        try 
+        if($_SESSION['estado']==1)
         {
-            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->db->beginTransaction();
-
-            foreach ($valores as $v) 
+            try
             {
-
-                $data = $this->db->prepare('SELECT idperfil,valor,idaspecto
-                                            from evaluacion.valores where idvalor = :id and estado = 1 and idperiodo = '.$idperiodo);
-                $data->bindParam(':id',$v,PDO::PARAM_INT);
-                $data->execute();
-                $n = $data->rowCount();
-                $row = $data->fetchObject();
-
-                if($n>0)
+                $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $this->db->beginTransaction();
+                foreach ($valores as $v) 
                 {
+                    $data = $this->db->prepare('SELECT idperfil,valor,idaspecto
+                                                from evaluacion.valores where idvalor = :id and estado = 1 and idperiodo = '.$idperiodo);
+                    $data->bindParam(':id',$v,PDO::PARAM_INT);
+                    $data->execute();
+                    $n = $data->rowCount();
+                    $row = $data->fetchObject();
 
-                    $s = $this->db->prepare('SELECT idresultado from evaluacion.resultados as r inner join 
-                                            evaluacion.valores as v on v.idvalor = r.idvalor and r.idpersonal = '.$idp.'
-                                            where v.idaspecto='.$row->idaspecto);                    
-                    $s->execute();
-                    $n = $s->rowCount();                    
                     if($n>0)
                     {
-                        foreach ($s->fetchAll() as $re) 
-                        {
-                            $sql = "UPDATE evaluacion.resultados set estado = 0 where idresultado = ".$re['idresultado']." and idpersonal = ".$idp;
-                            $stmt = $this->db->prepare($sql);
-                            $stmt->execute();
-                        }
-                    }
-                    
-                    $sql = "INSERT INTO evaluacion.resultados(
-                                idperiodo, idpersonal, idperfil, idevaluador, 
-                                idvalor, fecha_reg, hora_reg, estado,valor) values(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9)";
-                    $stmt = $this->db->prepare($sql);
-                    $stmt->bindParam(':p1',$idperiodo,PDO::PARAM_INT);
-                    $stmt->bindParam(':p2',$idp,PDO::PARAM_INT);
-                    $stmt->bindParam(':p3',$row->idperfil,PDO::PARAM_INT);
-                    $stmt->bindParam(':p4',$idusuario,PDO::PARAM_INT);
-                    $stmt->bindParam(':p5',$v,PDO::PARAM_INT);
-                    $stmt->bindParam(':p6',$fecha_reg,PDO::PARAM_STR);
-                    $stmt->bindParam(':p7',$hora_reg,PDO::PARAM_STR);
-                    $stmt->bindParam(':p8',$estado,PDO::PARAM_INT);
-                    $stmt->bindParam(':p9',$row->valor,PDO::PARAM_INT);
-                    $stmt->execute();
-                }
-            }
 
-            $this->db->commit();
-            return array('1','Bien!',$id);
+                        $s = $this->db->prepare('SELECT idresultado from evaluacion.resultados as r inner join 
+                                                evaluacion.valores as v on v.idvalor = r.idvalor and r.idpersonal = '.$idp.'
+                                                where v.idaspecto='.$row->idaspecto);                    
+                        $s->execute();
+                        $n = $s->rowCount();                    
+                        if($n>0)
+                        {
+                            foreach ($s->fetchAll() as $re) 
+                            {
+                                $sql = "UPDATE evaluacion.resultados set estado = 0 where idresultado = ".$re['idresultado']." and idpersonal = ".$idp;
+                                $stmt = $this->db->prepare($sql);
+                                $stmt->execute();
+                            }
+                        }
+                        
+                        $sql = "INSERT INTO evaluacion.resultados(
+                                    idperiodo, idpersonal, idperfil, idevaluador, 
+                                    idvalor, fecha_reg, hora_reg, estado,valor) values(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9)";
+                        $stmt = $this->db->prepare($sql);
+                        $stmt->bindParam(':p1',$idperiodo,PDO::PARAM_INT);
+                        $stmt->bindParam(':p2',$idp,PDO::PARAM_INT);
+                        $stmt->bindParam(':p3',$row->idperfil,PDO::PARAM_INT);
+                        $stmt->bindParam(':p4',$idusuario,PDO::PARAM_INT);
+                        $stmt->bindParam(':p5',$v,PDO::PARAM_INT);
+                        $stmt->bindParam(':p6',$fecha_reg,PDO::PARAM_STR);
+                        $stmt->bindParam(':p7',$hora_reg,PDO::PARAM_STR);
+                        $stmt->bindParam(':p8',$estado,PDO::PARAM_INT);
+                        $stmt->bindParam(':p9',$row->valor,PDO::PARAM_INT);
+                        $stmt->execute();
+                    }
+                }
+
+                $this->db->commit();
+                return array('1','Bien!',$id);
+            }
+            catch(PDOException $e)
+            {
+                $this->db->rollBack();
+                return array('2',$e->getMessage().$str,'');
+            }
         }
-        catch(PDOException $e)
+        else
         {
-            $this->db->rollBack();
-            return array('2',$e->getMessage().$str,'');
+            return array('2','Ya no se puede guardar la evaluacion debido a que el periodo ya está cerrado');
         }
     }
 

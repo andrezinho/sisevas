@@ -23,7 +23,7 @@
                     <div class="content">
                         <div style="float: left;">
                             <h3 class="titleind">Misi&oacute;n</h3>                        
-                            <p style="text-align: justify;width: 400px;margin-right: 10px;">SERVIMOS / ATENDEMOS  con personal calificado y especializado,  trabajamos en equipo  para garantizar la salud de la poblaci&oacute;n sanmartinense.</p>
+                            <p style="text-align: justify;width: 400px;margin-right: 10px;"><?php echo $mv['mision']; ?></p>
                         </div>
                         <div style="float: left;margin-bottom: 10px;">
                             <img src="../web/images/VISIONR.png" width="257" height="165" style="float: left;" />

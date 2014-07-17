@@ -19,7 +19,7 @@ class reportesController extends Controller
     {
         //Reporte
         $data = array();
-        $view = new View();        
+        $view = new View();
         $view->setData($data);
         $view->setTemplate( '../view/reportes/_rep02.php' );
         $view->setLayout( '../template/layout.php' );

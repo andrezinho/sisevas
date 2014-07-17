@@ -9,7 +9,7 @@
         <input id="idperiodo" name="idperiodo" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->idperiodo; ?>" readonly />
         <br/>
         <label for="descripcion" class="labels">Descripcion:</label>
-            <input id="descripcion" maxlength="100" name="descripcion" onkeypress="return permite(event,'car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->descripcion; ?>" />
+            <input id="descripcion" maxlength="100" name="descripcion" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->descripcion; ?>" />
             <br>
         <label for="estado" class="labels">Activo:</label>
         <?php                   

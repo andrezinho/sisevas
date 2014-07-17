@@ -24,5 +24,23 @@ class IndexController extends Controller
         $objsistema = new Sistema();
         print_r(json_encode($objsistema->menu()));
     }
+    
+    //Ver todo el index desde la BD
+    public function VerIndex()
+    {
+        $obj = new Index();
+        $data = array();
+        $view = new View();
+        $ro = $obj->viewIndex();
+        $data['mv'] = $ro[0];
+        $data['obejtivosemp'] = $ro[1];
+        $data['obejtivoscal'] = $ro[2];
+        $data['valoresemp'] = $ro[3];
+        $data['politica'] = $ro[4];
+        $view->setData($data);
+        $view->setTemplate( '../view/_index.php' );
+        $view->setLayout( '../template/empty.php' );
+        echo $view->renderPartial();
+    }
 }
 ?>

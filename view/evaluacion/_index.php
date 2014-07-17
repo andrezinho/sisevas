@@ -21,7 +21,7 @@
 		<div class="mp-level">		
 			<div style=" padding:0 10px;">				
 				<span class="box-options-top"><a id="btn-logo" class="options-icons" href="index.php" title="Sistema"><b>SISEVAS</b></a></span>
-				<span class="box-options-top"><a id="btn-periodo" class="options-icons" href="#" title="Periodo">2014-01</a></span>
+				<span class="box-options-top"><a id="btn-periodo" class="options-icons" href="#" title="Periodo"><?php echo $_SESSION['periodo'] ?></a></span>
 				<span class="box-options-top"><a id="btn-search-personal" class="options-icons" href="#" title="Buscar y/o Cambiar de Personal">Buscar Personal</a></span>
 			</div>
 			<div id="box-search-personal">
@@ -51,8 +51,10 @@
 			</ul>
 			<div style="text-align:center; padding:10px 0;">
                 <a href="#" id="reporte_in" class="myButton">Innovaciones</a>
+                <a href="#" id="reporte_me" class="myButton">Memos</a>
 				<a href="#" id="reporte_as" class="myButton">Reporte</a>
-				<a href="#" id="save_as" class="myButton">Grabar</a>
+				<br/><br/>
+				<a href="#" id="save_as" class="myButton">&nbsp;&nbsp;&nbsp;&nbsp;Grabar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 			</div>
 		</div>
 	</nav>

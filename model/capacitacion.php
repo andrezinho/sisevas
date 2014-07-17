@@ -26,9 +26,7 @@ class capacitacion extends Main
                 c.idobejtivoscap, c.idmetodoscapacitacion,
                 c.idtipoevaluacion, c.idalcance,
                 c.propuesta, c.referencias, c.palabrasclaves,
-                c.externo, c.idpersonal, c.expositor,
-                substr(cast(c.fecha as text),9,2)||'/'||substr(cast(c.fecha as text),6,2)||'/'||substr(cast(c.fecha as text),1,4) AS fecha,
-                substr(cast(c.hora as text),1,8) AS hora,
+                c.externo, c.idpersonal, c.expositor,                
                 d.idobejtivosemp,
                 p.mail
                 
@@ -69,8 +67,8 @@ class capacitacion extends Main
         
         $stmt = $this->db->prepare("INSERT INTO capacitacion.capacitacion(
             idfuentecapacitacion, idejecapacitacion, tema, idobejtivoscap, idmetodoscapacitacion, idtipoevaluacion, idalcance, 
-            propuesta, referencias, palabrasclaves, externo, idpersonal, expositor, fecha, hora)
-            VALUES(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13,:p14,:p15) ");
+            propuesta, referencias, palabrasclaves, externo, idpersonal, expositor)
+            VALUES(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13) ");
         
         try 
         {
@@ -95,8 +93,8 @@ class capacitacion extends Main
             $stmt->bindParam(':p11', $exter , PDO::PARAM_INT);
             $stmt->bindParam(':p12', $_P['idpersonal'] , PDO::PARAM_INT);
             $stmt->bindParam(':p13', $_P['expositor'] , PDO::PARAM_STR);
-            $stmt->bindParam(':p14', $_P['horacap'] , PDO::PARAM_BOOL);
-            $stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
+            //$stmt->bindParam(':p14', $_P['horacap'] , PDO::PARAM_BOOL);
+            //$stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
             $stmt->execute();
             
             $id =  $this->IdlastInsert('capacitacion.capacitacion','idcapacitacion');
@@ -134,7 +132,7 @@ class capacitacion extends Main
             idfuentecapacitacion= :p1, idejecapacitacion= :p2, 
             tema= :p3, idobejtivoscap= :p4, idmetodoscapacitacion= :p5, idtipoevaluacion= :p6, 
             idalcance= :p7, propuesta= :p8, referencias= :p9, palabrasclaves= :p10, externo= :p11, 
-            idpersonal= :p12, expositor= :p13, fecha= :p14, hora= :p15
+            idpersonal= :p12, expositor= :p13
 
             WHERE idcapacitacion= :idcapacitacion";
 
@@ -166,8 +164,8 @@ class capacitacion extends Main
             $stmt->bindParam(':p11', $exter , PDO::PARAM_INT);
             $stmt->bindParam(':p12', $_P['idpersonal'] , PDO::PARAM_INT);
             $stmt->bindParam(':p13', $_P['expositor'] , PDO::PARAM_STR);
-            $stmt->bindParam(':p14', $_P['fechacap'] , PDO::PARAM_BOOL);
-            $stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
+            //$stmt->bindParam(':p14', $_P['fechacap'] , PDO::PARAM_BOOL);
+            //$stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
             
             $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
             $stmt->execute();

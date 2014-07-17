@@ -16,17 +16,17 @@ $(document).ready(function()
 	        minLength: 0,
 	        source: 'index.php?controller=personal&action=get&tipo=0',
 	        focus: function( event, ui ) 
-	        {	            
+	        {
 	            return false;
 	        },
-	        select: function( event, ui ) 
+	        select: function( event, ui )
 	        {
-	            $("#idp").val(ui.item.idpersonal);	            
+	            $("#idp").val(ui.item.idpersonal);
 	            $("#personal_name" ).val( ui.item.nompersonal );
 	            $("#load_personal").focus();
 	            return false;
 	        }
-	     }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {        
+	     }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
 	        return $( "<li></li>" )
 	            .data( "item.autocomplete", item )
 	            .append( "<a>"+ item.dni +" - " + item.nompersonal + "</a>" )
@@ -50,7 +50,7 @@ $(document).ready(function()
 				if(data[0]=='1')
                 	alert("Se ha grabado los cambios satisfactoriamente.");
                 else
-                	alert("Ha ocurrido un error, intentelo nuevamente.");
+                	alert(data[1]);
 			},'json')
 		});
 
@@ -66,6 +66,10 @@ $(document).ready(function()
         $("#reporte_in").click(function(){
 			var idp   = $("#idpersonal").val();
 			popup('index.php?controller=innovacion&action=reporte_detallado&idp='+idp,500,500);
+		});
+		$("#reporte_me").click(function(){
+			var idp   = $("#idpersonal").val();
+			popup('index.php?controller=envio&action=reporte_detallado&idp='+idp,500,500);
 		});
 
 		var $floatingbox = $('#mp-menu'); 

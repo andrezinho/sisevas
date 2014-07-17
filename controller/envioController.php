@@ -61,23 +61,19 @@ class EnvioController extends Controller
     {
         $obj = new Envio();
         $data = array();
-        $view = new View();
-        //$obj = $obj->edit($_GET['id']);
-        $rows = $obj->edit($_GET['id']);  
-        //$data['obj'] = $obj;
+        $view = new View();        
+        $rows = $obj->edit($_GET['id']);
         $data['obj'] = $rows;
         $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal','code'=>$rows->idperdestinatario));        
         $data['remitente'] = $this->Select(array('id'=>'idperremitente','name'=>'idperremitente','text_null'=>'Seleccione...','table'=>'vista_remitente','code'=>$rows->idpersonalresp));        
         $data['tipodoc'] = $this->Select(array('id'=>'idtipo_documento','name'=>'idtipo_documento','text_null'=>':: Seleccione ::','table'=>'vista_tipodocumento','code'=>$rows->idtipo_documento));
-        $data['tipoproblema'] = $this->Select(array('id'=>'idtipo_problema','name'=>'idtipo_problema','text_null'=>'Seleccione...','table'=>'vista_tipoproblema','code'=>$rows->idtipo_problema));        
-        
+        $data['tipoproblema'] = $this->Select(array('id'=>'idtipo_problema','name'=>'idtipo_problema','text_null'=>'Seleccione...','table'=>'vista_tipoproblema','code'=>$rows->idtipo_problema));
         $tp= $obj->idtipo_problema;
         if ($tp == 1) {
             $data['idareai'] = $this->Select(array('id'=>'idareai','name'=>'idareai','text_null'=>'Seleccione...','table'=>'vista_consultorio','code'=>$rows->idareai));
         }else
             {
                 $data['idareai'] = $this->Select(array('id'=>'idareai','name'=>'idareai','text_null'=>'Seleccione...','table'=>'vista_personal','code'=>$rows->idpersonalresp));
-        
             }
         
         $data['rowsd'] = $obj->getDetails($rows->idtramite,$rows->idtipo_documento);
@@ -111,12 +107,26 @@ class EnvioController extends Controller
         print_r(json_encode($result));
     }
 
+    public function reporte_detallado()
+    {
+        $obj = new Envio();
+        $data = array();
+        $result = $obj->reporte_detallado($_GET);
+        $data['datos'] = $result[1];
+        $data['rows'] = $result[0];        
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/envio/_reporte.php');
+        $view->setLayout('../template/evaluacion.php');
+        return $view->render();
+    }
+    
     public function nuevos()
     {
         $obj = new Envio();
         print_r(json_encode($obj->nuevos()));
     }
 
-    
+
 }
 ?>

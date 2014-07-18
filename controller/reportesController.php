@@ -42,5 +42,33 @@ class reportesController extends Controller
         $view->setLayout('../template/empty.php');
         return $view->render();
     }
+
+    public function rep03() 
+    {
+        //Reporte
+        $data = array();
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate( '../view/reportes/_rep03.php' );
+        $view->setLayout( '../template/layout.php' );
+        $view->render();
+    }
+    public function data_rep03()
+    {
+        //
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_rep03($_GET);
+        $data['datos'] = $result[1];
+        $data['rows'] = $result[0];
+        $view = new View();
+        $view->setData($data);
+        if($_GET['tipo']=="pdf")
+            $view->setTemplate('../view/reportes/_reporte_rep03_pdf.php');
+        else
+            $view->setTemplate('../view/reportes/_reporte_rep03.php');
+        $view->setLayout('../template/empty.php');
+        return $view->render();
+    }
 }
 ?>

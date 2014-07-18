@@ -1,7 +1,7 @@
 <?php
 include_once("Main.php");
 
-class Index {    
+class Index extends Main {    
     public function index()
     {
         return array('body'=>'<p>CUERPO DE LA PAGINA :) </p>');
@@ -19,8 +19,8 @@ class Index {
             public.misionvision";
         $stmt = $this->db->prepare($mv);            
         $stmt->execute();
-        $mv= $stmt->fetch();
-        print_r($mv);
+        $mv= $stmt->fetchAll();
+        //print_r($mv);
         
         $objemp="SELECT
             obejtivosemp.idobejtivosemp,

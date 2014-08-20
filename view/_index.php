@@ -26,15 +26,15 @@
                             <p style="text-align: justify;width: 400px;margin-right: 10px;"><?php echo $mv['mision']; ?></p>
                         </div>
                         <div style="float: left;margin-bottom: 10px;">
-                            <img src="../web/images/VISIONR.png" width="257" height="165" style="float: left;" />
+                            <img src="../web/images/index/<?php echo $mv['img_m']; ?>" width="257" height="165" style="float: left;" />
                         </div>
                         <div style="width: 100%; height: 2px;"></div>
                         <div style="float: left;">
             	        	<h3 class="titleind">Visi&oacute;n</h3>
-                            <p style="text-align: justify;width: 400px;margin-right: 10px;">Instituci&oacute;n privada que lidera la mejora continua de la calidad, acreditada en prestaciones de salud, con tecnolog&iacute;as de alta capacidad resolutiva dentro de una infraestructura moderna y ambientalista.</p>
+                            <p style="text-align: justify;width: 400px;margin-right: 10px;"><?php echo $mv['vision']; ?>.</p>
                         </div>
                         <div style="float: left;margin-bottom: 4%;">
-                            <img src="../web/images/MISIONR.png" width="260" height="154" style="float: left;" />
+                            <img src="../web/images/index/<?php echo $mv['img_v']; ?>" width="260" height="154" style="float: left;" />
                         </div>
                       
                     </div>
@@ -45,6 +45,17 @@
                         <br />
                         <div style="text-align: justify;float: left;width: 420px;margin-right: 10px;">
                             <p>
+                                <?php
+                                    if(count($obejtivosemp)>0)
+                                    {    $cn=0;
+                                        foreach ($obejtivosemp as $i => $r) 
+                                        {   
+                                            $cn ++;
+                                            echo $cn.'.- '.$r['descripcion'].'<br />';
+                                        }
+                                    }
+                                ?>
+                                <!--
                                 1. Impulsar acciones de prevenci&oacute;n y promoci&oacute;n en base a paquetes de atenci&oacute;n con &eacute;nfasis en la atenci&oacute;n de la mujer (COMUNICACI&Oacute;N).<br />
                     			2. Fortalecer  la calidad de la atenci&oacute;n de los consultorios (IDENTIDAD).<br />
                     			3. Garantizar la calidad de los sistemas de soporte. (IMAGEN).<br />
@@ -53,8 +64,8 @@
                                 6. Desarrollo de una pol&iacute;tica de marketing institucional (COMUNICACI&Oacute;N).<br />
                                 7. Desarrollo de un sistema de captaci&oacute;n de clientes con reglas claras del mercado (COMUNICACI&Oacute;N).<br />
                                 8. Garantizar la calidad de la hospitalizaci&oacute;n y emergencia (IDENTIDAD).<br />
-                                9. Promover el desarrollo de las competencias del RRHH(IDENTIDAD).<br /><br />
-                                
+                                9. Promover el desarrollo de las competencias del RRHH(IDENTIDAD).<br /><br />*/
+                                -->
                             </p>
                         </div>
                         <div style="float: left;">
@@ -69,10 +80,22 @@
                         <!-- <h3>Tab Two</h3> -->
                         <div style="text-align: justify;float: left;width: 420px;margin-right: 10px;">
                             <p>
+                                <?php
+                                    if(count($obejtivoscal)>0)
+                                    {    $cnn=0;
+                                        foreach ($obejtivoscal as $i => $rs) 
+                                        {   
+                                            $cnn ++;
+                                            echo $cnn.'.- '.$rs['descripcion'].'<br />';
+                                        }
+                                    }
+                                ?>
+                                <!--
                                 1.	Impulsar   la calidad de la atenci&oacute;n del servicio  de obstetricia, tomando como referencia la Norma BPMG.<br />
                     			2.	Implementar los est&aacute;ndares de calidad en el  servicio de apoyo al tratamiento.<br />
                     			3.	Promover el desarrollo de las competencias del recurso humano.<br />
                     			4.	Medir la satisfacci&oacute;n de nuestros usuarios de acuerdo al servicio brindado.<br /><br />
+                                -->
                             </p>
                         </div>
                         <div style="float: left;">
@@ -84,6 +107,7 @@
                 </div>
                 <div id="tab-4">
                     <div class="content">
+                        <!--
                         <h3 class="titleind">INNOVACI&oacute;N</h3>
                         <p style="text-align: justify;"> 
                             Hacer las cosas de manera diferente, aplicaci&oacute;n de nuevas ideas, conceptos, productos, servicios y pr&aacute;cticas, con la intenci&oacute;n de ser &uacute;tiles. Buscamos  la mejora continua de nuestros procesos y servicios y no nos conformamos con proponer ideas sino que las llevamos a la pr&aacute;ctica como parte de nuestro reto diario para el mejoramiento contin&uacute;o.
@@ -113,15 +137,31 @@
                                 Buscamos siempre la excelencia mediante la aplicaci&oacute;n de la mejora continua, mejoramos nuestras competencias personales y profesionales, cumplimos y excedemos los est&aacute;ndares de las normas de  calidad. Participamos en todas la etapas del proceso de calidad.
                             </p>
                         </div>
+                        -->
+                        <?php
+                            if(count($valoresemp)>0)
+                            {    
+                                foreach ($valoresemp as $i => $res) 
+                                {
+                            ?>
+                                <h3 class="titleind"><?php echo $res['valor']; ?></h3>
+                                <p style="text-align: justify;"> 
+                                    <?php echo $res['descripcion'].'<br />'; ?>
+                                </p>
+                            <?php                                    
+                                   
+                                }
+                            }
+                        ?>
                     </div>
                 </div>
                 <div id="tab-5">
                     <div class="content">
                         <div style="text-align: justify;float: left;width: 420px;margin-right: 10px;">
-                            <p style="text-align: justify;">En el cumplimiento de su misi&oacute;n, la CORPORACI&Oacute;N MEDICA  SAN MARTIN S.A.C., desarrolla acciones de mejora continua y aplica eficiencia en sus costos. Es un equipo calificado, especializado y polifuncional que brinda servicios de salud en el &aacute;rea de obstetricia de manera sencilla,  sincera, precisa, oportuna y personalizada con el fin de satisfacer los requerimientos y expectativas del cliente; est&aacute;n comprometidos con los lineamientos de la norma de BPMG e  impulsan una cultura de calidad y valores de la Empresa.</p>
+                            <p style="text-align: justify;"><?php echo $politica['descripcion']; ?> </p>
                         </div>
                         <div style="float: left;">
-                            <img src="../web/images/POLITICASCA.png" width="232" height="145" style="float: left;" />
+                            <img src="../web/images/index/<?php echo $politica['img']; ?>" width="232" height="145" style="float: left;" />
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ class politicacal extends Main
     {
         $sql = "SELECT idpolitica_calidad,
                descripcion,
-               '<a href=\"index/'||img||'\" target=\"_blank\" class=\"btn-evaluar box-boton boton-recibido\"></a>',
+               '<a href=\"images/index/'||img||'\" target=\"_blank\" class=\"btn-evaluar box-boton boton-recibido\"></a>',
                case estado when 1 then 'ACTIVO' else 'INCANTIVO' end
                 from politica_calidad";    
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);

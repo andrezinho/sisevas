@@ -18,11 +18,12 @@
         </ul>
         <div id="tabs-1">
             <div id="table-per">
-                <!--
-                <label for="fechanaci" class="labels">Fecha Cap:</label>
-                <input type="text" id="fechacap" name="fechacap" value="<?php if($obj->fecha=='') echo date('d/m/Y'); else echo fdate($obj->fecha,'ES'); ?>" class="text ui-widget-content ui-corner-all" style=" width: 70px; text-align: center;" />
-                -<input type="text" name="horacap" id="horacap" value="<?php if($obj->hora!=""){echo fdate($obj->hora,'ES');} else {echo date('H:i:s');} ?>" class="ui-widget-content ui-corner-all text" style="width:70px; text-align:center" />
-                -->
+                
+                <label for="cod" class="labeless">Codigo:</label>
+                <input type="text" id="correlativo" name="correlativo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php echo $obj->codigo; ?>" readonly="">
+                <input type="hidden" id="codigo" name="codigo"  value="<?php echo $obj->codigo; ?>" >
+                
+                <br />
                 <label for="fuente" class="labeless">Fuente de cap.:</label> 
                 <?php echo $fuente; ?>
                 
@@ -57,7 +58,7 @@
                                 {                                          
                                     ?>
                                     <tr class="tr-detalle">
-                                        <td align="left"><?php echo $r['descripcion']; ?><input type="hidden" name="idobejtivosemp[]" value="<?php echo $r['idobejtivosemp']; ?>" /></td>
+                                        <td align="left"><?php echo $r['descripcion']; ?><input type="hidden" name="idobejtivosempresa[]" value="<?php echo $r['idobejtivosemp']; ?>" /></td>
                                         <td align="center"><a class="box-boton boton-delete" href="#" title="Quitar" ></a></td>
                                     </tr>
                                     <?php    
@@ -80,19 +81,6 @@
                 <label for="objcap" class="labels">Tipo Evaluacion:</label> 
                 <?php echo $tipoeva; ?>
                 
-                <label for="objcap" class="labels">Alcance:</label> 
-                <?php echo $perfilocup; ?>
-                <br />                
-                
-                <label for="estado" class="labeless">Expositor:</label>
-                <input id="expositor" name="expositor" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->expositor; ?>" />    
-                <input type="hidden" id="idpersonal" name="idpersonal" value="<?php echo $obj->idpersonal; ?>" />
-                <input type="checkbox" name="externo" value="1" />
-                Externo
-                
-                <label for="estado" class="labeless">Email Exposit.:</label>
-                <input id="emailexp" name="emailexp" value="<?php echo $obj->mail; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" />  
-                
             </div>
             
         </div>
@@ -113,17 +101,8 @@
                 <br />
             </div>
         </div>
-        <!--
-        <div id="tabs-2">
-        </div>
-        <div id="tabs-3">
-            
-            <label for="anex" class="labeless">Anexo:</label>
-            <input id="anexo" name="anexo" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 190px; text-align: left;" value="<?php echo $obj->anexo; ?>" />    
-            <br />
-            
-        </div>
-        -->
+        
+        
     </div>
     
     

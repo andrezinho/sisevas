@@ -266,6 +266,7 @@ a.login { color : #E4F5F6;}
 .boton-new { background-position: -2px -2px; }
 .boton-edit { background-position: -20px -2px; }
 .boton-delete { background-position: -77px -2px; }
+.boton-deletes { background-position: -77px -2px; }
 .boton-view { background-position: -77px -23px; }
 .boton-close { background-position: -59px -2px; }
 .boton-registrado { background-position: -79px -23px; }

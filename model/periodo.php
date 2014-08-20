@@ -76,5 +76,6 @@ class periodo extends Main
         $p1 = $stmt->execute();
         return array($p1, 1);
     }
+   
 }
 ?>

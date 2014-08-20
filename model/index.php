@@ -78,6 +78,8 @@ class Index extends Main {
         
         return array($mv, $obejtivosemp, $obejtivoscal, $valoresemp, $politica);
     }
+
+
 }
 
 

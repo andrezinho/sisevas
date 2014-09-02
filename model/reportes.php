@@ -174,7 +174,7 @@ class reportes extends Main
             {
                 $data[$c]['res'][] = array('idaspecto'=>$r[0],
                                             'aspecto'=>$r[1],
-                                            'periodo'=>array(0 => array($r[2],$r[1]));                                            
+                                            'periodo'=>array(0 => array($r[2],$r[1])));
             }
             $c += 1;
         }

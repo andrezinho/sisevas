@@ -116,7 +116,28 @@ class capacitacionasigController extends Controller
         echo $view->renderPartial();
     }
    
+   public function upload_file()
+   {
+        $obj = new capacitacionasig();
+        $data = array();
+        $upload = $obj->upload_files($_POST,$_FILES);
+        echo $upload;
+   }
+
+   public function getAnexos()
+   {
+        $obj = new capacitacionasig();
+        $data = array();
+        $anexos = $obj->getAnexos($_GET['idc']);
+        print_r(json_encode($anexos));
+   }
    
+   public function delete_anexo()
+   {
+        $obj = new capacitacionasig();
+        $data = array();
+        $anexos = $obj->delete_anexo($_POST['ida']);
+   }
 }
 
 ?>

@@ -65,7 +65,7 @@ class Sistema extends Main
         return $menu;
     }    
 
-     function viewIndex()
+    function viewIndex()
     {        
         $mv="SELECT
             misionvision.mision,
@@ -132,7 +132,7 @@ class Sistema extends Main
 
         $stmt4 = $this->db->prepare($polcal);
         $stmt4->execute();
-        $politica=$stmt4->fetchAll();
+        $politica=$stmt4->fetch();
         
         return array($mv, $obejtivosemp, $obejtivoscal, $valoresemp, $politica);
     }

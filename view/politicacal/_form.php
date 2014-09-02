@@ -16,7 +16,7 @@
        
         
         <label for="descripcion" class="labels">Descripcion:</label>
-        <textarea name="descripcion" id="descripcion" style="width: 80%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="80" rows="6"></textarea><br />
+        <textarea name="descripcion" id="descripcion" style="width: 80%; margin-left:16%;" class="text ui-widget-content ui-corner-all" cols="80" rows="6"><?php echo $obj->descripcion ?></textarea><br />
         
         <label for="descripcion" class="labels">Subir Imagen:</label>
         <div class="subir_file">

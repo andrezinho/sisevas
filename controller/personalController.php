@@ -128,7 +128,8 @@ class PersonalController extends Controller
               array_push($result, array(
                         "idpersonal"=>$val['idpersonal'],
                         "mail"=>$val['mail'],
-                        "nompersonal"=> strtoupper($val['nompersonal'])
+                        "nompersonal"=> strtoupper($val['nompersonal']),
+                        "dni"=>$val['dni']
                     )
                 );
               if ( $key > 7 ) { break; }

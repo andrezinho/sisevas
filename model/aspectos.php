@@ -59,7 +59,8 @@ class aspectos extends Main
 
     function getAspectos($idc)
     {
-        $stmt = $this->db->prepare("SELECT idaspecto, descripcion from evaluacion.aspectos 
+        $stmt = $this->db->prepare("SELECT idaspecto, descripcion 
+                                    from evaluacion.aspectos 
                                     where estado = 1 and idcompetencia = :id");
         $stmt->bindParam(':id',$idc,PDO::PARAM_INT);
         $stmt->execute();

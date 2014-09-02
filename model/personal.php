@@ -172,7 +172,8 @@ class Personal extends Main
         $statement = $this->db->prepare("SELECT 
                                         idpersonal,
                                         mail, 
-                                        nombres || ' ' || apellidos AS nompersonal                                                
+                                        nombres || ' ' || apellidos AS nompersonal,
+                                        dni
                                         FROM personal
                                         WHERE {$field} ilike :query and dni <> ''
                                          limit 10");

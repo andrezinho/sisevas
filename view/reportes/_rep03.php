@@ -50,7 +50,7 @@ function valid()
 }
 </script>
 <div class="div_container">
-<h6 class="ui-widget-header ui-state-hover">Reporte Resultados de Evaluacion Anual Promediado</h6>
+<h6 class="ui-widget-header ui-state-hover">Reporte Resultados de Evaluacion Anual Detallado</h6>
 <div style="padding: 20px;" class="ui-widget-content">
     <form name="frm" id="frm" action="" method="get">
         <label class="labels" for="idperiodo">Año: </label>

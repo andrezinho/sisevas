@@ -293,5 +293,117 @@ class capacitacionasig extends Main
         return array($cab,$objemp,$asig);
     }
 
+    function upload_files($_P,$_F)
+    {
+        $result = array();
+        if (!empty($_F)) 
+        {
+            $tempFile = $_F['Filedata']['tmp_name'];                          // 1
+            $fileparts = pathinfo($_F['Filedata']['name']);
+            $ext = $fileparts['extension'];
+         
+            $targetPath = 'files_uploads/';
+            $filetypes = array("pdf","doc","odt","docx","rtf","ppt","pptx","jpg","jpeg","png","gif","xls","xlsx");
+            $flag = false;
+            foreach($filetypes as $typ)
+            {
+                if($typ==strtolower($ext))
+                {
+                    $flag = true;
+                }
+            }    
+            if($flag)
+            {
+                //Generamos el nuevo registro
+                $name = "anexo_".date('d-m-Y-h-i-s').".".$ext;
+                $stmt = $this->db->prepare("INSERT INTO capacitacion.anexos (idcapacitacion,descripcion) values (:p1,:p2)");
+                $stmt->bindParam(':p1',$_P['idcapacitacion'],PDO::PARAM_INT);
+                $stmt->bindParam(':p2',$name,PDO::PARAM_STR);
+                $stmt->execute();
+
+                $stmt = $this->db->prepare("SELECT max(idanexo) as idanexo from capacitacion.anexos");
+                $stmt->execute();
+                $r = $stmt->fetchObject();
+                $idanexo = $r->idanexo;
+
+                $targetFile =  str_replace('//','/',$targetPath).str_replace(' ','_',$name);
+                
+                if( move_uploaded_file($tempFile,$targetFile))
+                {   
+                    $result = '1###Ok';
+                    chmod($targetFile, 0777);
+                }
+                else
+                {
+                    $stmt = $this->db->prepare("DELETE from capacitacion.anexos where idanexo = ".$idanexo);
+                    $stmt->execute();                    
+                    $result = '0###Error al intentar subir el archivo.';
+                }
+            }
+            else 
+            {
+                $result = '0###Extension no apcetada, debe ser (doc, odt, docx, rtf, pdf, imagenes)';
+            }    
+        }        
+        return $result;
+    }
+
+    function getAnexos($idc)
+    {
+        $stmt = $this->db->prepare("SELECT * from capacitacion.anexos where idcapacitacion = :id order by idanexo");
+        $stmt->bindParam(':id',$idc,PDO::PARAM_INT);
+        $stmt->execute();
+        $data = array();
+        foreach ($stmt->fetchAll() as $row) 
+        {
+            $name = $row['descripcion'];
+            $extencion = explode(".", $name);
+            $data[] = array('idanexo'=>$row['idanexo'],
+                            'nombre'=>$extencion[0],
+                            'icono'=>$this->icon_file($extencion[1]),
+                            'ext'=>$extencion[1]);
+        }
+        return $data;
+    }
+
+    function icon_file($extencion)
+    {
+        $icon = "";
+        switch ($extencion) {
+            case 'doc':
+            case 'docx':
+            case 'odt':
+            case 'rtf':
+                $icon = "word.png";
+                break;
+            case 'ppt':
+            case 'pptx':
+                $icon = "point.png";
+            case 'xls':
+            case 'xlsx':
+                $icon = "excel.png";
+                break;
+            case 'pdf':
+                $icon = "pdf.png";
+                break;
+            case 'png':
+            case 'jpg':
+            case 'jpeg':
+            case 'gif':
+                $icon = "imagen.png";
+                break;
+            default:
+                $icon = "undefined.png";
+                break;
+        }
+        return $icon;
+    }
+
+    function delete_anexo($ida)
+    {
+        $stmt = $this->db->prepare("DELETE from capacitacion.anexos where idanexo = ".$ida);
+        $stmt->execute();                    
+    }
+
 }
 ?>

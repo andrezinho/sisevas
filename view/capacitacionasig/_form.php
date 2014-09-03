@@ -1,9 +1,81 @@
 <?php  
     include("../lib/helpers.php"); 
-    include("../view/header_form.php");       
-    
+    include("../view/header_form.php");   
 ?>
-   
+<?php $timestamp = time();?>
+<script src="js/jquery.uploadify.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="css/uploadify.css">
+<script type="text/javascript">
+$(function() {   
+        getAnexos();
+        $('#file_upload').uploadify({
+                'formData' : {
+                        'timestamp' : '<?php echo $timestamp;?>',
+                        'token'     : '<?php echo md5('unique_salt' . $timestamp);?>',
+                        'idcapacitacion': '<?php echo $obj->idcapacitacion; ?>',
+                        'controller':'capacitacionasig',
+                        'action':'upload_file'
+                },
+                'swf'      : 'uploadify.swf',
+                'uploader' : 'index.php',
+                'buttonText': 'Archivo',
+                'height'   : 21,
+                onUploadSuccess : function(file, data, response) {
+                        if(response)
+                        {                            
+                            r = data.split("###");
+                            if(r[0]==1)
+                            {                                
+                                getAnexos();
+                            }
+                            else 
+                            {
+                                alert(r[1]);
+                            }                            
+                        }
+                        else 
+                        {
+                            alert("Ha ocurrido un error al intentar subir el archivo "+file.name);
+                        }
+                        
+                    },
+                onUploadError : function(file, errorCode, errorMsg, errorString) 
+                    {
+                        alert('El archivo ' + file.name + ' no pudo ser subido: ' + errorString);
+                    }
+        });
+
+        $("#tabla-anexos tbody").on('click','.delete-anexo',function(){
+            var i = $(this).attr("id");
+            i = i.split("-");
+            deleting(i[1]);
+        });
+});
+
+function getAnexos()
+{
+    var idc = $("#idcapacitacion").val();
+    html = '';
+    $.get('index.php','controller=capacitacionasig&action=getAnexos&idc='+idc,function(data){
+        $.each(data,function(i,j){
+            html += '<tr>';
+            html += '<td align="center">'+(i+1)+').</td>'
+            html += '<td><a target="_blank" href="files_uploads/'+j.nombre+'.'+j.ext+'"><img src="images/'+j.icono+'" /></a></td>';
+            html += '<td><a target="_blank" href="files_uploads/'+j.nombre+'.'+j.ext+'">'+j.nombre+'</a></td>';
+            html += '<td><a href="javascript:" class="delete-anexo" id="anexo-'+j.idanexo+'" style="color:red">Eliminar</a></td>';
+            html += '</tr>';
+        })
+        $("#tabla-anexos tbody").empty().append(html);
+    },'json');
+
+}
+function deleting(i)
+{
+    $.post('index.php','controller=capacitacionasig&action=delete_anexo&ida='+i,function(data){
+        getAnexos();
+    });
+}
+</script>
 <form id="frm_cap" >
     <input type="hidden" name="controller" value="capacitacionasig" />
     <input type="hidden" name="action" value="save" />
@@ -185,9 +257,19 @@
             </table>
             
         </div>
-        <div id="tabs-4">&nbsp;</div>
+        <div id="tabs-4">
+            <div style="width:725px;">&nbsp;</div>
+            <div id="queue" style="width:1px"></div>
+            <input id="file_upload" name="file_upload" type="file" multiple="true">
+            <input type="hidden" name="0form1_archivo" id="archivo" value="<?php echo $row['archivo'] ?>" />        
+            <div class="ui-widget-content ui-corner-all">
+                <table border="0" id="tabla-anexos" cellpadding="10" cellspacing="10" >
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div id="tabs-5">&nbsp;</div>
     </div>
-    
-    
 </form>

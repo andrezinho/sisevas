@@ -102,7 +102,6 @@ class reportes extends Main
         $sql = "SELECT idperiodo from evaluacion.periodo where anio = ".$anio;
         $q = $this->db->prepare($sql);
         $q->execute();
-        
 
         $s = "SELECT descripcion from evaluacion.periodo where idperiodo = ".$idperiodo;
         $stmt = $this->db->prepare($s);
@@ -115,6 +114,7 @@ class reportes extends Main
                 FROM personal as p inner join seguridad.perfil as c on 
                     c.idperfil = p.idperfil
                 WHERE p.idpersonal = :id ";
+
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
         $stmt->execute();
@@ -124,10 +124,8 @@ class reportes extends Main
         $perfil = $r->perfil;
 
         $datos = array($personal, $perfil, $anio);
-
         $sql = "SELECT idcompetencia,descripcion 
-                from evaluacion.competencias order by idcompetencia";
-                
+                from evaluacion.competencias order by idcompetencia";        
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $data = array();
@@ -139,6 +137,8 @@ class reportes extends Main
                             'des'=>$row[1],
                             'res'=>array()
                            );
+
+
 
             $s = "SELECT  t1.idaspecto,
                           t1.aspecto,
@@ -174,8 +174,7 @@ class reportes extends Main
             {
                 $data[$c]['res'][] = array('idaspecto'=>$r[0],
                                             'aspecto'=>$r[1],
-                                            'valor'=>$r[2],
-                                            'valor_max'=>$r[3]);
+                                            'periodo'=>array(0 => array($r[2],$r[1])));
             }
             $c += 1;
         }

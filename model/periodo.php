@@ -32,16 +32,42 @@ class periodo extends Main
 
     function insert($_P ) 
     {
-        $fecha = date('Y-m-d');
-        $anio = date('Y');
-        $stmt = $this->db->prepare("INSERT INTO evaluacion.periodo (descripcion, fecha_apertura, estado, anio) VALUES(:p1,:p2,:p3,:p4)");
-        $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $fecha , PDO::PARAM_STR);
-        $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_BOOL);
-        $stmt->bindParam(':p4', $anio , PDO::PARAM_INT);
-        $p1 = $stmt->execute();
-        $p2 = $stmt->errorInfo();
-        return array($p1 , $p2[2]);
+
+        $stmt = $this->db->prepare("SELECT estado from evaluacion.periodo order by idperiodo desc limit 1");
+        $stmt->execute();
+        $r = $stmt->fetchObject();
+        $estado = $r->estado;
+
+        if($estado==2)
+        {            
+            $fecha = date('Y-m-d');
+            $anio = date('Y');
+            $stmt = $this->db->prepare("INSERT INTO evaluacion.periodo (descripcion, fecha_apertura, estado, anio) VALUES(:p1,:p2,:p3,:p4)");
+            $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
+            $stmt->bindParam(':p2', $fecha , PDO::PARAM_STR);
+            $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_BOOL);
+            $stmt->bindParam(':p4', $anio , PDO::PARAM_INT);
+            $p1 = $stmt->execute();
+            $p2 = $stmt->errorInfo();
+
+            //
+            $stmt = $this->db->prepare("SELECT idperiodo from evaluacion.periodo where estado = 1 order by idperiodo desc limit 1");
+            $stmt->execute();
+            $r = $stmt->fetchObject();
+            $id = $r->idperiodo;
+
+            $stmt = $this->db->prepare("SELECT evaluacion.push_valores(:p1, :p2)");
+            $stmt->bindParam(':p1',$_SESSION['idperiodo'],PDO::PARAM_INT);
+            $stmt->bindParam(':p2',$id,PDO::PARAM_INT);
+            $stmt->execute();
+
+            return array($p1 , $p2[2]);
+        }
+        else
+        {
+            return array(false, 'Existe un periodo sin cerrar, cierrelo para poder crear un nuevo');
+        }
+
     }
 
     function update($_P ) {
@@ -74,7 +100,12 @@ class periodo extends Main
         $stmt = $this->db->prepare("update evaluacion.periodo set estado = 2, fecha_cierre = '".$fecha."' where idperiodo = :id");
         $stmt->bindParam(':id',$_SESSION['idperiodo'],PDO::PARAM_INT);
         $p1 = $stmt->execute();
+
+        $_SESSION['periodo_estado'] = "CERRADO";
+        $_SESSION['estado'] = 2;
+
         return array($p1, 1);
+
     }
    
 }

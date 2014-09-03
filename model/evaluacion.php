@@ -11,7 +11,7 @@ class evaluacion extends Main
         $stmt->execute();
         $r = $stmt->fetchObject();
         $idperfil = $r->idperfil;
-
+        $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
         $sql=" SELECT * FROM evaluacion.aspectos 
                WHERE idcompetencia = :c 
                     and estado = 1; ";
@@ -24,8 +24,9 @@ class evaluacion extends Main
 
         foreach($stmt->fetchAll() as $row)
         {
+
             $data[$c] = array('idaspecto'=>$row['idaspecto'],'descripcion'=>$row['descripcion'],'parametros'=>array());
-            $s = "SELECT  v.idvalor,
+            $s = "SELECT  distinct v.idvalor,
                             p.descripcion,
                             v.orden,
                             v.idaspecto,
@@ -33,7 +34,7 @@ class evaluacion extends Main
                     from evaluacion.resultados as r right outer join 
                     evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1 and r.idpersonal = ".$g['idp']."
                     inner join evaluacion.parametros as p on p.idparametro = v.idparametro
-                    where v.idaspecto = ".$row['idaspecto']." and v.idperfil = ".$idperfil."                           
+                    where v.idaspecto = ".$row['idaspecto']." and v.idperfil = ".$idperfil." and v.idperiodo = ".$idperiodo." 
                     order by v.orden, v.idaspecto";
             
             $stmt2 = $this->db->prepare($s);
@@ -117,7 +118,7 @@ class evaluacion extends Main
                         {
                             foreach ($s->fetchAll() as $re) 
                             {
-                                $sql = "UPDATE evaluacion.resultados set estado = 0 where idresultado = ".$re['idresultado']." and idpersonal = ".$idp;
+                                $sql = "UPDATE evaluacion.resultados set estado = 0 where idresultado = ".$re['idresultado']." and idpersonal = ".$idp." and idperiodo = ".$idperiodo;
                                 $stmt = $this->db->prepare($sql);
                                 $stmt->execute();
                             }

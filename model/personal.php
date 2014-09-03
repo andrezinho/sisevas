@@ -170,19 +170,17 @@ class Personal extends Main
     {
         $query = "%".$query."%";
         $statement = $this->db->prepare("SELECT 
-                idpersonal,
-                mail,
-                dni,
-                nombres || ' ' || apellidos AS nompersonal ,
-                nombres,
-                apellidos
-                FROM personal
-                WHERE {$field} ilike :query and dni <> ''
-                limit 10");
-        $statement->bindParam (":query", $query , PDO::PARAM_STR);
-        //print_r($statement);
+                                        idpersonal,
+                                        mail, 
+                                        dni,
+                                        nombres || ' ' || apellidos AS nompersonal,
+                                        nombres,
+                                        apellidos
+                                        FROM personal
+                                        WHERE {$field} ilike :query and dni <> ''
+                                         limit 10");
+        $statement->bindParam (":query", $query , PDO::PARAM_STR);        
         $statement->execute();
-        //print_r($statement);
         return $statement->fetchAll();
     }
 

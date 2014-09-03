@@ -1,6 +1,5 @@
 <?php  include("../lib/helpers.php"); 
-       include("../view/header_form.php");
-       
+       include("../view/header_form.php");       
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -11,7 +10,7 @@ $(document).ready(function(){
     $("#btn-close").click(function()
     {
         $.post('index.php','controller=periodo&action=closeok',function(data){
-            alert(data);
+            alert("El periodo fue cerrado correctamente");
         })
     });
 

@@ -19,7 +19,7 @@ $(function()
         var i = $(this).attr("id");
         i = i.split('-');
         id = i[1];        
-        alert(id);
+        //alert(id);
         var ventana=window.open('index.php?controller=capacitacionasig&action=printer&id='+id, 'scrollbars=yes, status=yes,location=yes'); 
         ventana.focus();
         

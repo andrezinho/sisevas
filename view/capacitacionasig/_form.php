@@ -176,7 +176,7 @@
                         }
                      ?>         
                 </tbody>
-                 <tfoot>
+                <tfoot>
                     <tr>               
                         <td colspan="2">&nbsp;</td>
                     </tr>

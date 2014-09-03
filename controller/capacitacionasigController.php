@@ -109,7 +109,8 @@ class capacitacionasigController extends Controller
         $view = new View();
         $ro = $obj->printDoc($_GET['id']);
         $data['cab'] = $ro[0];
-        //$data['detalle'] = $ro[1];
+        $data['objemp'] = $ro[1];
+        $data['asig'] = $ro[2];
         $view->setData($data);
         $view->setTemplate( '../view/capacitacionasig/_cappdf.php' );
         $view->setLayout( '../template/empty.php' );

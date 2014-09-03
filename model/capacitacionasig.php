@@ -31,24 +31,24 @@ class capacitacionasig extends Main
 
     function edit($id ) {
         $stmt = $this->db->prepare("SELECT
-                c.idcapacitacion, c.idfuentecapacitacion,
-                c.idejecapacitacion, c.tema,
-                c.idobejtivoscap, c.idmetodoscapacitacion,
-                c.idtipoevaluacion, 
-                c.propuesta, c.referencias, c.palabrasclaves,
-                c.externo, c.idpersonal, c.expositor,    
-                c.fecha, 
-                substr(cast(c.hora as text),1,8) AS hora,          
-                d.idobejtivosemp, 
-                p.mail, p.dni,p.nombres, p.apellidos
-                
-                FROM
-                capacitacion.capacitacion AS c
-                LEFT JOIN capacitacion.capacitacion_obejtivosemp AS d ON c.idcapacitacion = d.idcapacitacion
-                LEFT JOIN public.obejtivosemp AS oe ON oe.idobejtivosemp = d.idobejtivosemp
-                LEFT JOIN public.personal AS p ON p.idpersonal = c.idpersonal
-                
-                WHERE c.idcapacitacion = :id");
+            c.idcapacitacion, c.idfuentecapacitacion,
+            c.idejecapacitacion, c.tema,
+            c.idobejtivoscap, c.idmetodoscapacitacion,
+            c.idtipoevaluacion, 
+            c.propuesta, c.referencias, c.palabrasclaves,
+            c.externo, c.idpersonal, c.expositor,    
+            c.fecha, 
+            substr(cast(c.hora as text),1,8) AS hora,          
+            d.idobejtivosemp, 
+            p.mail, p.dni,p.nombres, p.apellidos
+            
+            FROM
+            capacitacion.capacitacion AS c
+            LEFT JOIN capacitacion.capacitacion_obejtivosemp AS d ON c.idcapacitacion = d.idcapacitacion
+            LEFT JOIN public.obejtivosemp AS oe ON oe.idobejtivosemp = d.idobejtivosemp
+            LEFT JOIN public.personal AS p ON p.idpersonal = c.idpersonal
+            
+            WHERE c.idcapacitacion = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_STR);
         $stmt->execute();
         //print_r($stmt);
@@ -233,22 +233,17 @@ class capacitacionasig extends Main
         
         //echo $id;        
         $cab= "SELECT
-            ca.idcapacitacion,
-            ca.codigo,
+            ca.idcapacitacion, ca.codigo,
             fu.descripcion AS fuente,
             ej.descripcion AS eje,
-            ca.tema,
-            me.descripcion AS metodo,
+            ca.tema, me.descripcion AS metodo,
             ob.descripcion AS obejtivoscap,
             p.descripcion AS tipoeval,
-            ca.propuesta,
-            ca.referencias,
-            ca.palabrasclaves,
-            ca.externo,
+            ca.propuesta, ca.referencias,
+            ca.palabrasclaves, ca.externo,
             substr(cast(ca.fecha as text),9,2)||'/'||substr(cast(ca.fecha as text),6,2)||'/'||substr(cast(ca.fecha as text),1,4) AS fecha,
             substr(cast(ca.hora as text),1,8) AS hora,
-            ca.estado,
-            pe.dni,
+            ca.estado, pe.dni,
             pe.nombres||' '||pe.apellidos AS expoitor,
             pe.mail
 
@@ -264,13 +259,38 @@ class capacitacionasig extends Main
             WHERE
             ca.idcapacitacion=".$id;
 
-        $stmt = $this->db->prepare($cab);
-            //$stmt->bindParam(':id', $id , PDO::PARAM_INT);
- 
+        $stmt = $this->db->prepare($cab); 
         $stmt->execute();
-        $cab= $stmt->fetchAll();
+        $cab= $stmt->fetch();
+        
+        $objemp= "SELECT
+            o.descripcion
+            FROM
+            capacitacion.capacitacion_obejtivosemp AS d
+            INNER JOIN capacitacion.capacitacion AS c ON d.idcapacitacion = c.idcapacitacion
+            INNER JOIN public.obejtivosemp AS o ON d.idobejtivosemp = o.idobejtivosemp
+            WHERE
+            d.idcapacitacion=".$id;
+        $stmt1 = $this->db->prepare($objemp); 
+        $stmt1->execute();
+        $objemp= $stmt1->fetchAll();
+        
+        $asig= "SELECT
+            p.dni,
+            p.nombres||' '||p.apellidos AS personal,
+            t.descripcion
+            FROM
+            capacitacion.capacitacion AS c
+            INNER JOIN capacitacion.capacitacion_asignacion AS d ON d.idcapacitacion = c.idcapacitacion
+            INNER JOIN public.personal AS p ON p.idpersonal = d.idpersonalasig
+            INNER JOIN capacitacion.tipoalcance AS t ON t.idtipoalcance = d.idtipoalcance
+            WHERE
+            d.idcapacitacion=".$id;
+        $stmt2 = $this->db->prepare($asig); 
+        $stmt2->execute();
+        $asig= $stmt2->fetchAll();
 
-        return array($cab);
+        return array($cab,$objemp,$asig);
     }
 
 }

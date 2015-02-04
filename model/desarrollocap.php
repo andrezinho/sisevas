@@ -26,7 +26,7 @@ class desarrollocap extends Main
             INNER JOIN capacitacion.fuentecapacitacion AS f ON f.idfuentecapacitacion = c.idfuentecapacitacion
             INNER JOIN capacitacion.ejecapacitacion AS e ON e.idejecapacitacion = c.idejecapacitacion
             INNER JOIN capacitacion.metodoscapacitacion AS m ON m.idmetodoscapacitacion = c.idmetodoscapacitacion
-            WHERE c.estado=1 AND c.anio= ".date(Y); 
+            WHERE (c.estado=1 OR c.estado=2) AND c.anio= ".date(Y); 
                
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
@@ -157,13 +157,13 @@ class desarrollocap extends Main
                 VALUES ( :p1, :p2, :p3)";
             $stmt2 = $this->db->prepare($sqlac);
 
-            if($_P['acuerdocap']!= ''){
-                foreach($_P['acuerdocap'] as $i => $acuerdocap)
+            if($_P['idasistente'][0]!= ''){
+                foreach($_P['idasistente'] as $i => $idasistente)
                 {   
-                    //print_r($_P['idobejtivosemp']);
+                    //print_r($_P['acuerdocap']);
                     $stmt2->bindParam(':p1',$id,PDO::PARAM_INT);                    
-                    $stmt2->bindParam(':p2',$acuerdocap,PDO::PARAM_STR);
-                    $stmt2->bindParam(':p3',$_P['idasistente'],PDO::PARAM_INT);
+                    $stmt2->bindParam(':p2',$_P['acuerdocap'][$i],PDO::PARAM_STR);
+                    $stmt2->bindParam(':p3', $idasistente ,PDO::PARAM_INT);
                     $stmt2->execute();                
 
                 }

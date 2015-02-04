@@ -7,12 +7,12 @@ class desarrollocapController extends Controller
 {
     var $cols = array(
                 1 => array('Name'=>'Item','NameDB'=>'s.idcapacitacion','align'=>'center','width'=>'25'),
-                2 => array('Name'=>'Tema','NameDB'=>'tema','search'=>true,'width'=>'180'),                
-                3 => array('Name'=>'Fuente','NameDB'=>'expositor','width'=>'150'),
-                4 => array('Name'=>'Expositor','NameDB'=>'c.expositor','width'=>'150'),
-                5 => array('Name'=>'Fecha Cap.','NameDB'=>'e.descripcion ','width'=>'60','align'=>'center'),
-                6 => array('Name'=>'','NameDB'=>'','align'=>'center','width'=>'80'),
-                7 => array('Name'=>'','NameDB'=>'','align'=>'center','width'=>'20')
+                2 => array('Name'=>'Tema','NameDB'=>'tema','search'=>true,'width'=>'180'), 
+                3 => array('Name'=>'Expositor','NameDB'=>'c.expositor','width'=>'150'),
+                4 => array('Name'=>'Fecha Cap.','NameDB'=>'e.descripcion ','width'=>'60','align'=>'center'),
+                5 => array('Name'=>'Est.','NameDB'=>'','align'=>'center','width'=>'50'),
+                6 => array('Name'=>'Imp. Cap.','NameDB'=>'','align'=>'center','width'=>'50'),
+                7 => array('Name'=>'Imp. Act.','NameDB'=>'','align'=>'center','width'=>'50')
              );
     
     public function index() 
@@ -24,7 +24,7 @@ class desarrollocapController extends Controller
         $data['controlador'] = $_GET['controller'];
 
         $data['titulo'] = "Desarrollo de la Capacitacion";
-        $data['script'] = "evt_index_capacitacion.js";
+        $data['script'] = "evt_index_desarrollocap.js";
         //(nuevo,editar,eliminar,ver)
         $data['actions'] = array(false,true,false,false);
 
@@ -63,7 +63,7 @@ class desarrollocapController extends Controller
             $data['personalasis'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>':: Seleccione ::','table'=>$rowsAsist));
             $data['tipoeva'] = $this->Select(array('id'=>'idperfil','name'=>'idperfil','text_null'=>':: Seleccione ::','table'=>'seguridad.vista_perfil','code'=>$rows->idtipoevaluacion));
             
-            $data['rowsac'] = $obj->getDetails($rows->idcapacitacion);
+            $data['rowsac'] = $obj->getAcuerdos($rows->idcapacitacion);
             $view->setData($data);
             $view->setTemplate( '../view/desarrollocap/_form.php' );
             echo $view->renderPartial();
@@ -117,8 +117,33 @@ class desarrollocapController extends Controller
         else $result = array(2,$p[1]);
         print_r(json_encode($result));
     }
-   
-   
+    
+    public function VerNroActa()
+    {
+        $obj = new desarrollocap();
+        $result = array();        
+        $p = $obj->VerNroActa($Id);
+        if ($p[0]=="1") $result = array(1,$p[1]);
+        else $result = array(2,$p[1]);
+        print_r(json_encode($result));
+    }
+    
+    public function printeract()
+    {
+        $obj = new desarrollocap();
+        $data = array();
+        $view = new View();
+        $ro = $obj->printDoc($_GET['id']);
+        $res= $obj->printPre($_GET['id']);
+        $data['cab']    = $ro[0];
+        $data['objemp'] = $ro[1];
+        $data['asig']   = $ro[2];
+        $data['rowsd']  = $res;
+        $view->setData($data);
+        $view->setTemplate( '../view/desarrollocap/_actapdf.php' );
+        //$view->setLayout( '../template/empty.php' );
+        echo $view->renderPartial();
+    }
 }
 
 ?>

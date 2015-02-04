@@ -32,6 +32,11 @@
                 <div style="margin: 0 auto; height: 180px !important; overflow: scroll;">
                     <table id="table-detalle" class="ui-widget ui-widget-content" style="margin: 0 auto; width:640px" border="0" >
                         <thead class="ui-widget ui-widget-content" >
+                            <tr class="ui-widget-header" style="height: 23px; font-size: 13px;">
+                                <th colspan="3" align="center">
+                                    ACTA N&ordm: <input type="text" size="16" id="nroacta" name="nroacta"  value="<?php echo $obj->nroacta; ?>" readonly="" />
+                                </th>
+                            </tr>
                             <tr class="ui-widget-header" style="height: 23px">          
                                 <th align="center" width="400px">Acuerdo / Agenda</th>
                                 <th align="center" width="220px">Asignado</th>
@@ -65,6 +70,10 @@
                 </div>
                 <br />
                 
+                <label for="lug" class="labeless">Lugar de Reu.:</label>
+                <input id="lugarreunion" name="lugarreunion" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 470px; text-align: left;" value="<?php echo $obj->lugarreunion; ?>" />
+                <br />
+                
                 <label for="hora" class="labeless">Hora Inicio:</label>
                 <input type="text" name="horacap" id="horacap" value="<?php if($obj->hora!=""){echo $obj->hora; } else {echo date('H:i');} ?>" class="ui-widget-content ui-corner-all text" style="width:60px; text-align:center" />
                                
@@ -83,7 +92,6 @@
                         activo('activo',$rep);
                 ?>
                 </div>
-                
                 
             </div>
             

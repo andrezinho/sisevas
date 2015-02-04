@@ -114,7 +114,7 @@ $(function()
 function addDetail()
 {
   
-      bval = true;
+      bval = true;      
       bval = bval && $("#idobejtivosemp").required();      
 
       if(!bval) return 0;

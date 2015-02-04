@@ -216,7 +216,7 @@ class capacitacionasig extends Main
                                         idcapacitacion, idobejtivosemp)
                                 VALUES (:p1, :p2) ");
 
-            if($_P['idobejtivosemp']!= ''){
+            if($_P['idobejtivosemp'][0]!= ''){
                 foreach($_P['idobejtivosemp'] as $i => $idobejtivosemp)
                 {   
                     //print_r($_P['idobejtivosemp']);

@@ -229,7 +229,7 @@ class capacitacion extends Main
         return array($p1 , $p2[2]);
     }
 
-     function end($p)
+    function end($p)
     {
         $stmt = $this->db->prepare("UPDATE capacitacion.capacitacion set estado = 2
                                     WHERE idcapacitacion = :id and estado = 1");

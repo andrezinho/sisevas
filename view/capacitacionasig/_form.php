@@ -129,7 +129,7 @@ function deleting(i)
                                 {                                          
                                     ?>
                                     <tr class="tr-detalle" style="height: 23px">
-                                        <td align="left"><?php echo $r['descripcion']; ?><input type="hidden" name="idobejtivosempresa[]" value="<?php echo $r['idobejtivosemp']; ?>" /></td>
+                                        <td align="left"><?php echo $r['descripcion']; ?><input type="hidden" name="idobejtivosemp[]" value="<?php echo $r['idobejtivosemp']; ?>" /></td>
                                         <td align="center"><a class="box-boton boton-delete" href="#" title="Quitar" ></a></td>
                                     </tr>
                                     <?php    

@@ -1,5 +1,6 @@
 <?php
 include_once("Main.php");
+include_once("tipodocumento.php");
 
 class desarrollocap extends Main
 {
@@ -7,18 +8,20 @@ class desarrollocap extends Main
     {
         $sql = "SELECT
             c.idcapacitacion,
-            c.tema,                        
-            f.descripcion,
+            c.tema,
             c.expositor,
             substr(cast(c.fecha as text),9,2)||'/'||substr(cast(c.fecha as text),6,2)||'/'||substr(cast(c.fecha as text),1,4),
             case c.estado 
                 when 0 then '<p style=\"color:green;font-weight: bold;\">FALTA ASIGNAR</p>'
                 when 1 then '<a class=\"finalizar box-boton boton-hand\" id=\"f-'||c.idcapacitacion||'\" href=\"#\" title=\"Finalizar Capacitacion\" ></a>'
-                when 2 then '<a class=\"box-boton boton-ok\" title=\"Capacitacion Fonalizada\" ></a>'
+                when 2 then '<a class=\"box-boton boton-ok\" title=\"Capacitacion Finalizada\" ></a>'
             else '' end ,
             case c.estado 
                 when 1 then '<a class=\"printer box-boton boton-print\" id=\"f-'||c.idcapacitacion||'\" href=\" #\" title=\"Imprimir Capacitacion\" ></a>'
                 when 2 then '<a class=\"printer box-boton boton-print\" id=\"f-'||c.idcapacitacion||'\" href=\" #\" title=\"Imprimir Capacitacion\" ></a>'
+            else '' end,
+            case c.estado                 
+                when 2 then '<a class=\"printerac box-boton boton-print\" id=\"f-'||c.idcapacitacion||'\" href=\" #\" title=\"Imprimir Acta de Reunion\" ></a>'
             else '' end
                         
             FROM
@@ -55,7 +58,7 @@ class desarrollocap extends Main
         return $stmt->fetchObject();
     }
     
-    function getDetails($id)
+    function getAcuerdos($id)
     {
 
         $stmt = $this->db->prepare("SELECT
@@ -94,54 +97,36 @@ class desarrollocap extends Main
         return $stmt->fetchAll();
     }
     
-    function getDetailsPre($id)
-    {
-        
-        $stmt = $this->db->prepare("SELECT
-            p.idcapacitacion,
-            p.idcatpresupuesto,
-            cat.descripcion AS categoria,
-            p.idconcepto,
-            co.descripcion AS concepto,
-            p.tiempo,
-            p.idunidad_medida,
-            un.descripcion AS unidad,            
-            p.cantidad,
-            p.preciounitario,
-            p.subtotal
-            FROM
-            capacitacion.presupuesto AS p
-            INNER JOIN capacitacion.capacitacion AS c ON c.idcapacitacion = p.idcapacitacion
-            LEFT JOIN capacitacion.categoriapresupuesto AS cat ON cat.idcatpresupuesto = p.idcatpresupuesto
-            LEFT JOIN public.conceptos AS co ON co.idconcepto = p.idconcepto
-            LEFT JOIN public.unidad_medida AS un ON un.idunidad_medida = p.idunidad_medida
-            WHERE p.idcapacitacion = :id ");
-
-        $stmt->bindParam(':id', $id , PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
-
+    
     function update($_P ) 
     {   
+        $obj_td = new Tipodocumento();
+        $idtipodocumento= 9;
+        
         $id        = $_P['idcapacitacion'];
         $horacap   = $_P['horacap'];
         $horacapfin= $_P['horacapfin'];
         $si        = $_P['activo'];
-        
+        $nroacta   = $_P['nroacta'];
+        $lugar     = $_P['lugarreunion'];
         if($si!= 1) { $si=1; }else{ $si=2; }        
         
         $sql = "UPDATE capacitacion.capacitacion SET 
-            hora= :p1, horafin= :p2, estado= :p3
+            hora= :p1, horafin= :p2, estado= :p3, nroacta= :p4,
+            lugarreunion= :p5
             WHERE idcapacitacion= :idcapacitacion ";
         $stmt = $this->db->prepare($sql);
         
         $stmt->bindParam(':p1', $horacap , PDO::PARAM_INT);
         $stmt->bindParam(':p2', $horacapfin , PDO::PARAM_INT);
         $stmt->bindParam(':p3', $si , PDO::PARAM_INT);
+        $stmt->bindParam(':p4', $nroacta , PDO::PARAM_STR);
+        $stmt->bindParam(':p5', $lugar , PDO::PARAM_STR);
         $stmt->bindParam(':idcapacitacion', $id , PDO::PARAM_INT);
         $stmt->execute();
-            
+        
+        $obj_td->UpdateCorrelativo($idtipodocumento);
+        
         try 
         {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -302,116 +287,18 @@ class desarrollocap extends Main
         return $data;   
     }
     
-    function upload_files($_P,$_F)
+    function VerNroActa($Id)
     {
-        $result = array();
-        if (!empty($_F)) 
-        {
-            $tempFile  = $_F['Filedata']['tmp_name'];                          // 1
-            $fileparts = pathinfo($_F['Filedata']['name']);
-            $ext       = $fileparts['extension'];
-         
-            $targetPath = 'files_uploads/';
-            $filetypes = array("pdf","doc","odt","docx","rtf","ppt","pptx","jpg","jpeg","png","gif","xls","xlsx");
-            $flag = false;
-            foreach($filetypes as $typ)
-            {
-                if($typ== strtolower($ext))
-                {
-                    $flag = true;
-                }
-            }    
-            if($flag)
-            {
-                //Generamos el nuevo registro
-                $name = "anexo_".date('d-m-Y-h-i-s').".".$ext;
-                $stmt = $this->db->prepare("INSERT INTO capacitacion.anexos (idcapacitacion,descripcion) values (:p1,:p2)");
-                $stmt->bindParam(':p1',$_P['idcapacitacion'],PDO::PARAM_INT);
-                $stmt->bindParam(':p2',$name,PDO::PARAM_STR);
-                $stmt->execute();
-
-                $stmt = $this->db->prepare("SELECT max(idanexo) as idanexo from capacitacion.anexos");
-                $stmt->execute();
-                $r = $stmt->fetchObject();
-                $idanexo = $r->idanexo;
-
-                $targetFile =  str_replace('//','/',$targetPath).str_replace(' ','_',$name);
-                
-                if( move_uploaded_file($tempFile,$targetFile))
-                {   
-                    $result = '1###Ok';
-                    chmod($targetFile, 0777);
-                }
-                else
-                    {
-                        $stmt = $this->db->prepare("DELETE from capacitacion.anexos WHERE idanexo = ".$idanexo);
-                        $stmt->execute();                    
-                        $result = '0###Error al intentar subir el archivo.';
-                    }
-            }
-            else 
-                {
-                    $result = '0###Extension no apcetada, debe ser (doc, odt, docx, rtf, pdf, imagenes)';
-                }    
-        }        
-        return $result;
-    }
-
-    function getAnexos($idc)
-    {
-        $stmt = $this->db->prepare("SELECT * from capacitacion.anexos WHERE idcapacitacion = :id ORDER BY idanexo");
-        $stmt->bindParam(':id',$idc,PDO::PARAM_INT);
+        $stmt = $this->db->prepare("SELECT nroacta FROM capacitacion.capacitacion WHERE idcapacitacion = :id ");
+        $stmt->bindParam(':id',$Id,PDO::PARAM_INT);
         $stmt->execute();
         $data = array();
-        foreach ($stmt->fetchAll() as $row) 
-        {
-            $name = $row['descripcion'];
-            $extencion = explode(".", $name);
-            $data[] = array('idanexo'=>$row['idanexo'],
-                            'nombre'=>$extencion[0],
-                            'icono'=>$this->icon_file($extencion[1]),
-                            'ext'=>$extencion[1]);
-        }
+        $row= $stmt->fetchObject();
+        $nroacta= $row->nroacta; 
+        
+        $data = array('nroacta' =>$nroacta );
         return $data;
-    }
-
-    function icon_file($extencion)
-    {
-        $icon = "";
-        switch ($extencion) {
-            case 'doc':
-            case 'docx':
-            case 'odt':
-            case 'rtf':
-                $icon = "word.png";
-                break;
-            case 'ppt':
-            case 'pptx':
-                $icon = "point.png";
-            case 'xls':
-            case 'xlsx':
-                $icon = "excel.png";
-                break;
-            case 'pdf':
-                $icon = "pdf.png";
-                break;
-            case 'png':
-            case 'jpg':
-            case 'jpeg':
-            case 'gif':
-                $icon = "imagen.png";
-                break;
-            default:
-                $icon = "undefined.png";
-                break;
-        }
-        return $icon;
-    }
-
-    function delete_anexo($ida)
-    {
-        $stmt = $this->db->prepare("DELETE from capacitacion.anexos WHERE idanexo = ".$ida);
-        $stmt->execute();                    
+        
     }
 
 }

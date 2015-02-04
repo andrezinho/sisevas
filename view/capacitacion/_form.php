@@ -21,7 +21,7 @@
                 
                 <label for="cod" class="labeless">Codigo:</label>
                 <input type="text" id="correlativo" name="correlativo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php echo $obj->codigo; ?>" readonly="">
-                <input type="hidden" id="codigo" name="codigo"  value="<?php echo $obj->codigo; ?>" >
+                <input type="hidden" id="codigo" name="codigo"  value="<?php echo $obj->codigo; ?>" />
                 
                 <br />
                 <label for="fuente" class="labeless">Fuente de cap.:</label> 

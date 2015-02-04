@@ -15,21 +15,26 @@ $(function()
     $("#table-detalle").on('click','.boton-delete',function(){var v = $(this).parent().parent().remove();})
     
     var idcap=$("#idcapacitacion").val();
-    if(idcap == '')
-    {load_correlativo(8);}
+    if(idcap != '')
+    {load_correlativo(9);}
     
     
     
 });
 
 function load_correlativo(idtp)
-{
-    $.get('index.php','controller=tipodocumento&action=Correlativo&idtp='+idtp,function(r){
-          
-        //$("#serie").val(r.serie);
-        //$("#numero").val(r.numero);
-        $("#correlativo").val(r.correlativo);
-        $("#codigo").val(r.correlativo);
+{   
+    var idcap = $("#idcapacitacion").val();
+    
+    $.get('index.php','controller=desarrollocap&action=VerNroActa&idcap='+idcap,function(rs){
+        //alert(rs.nroacta);
+        if(rs.nroacta== undefined)
+        {
+            $.get('index.php','controller=tipodocumento&action=Correlativo&idtp='+idtp,function(r){
+                $("#nroacta").val(r.correlativo);
+            },'json');
+        }
+        
     },'json');
 }
 

@@ -54,43 +54,53 @@ class PDF extends FPDF {
         $border = 'BLT';
         $st = 0;
         $smt = 0;
-        foreach ($rows as $k => $v) {
+        $smtp = 0;
+        foreach ($rows as $k => $v)
+        {
             $s = 0;
             $sm = 0;
+            $smp = 0;
             $fill = false;
             $this->SetFont('Arial', 'B', 9);
             $this->Cell(0, $h, strtoupper($v['des']), 0, 0, 'L', $fill);
             $this->Ln();
             $this->SetFont('Arial', 'B', 9);
-            $this->Cell(140, $h, utf8_decode('Capacidades'), $border, 0, 'L', $fill);
+            $this->Cell(125, $h, utf8_decode('Capacidades'), $border, 0, 'L', $fill);
             $this->Cell(15, $h, utf8_decode('Puntaje'), 1, 0, 'C', $fill);
             $this->Cell(15, $h, utf8_decode('Máximo'), 1, 0, 'C', $fill);
+            $this->Cell(15, $h, utf8_decode('Prom'), 1, 0, 'C', $fill);
             $this->Ln();
-            foreach ($v['res'] as $i => $r) {
+            foreach ($v['res'] as $i => $r) 
+            {
                 $s += $r['valor'];
                 $sm += $r['valor_max'];
+                $smp += $r['promedio'];
                 $this->SetFont('Arial', '', 9);
-                $this->Cell(140, $h, utf8_decode($r['aspecto']), $border, 0, 'L', $fill);
+                $this->Cell(125, $h, utf8_decode($r['aspecto']), $border, 0, 'L', $fill);
                 $this->Cell(15, $h, (int) $r['valor'], 1, 0, 'C', $fill);
                 $this->Cell(15, $h, (int) $r['valor_max'], 1, 0, 'C', $fill);
+                $this->Cell(15, $h, number_format($r['promedio'],2), 1, 0, 'C', $fill);
                 $this->Ln();
             }
 
             $this->SetFont('Arial', 'B', 9);
-            $this->Cell(140, $h, '', 0, 0, 'L', $fill);
+            $this->Cell(125, $h, '', 0, 0, 'L', $fill);
             $this->Cell(15, $h, (int) $s, 1, 0, 'C', $fill);
             $this->Cell(15, $h, (int) $sm, 1, 0, 'C', $fill);
+            $this->Cell(15, $h, number_format($smp,2), 1, 0, 'C', $fill);
             $this->Ln();
 
             $st += $s;
             $smt += $sm;
+            $smtp += $smp;
 
             $this->Ln();
         }
 
-        $this->Cell(140, $h, 'TOTALES   ', 0, 0, 'R', $fill);
+        $this->Cell(125, $h, 'TOTALES   ', 0, 0, 'R', $fill);
         $this->Cell(15, $h, (int) $st, 1, 0, 'C', $fill);
         $this->Cell(15, $h, (int) $smt, 1, 0, 'C', $fill);
+        $this->Cell(15, $h, number_format($smtp,2), 1, 0, 'C', $fill);
         $this->Ln();
         $this->Cell(140, $h, 'PORCENTAJE   ', 0, 0, 'R', $fill);
         $this->Cell(30, $h, number_format($st * 100 / $smt, 0) . ' %', 1, 0, 'C', $fill);

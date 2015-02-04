@@ -90,7 +90,7 @@ class Caja extends Main
 
         $idcaja= $_P['idcaja'];
         
-         $del="DELETE FROM facturacion.cajaxpersonal
+        $del="DELETE FROM facturacion.cajaxpersonal
                     WHERE idcaja='$idcaja' ";
                     
             $res = $this->db->prepare($del);

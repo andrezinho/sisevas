@@ -6,10 +6,10 @@ class Index extends Main {
     {
         return array('body'=>'<p>CUERPO DE LA PAGINA :) </p>');
     }
-    
+    /*
     function viewIndex()
     {
-        //echo $id= $Gets['mes'];
+        
         $mv="SELECT
             misionvision.mision,
             misionvision.vision,
@@ -20,17 +20,15 @@ class Index extends Main {
         $stmt = $this->db->prepare($mv);            
         $stmt->execute();
         $mv= $stmt->fetchAll();
-        //print_r($mv);
-        
+                
         $objemp="SELECT
-            obejtivosemp.idobejtivosemp,
             obejtivosemp.descripcion,
-            obejtivosemp.estado
+            obejtivosemp.estado,
+            obejtivosemp.img
             FROM
             public.obejtivosemp
             WHERE
             obejtivosemp.estado=1 ";
-
         $stmt1 = $this->db->prepare($objemp);
         $stmt1->execute();
         $obejtivosemp=$stmt1->fetchAll();
@@ -76,9 +74,9 @@ class Index extends Main {
         $stmt4->execute();
         $politica=$stmt4->fetchAll();
         
-        return array($mv, $obejtivosemp, $obejtivoscal, $valoresemp, $politica);
+        return array($mv, $obejtivosemp, $obejtivoscal, $valoresemp, $politica, $objetempimg);
     }
-
+    */
 
 }
 

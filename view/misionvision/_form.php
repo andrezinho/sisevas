@@ -40,7 +40,8 @@
                     ?>
                 <div id="queue"></div>
                 <input id="file_upload" name="file_upload" type="file" multiple="true" />    
-                <a target="_blank" href="images/index/<?php echo $obj->img_m ?>" style="display:<?php echo $d; ?>;cursor:pointer; font-size: 11px;" id="VerImagennn"><img src="images/pdf.png" />Abrir Archivo</a>
+                <a target="_blank" href="images/index/<?php echo $obj->img_m ?>" style="display:<?php echo $d; ?>;cursor:pointer; font-size: 11px;" id="VerImagennn">
+                    <img src="images/pdf.png" />Abrir Archivo</a>
                 
             </div>
             <br />

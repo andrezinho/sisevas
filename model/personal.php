@@ -14,7 +14,7 @@ class Personal extends Main
             p.direccion,
             c.descripcion,
             case p.estado when 1 then 'ACTIVO' else 'INCANTIVO' end,
-            '<a href=\"index.php?controller=evaluacion&idp='||p.idpersonal||'\" target=\"_blank\" class=\"btn-evaluar box-boton boton-recibido\"></a>'            
+            '<a href=\"index.php?controller=evaluacion&idp='||p.idpersonal||'\" target=\"_blank\" class=\"btn-evaluar box-boton boton-recibido\"></a>'
             FROM
             public.personal AS p
             INNER JOIN public.estado_civil AS e ON e.idestado_civil = p.idestado_civil
@@ -26,12 +26,12 @@ class Personal extends Main
     function edit($id)
     {
         $stmt = $this->db->prepare("SELECT  p.*,
-                                            c.descripcion as consult,
-                                            p2.descripcion as perfil
-                                    FROM personal as p inner join consultorio as c
-                                        on c.idconsultorio = p.idarea 
-                                        inner join seguridad.perfil as p2 on p.idperfil = p2.idperfil
-                                    WHERE p.idpersonal = :id");
+                                c.descripcion as consult,
+                                p2.descripcion as perfil
+                        FROM personal as p inner join consultorio as c
+                            on c.idconsultorio = p.idarea 
+                            inner join seguridad.perfil as p2 on p.idperfil = p2.idperfil
+                        WHERE p.idpersonal = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchObject();
@@ -43,11 +43,29 @@ class Personal extends Main
         $dni=$_P['dni'];
         $estado=1;
         $tdoc= $_P['iddocumento_identidad'];
+        
+        if($_P['cumpleesposa']=='')
+        { $_P['cumpleesposa']=null; } 
+
+        if($_P['cumplehijo']=='')
+        { $_P['cumplehijo']=null; }
+
+        if($_P['vacacionesinicio']=='')
+        { $_P['vacacionesinicio']=null; }
+
+        if($_P['vacacionesfin']=='')
+        { $_P['vacacionesfin']=null; }
+
+        if($_P['sueldo']=='')
+        { $_P['sueldo']=0; }
+    
         $sql="INSERT INTO personal(
             iddocumento_identidad, dni, nombres, apellidos, telefono, direccion, sexo,idestado_civil, estado, idarea,
             idcargo, idperfil, usuario,clave, ruc,idespecialidad,idgradinstruccion,idtipopersonal, codessalud, codafp, nrobrevete,
-            file, file_hc, fechareg, fechanaci, cumpleesposa, cumplehijo,mail,asumircargo,contrato)   
-            values(:p0,:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13,:p14,:p15,:p16,:p17,:p18,:p19,:p20,:p21,:p22,:p23,:p24,:p25,:p26,:p27,:p28,:p29) ";
+            file, file_hc, fechareg, fechanaci, cumpleesposa, cumplehijo,mail,asumircargo,contrato, sueldo, vacacionesinicio,
+            vacacionesfin)   
+            values(:p0,:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13,:p14,:p15,:p16,:p17,:p18,:p19,:p20,:p21,:p22,
+                :p23, :p24, :p25, :p26, :p27, :p28, :p29, :p30, :p31, :p32) ";
         
         //$stmt = $this->db->prepare("INSERT INTO personal(iddocumento_identidad, dni, nombres, apellidos, telefono, direccion, sexo, idestado_civil,
         //    estado,idarea,idcargo,idperfil, usuario,clave,ruc,idespecialidad,idgradinstruccion,idtipopersonal,codessalud,
@@ -85,7 +103,10 @@ class Personal extends Main
         $stmt->bindParam(':p27', $_P['email'] , PDO::PARAM_STR);
         $stmt->bindParam(':p28', $_P['asumircargo'] , PDO::PARAM_STR);
         $stmt->bindParam(':p29', $_P['contrato'] , PDO::PARAM_STR);
-            
+        
+        $stmt->bindParam(':p30', $_P['sueldo'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p31', $_P['vacacionesinicio'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p32', $_P['vacacionesfin'] , PDO::PARAM_STR);    
         //print_r($stmt);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -98,6 +119,21 @@ class Personal extends Main
     {
          
         $dni=$_P['dni'];
+
+        if($_P['cumpleesposa']=='')
+        { $_P['cumpleesposa']=null; } 
+
+        if($_P['cumplehijo']=='')
+        { $_P['cumplehijo']=null; }
+
+        if($_P['vacacionesinicio']=='')
+        { $_P['vacacionesinicio']=null; }
+
+        if($_P['vacacionesfin']=='')
+        { $_P['vacacionesfin']=null; }
+
+        if($_P['sueldo']=='')
+        { $_P['sueldo']=0; }
 
         $sql = "UPDATE personal set 
                     dni = :p1, nombres=:p2,
@@ -115,7 +151,9 @@ class Personal extends Main
                     codessalud=:p21,
                     codafp=:p22, file=:p23,file_hc=:p24,
                     cumpleesposa=:p25, cumplehijo=:p26,
-                    asumircargo= :p27, contrato= :p28
+                    asumircargo= :p27, contrato= :p28,
+                    sueldo= :p29, vacacionesinicio= :p30,
+                    vacacionesfin= :p31
                     
                 where idpersonal = :idpersonal";
 
@@ -150,7 +188,10 @@ class Personal extends Main
             $stmt->bindParam(':p26', $_P['cumplehijo'] , PDO::PARAM_STR);
             $stmt->bindParam(':p27', $_P['asumircargo'] , PDO::PARAM_STR);
             $stmt->bindParam(':p28', $_P['contrato'] , PDO::PARAM_STR);
-            
+            $stmt->bindParam(':p29', $_P['sueldo'] , PDO::PARAM_STR);
+            $stmt->bindParam(':p30', $_P['vacacionesinicio'] , PDO::PARAM_STR);
+            $stmt->bindParam(':p31', $_P['vacacionesfin'] , PDO::PARAM_STR);
+
             $stmt->bindParam(':idpersonal', $_P['idpersonal'] , PDO::PARAM_INT);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
@@ -168,6 +209,7 @@ class Personal extends Main
 
     function get($query,$field)
     {
+    
         $query = "%".$query."%";
         $statement = $this->db->prepare("SELECT 
                                         idpersonal,

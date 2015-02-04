@@ -13,7 +13,8 @@ class Innovacion extends Main
             
             FROM
             evaluacion.innovacion AS i
-            INNER JOIN public.personal AS p ON p.idpersonal = i.idpersonal ";
+            INNER JOIN public.personal AS p ON p.idpersonal = i.idpersonal 
+            WHERE i.anio='2015' ";
             
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
@@ -26,15 +27,18 @@ class Innovacion extends Main
     }
 
     function insert($_P ) {
-        $stmt = $this->db->prepare("INSERT INTO evaluacion.innovacion (idpersonal, descripcion, fechain, horain,palabraclave) 
-                        VALUES(:p1,:p2,:p3,:p4,:p5)");
+
+        $anio= date('Y');  
+
+        $stmt = $this->db->prepare("INSERT INTO evaluacion.innovacion (idpersonal, descripcion, fechain, horain, palabraclave, anio) 
+                        VALUES(:p1,:p2,:p3,:p4,:p5,:p6)");
                         
         $stmt->bindParam(':p1', $_P['idpersonal'] , PDO::PARAM_INT);
         $stmt->bindParam(':p2', $_P['descripcion'] , PDO::PARAM_STR);
         $stmt->bindParam(':p3', $_P['fechain'] , PDO::PARAM_STR);
         $stmt->bindParam(':p4', $_P['horain'] , PDO::PARAM_STR);
         $stmt->bindParam(':p5', $_P['palabraclave'] , PDO::PARAM_STR);
-        
+        $stmt->bindParam(':p6', $anio , PDO::PARAM_INT);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);

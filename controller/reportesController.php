@@ -58,7 +58,7 @@ class reportesController extends Controller
         //
         $obj = new reportes();
         $data = array();
-        $result = $obj->data_rep03($_GET);
+        $result = $obj->data_rep05($_GET);
         $data['datos'] = $result[1];
         $data['rows'] = $result[0];
         $view = new View();
@@ -67,6 +67,62 @@ class reportesController extends Controller
             $view->setTemplate('../view/reportes/_reporte_rep03_pdf.php');
         else
             $view->setTemplate('../view/reportes/_reporte_rep03.php');
+        $view->setLayout('../template/empty.php');
+        return $view->render();
+    }
+    
+    public function rep05() 
+    {
+        $data = array();
+        $view = new View();
+        //$data['tipoalc'] = $this->Select(array('id'=>'idtipoalcance','name'=>'idtipoalcance','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_tipoalcance','code'=>$rows->idtipoalcance));
+        $view->setData($data);
+        $view->setTemplate( '../view/reportes/_rep05.php' );
+        $view->setLayout( '../template/layout.php' );
+        $view->render();
+    }
+    
+    public function data_rep05()
+    {
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_rep05($_GET);
+        $data['datos'] = $result[1];
+        $data['rows'] = $result[0];
+        $view = new View();
+        $view->setData($data);
+        if($_GET['tipo']=="pdf")
+            $view->setTemplate('../view/reportes/_reporte_rep05_pdf.php');
+        else
+            $view->setTemplate('../view/reportes/_reporte_rep05.php');
+        $view->setLayout('../template/empty.php');
+        return $view->render();
+    }
+    
+    public function rep06() 
+    {
+        $data = array();
+        $view = new View();
+        $data['tipodoc'] = $this->Select(array('id'=>'idtipo_documento','name'=>'idtipo_documento','text_null'=>':: Todos ::','table'=>'vista_tipodocumento'));
+        $view->setData($data);
+        $view->setTemplate( '../view/reportes/_rep06.php' );
+        $view->setLayout( '../template/layout.php' );
+        $view->render();
+    }
+    
+    public function data_rep06()
+    {
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_rep06($_GET);
+        $data['datos'] = $result[1];
+        $data['rows'] = $result[0];
+        $view = new View();
+        $view->setData($data);
+        if($_GET['tipo']=="pdf")
+            $view->setTemplate('../view/reportes/_reporte_rep06_pdf.php');
+        else
+            $view->setTemplate('../view/reportes/_reporte_rep06.php');
         $view->setLayout('../template/empty.php');
         return $view->render();
     }

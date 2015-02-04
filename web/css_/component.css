@@ -1,0 +1,295 @@
+*,
+*:after,
+*::before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ac-custom {
+	padding: 0 3em;
+	max-width: 900px;
+	margin: 0 auto;
+}
+
+.ac-custom h2 {
+	font-size: 3em;
+	font-weight: 300;
+	padding: 0 0 0.5em;
+	margin: 0 0 30px;
+}
+
+.ac-custom ul,
+.ac-custom ol {
+	list-style: none;
+	padding: 0;
+	margin: 0 auto;
+	max-width: 800px;
+}
+
+.ac-custom li {
+	margin: 0 auto;
+	padding: 2em 0;
+	position: relative;
+}
+
+.ac-custom label {
+	display: inline-block;
+	position: relative;
+	font-size: 2em;
+	padding: 0 0 0 80px;
+	vertical-align: top;
+	color: rgba(0,0,0,0.3);
+	cursor: pointer;
+	-webkit-transition: color 0.3s;
+	transition: color 0.3s;
+}
+
+.ac-custom input[type="checkbox"],
+.ac-custom input[type="radio"],
+.ac-custom label::before {
+	width: 50px;
+	height: 50px;
+	top: 50%;
+	left: 0;
+	margin-top: -25px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.ac-custom input[type="checkbox"],
+.ac-custom input[type="radio"] {
+	opacity: 0;
+	-webkit-appearance: none;
+	display: inline-block;
+	vertical-align: middle;
+	z-index: 100;
+}
+
+.ac-custom label::before {
+	content: '';
+	border: 4px solid #fff;
+	-webkit-transition: opacity 0.3s;
+	transition: opacity 0.3s;
+}
+
+.ac-radio label::before {
+	border-radius: 50%;
+}
+
+.ac-custom input[type="checkbox"]:checked + label,
+.ac-custom input[type="radio"]:checked + label {
+	color: #fff;
+} 
+
+.ac-custom input[type="checkbox"]:checked + label::before,
+.ac-custom input[type="radio"]:checked + label::before {
+	opacity: 0.8;
+}
+
+/* General SVG and path styles */
+
+.ac-custom svg {
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	top: 50%;
+	margin-top: -20px;
+	left: 5px;
+	pointer-events: none;
+}
+
+.ac-custom svg path {
+	stroke: #fdfcd3;
+	stroke-width: 13px;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	fill: none;
+}
+
+/* Specific input, SVG and path styles */
+
+/* Circle */
+.ac-circle input[type="checkbox"],
+.ac-circle input[type="radio"],
+.ac-circle label::before {
+	width: 30px;
+	height: 30px;
+	margin-top: -15px;
+	left: 10px;
+	position: absolute;
+}
+
+.ac-circle label::before {
+	background-color: #fff;
+	border: none;
+}
+
+.ac-circle svg {
+	width: 70px;
+	height: 70px;
+	margin-top: -35px;
+	left: -10px;
+}
+
+.ac-circle svg path {
+	stroke-width: 5px;
+} 
+
+/* Box Fill */
+.ac-boxfill svg path {
+	stroke-width: 8px;
+} 
+
+/* Swirl */
+.ac-swirl svg path {
+	stroke-width: 8px;
+}
+
+/* List */
+.ac-list ol {
+	list-style: decimal;
+	list-style-position: inside;
+}
+
+.ac-list ol li {
+	font-size: 2em;
+	padding: 1em 1em 0 2em;
+	text-indent: -40px;
+}
+
+.ac-list ol li label {
+	font-size: 1em;
+	text-indent: 0;
+	padding-left: 30px;
+}
+
+.ac-list label::before {
+	display: none;
+}
+
+.ac-list svg {
+	width: 100%;
+	height: 80px;
+	left: 0;
+	top: 1.2em;
+	margin-top: 0px;
+}
+
+.ac-list svg path {
+	stroke-width: 4px;
+}
+
+/* Media Queries */
+@media screen and (max-width: 50em) {
+	section 
+	{
+		font-size: 80%;
+	}
+}
+
+.mp-menu 
+{
+	position: absolute; /* we can't use fixed here :( */
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: 300px;
+	height: 100%;
+	box-shadow: 5px 2px 10px #333;
+
+}
+.mp-level {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #4D4D4C;
+	padding: 10px 0 10px 10px;
+}
+
+
+.title-head {
+	margin: 0 auto;
+	padding: 2em 2em .1em;
+	text-align: center;
+	
+}
+
+.title-head h1 {
+	font-size: 2.825em;
+	line-height: 1.3;
+	margin: 0;
+	font-weight: 300;
+}
+
+.title-head span {
+	display: block;
+	font-size: 60%;
+	color: rgba(0,0,0,.4);
+	font-weight: 400;
+	padding: 0 0 0.6em 0.1em;
+}
+
+.title-head p 
+{
+	font-size: .4em;
+	color: rgba(255,255,255,.4);
+}
+.mp-menu ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.mp-menu h2 {
+	margin: 0;
+	padding: 1em;
+	color: rgba(0,0,0,0.4);
+	text-shadow: 0 0 1px rgba(0,0,0,0.1);
+	font-weight: 300;
+	font-size: 2em;
+}
+.mp-menu ul li > a {
+	display: block;
+	padding: 0.7em 1em 0.7em 1.8em;
+	outline: none;
+	box-shadow: inset 0 -1px rgba(0,0,0,0.2);
+	text-shadow: 0 0 1px rgba(255,255,255,0.1);
+	font-size: 1.4em;
+	-webkit-transition: background 0.3s, box-shadow 0.3s;
+	-moz-transition: background 0.3s, box-shadow 0.3s;
+	transition: background 0.3s, box-shadow 0.3s;
+}
+
+.mp-menu ul li::before {
+	position: absolute;
+	left: 10px;
+	z-index: -1;
+	color: rgba(0,0,0,0.2);
+	line-height: 3.5;
+}
+
+.mp-level > ul > li:first-child > a {
+	box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
+}
+
+.mp-menu ul li a:hover,
+.mp-level > ul > li:first-child > a:hover {
+	background: rgba(0,0,0,0.2);
+	box-shadow: inset 0 -1px rgba(0,0,0,0);
+}
+
+.mp-menu .mp-level.mp-level-overlay > ul > li > a,
+.mp-level.mp-level-overlay > ul > li:first-child > a 
+{
+	box-shadow: inset 0 -1px rgba(0,0,0,0);
+}
+
+.mp-level > ul > li:first-child > a:hover,
+.mp-level.mp-level-overlay > ul > li:first-child > a 
+{
+	box-shadow: inset 0 -1px rgba(0,0,0,0), inset 0 1px rgba(0,0,0,0);
+}
+
+.com-option-select { background: #2C2C2B; }

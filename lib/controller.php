@@ -34,10 +34,11 @@ class Controller  {
         $view->setTemplate( '../view/_more_options.php' );
         return $view->renderPartial();
     }
-    public function getAlmacenes()
+    public function getAsistentes($p)
     {
         $obj = new Main(); 
-        return $obj->getAlmacenes($_SESSION['idsucursal']);
+        $Id= $p['id'];
+        return $obj->getAsistentesSql($Id);
     }
     public function Select($p) 
     {

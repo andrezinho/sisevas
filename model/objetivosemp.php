@@ -22,13 +22,23 @@ class objetivosemp extends Main
     }
 
     function insert($_P ) {
-        $stmt = $this->db->prepare("INSERT INTO obejtivosemp (descripcion,estado) 
-                    VALUES(:p1,:p2)");
+        $stmt = $this->db->prepare("INSERT INTO obejtivosemp (descripcion, img, estado) 
+                    VALUES(:p1, :p2, :p3) ");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p2', $_P['archivo'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_INT);
 
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
+        
+        $id =  $this->IdlastInsert('obejtivosemp','idobejtivosemp');
+        $Upd="UPDATE obejtivosemp
+            SET img= :p2
+          WHERE idobejtivosemp!= :p1";
+        $stmt1 = $this->db->prepare($Upd);
+        $stmt1->bindParam(':p1', $id , PDO::PARAM_INT);
+        $stmt1->bindParam(':p2', $_P['archivo'] , PDO::PARAM_STR);
+        $stmt1->execute();
         
         $stmt = $this->db->prepare("SELECT max(idobejtivosemp) as cod from obejtivosemp");
         $stmt->execute();
@@ -39,16 +49,25 @@ class objetivosemp extends Main
 
     function update($_P ) {
         $stmt = $this->db->prepare("UPDATE obejtivosemp 
-                set 
-                    descripcion = :p1, 
-                    estado = :p2
+                SET descripcion = :p1, img= :p2, estado = :p3
                 WHERE idobejtivosemp = :idobejtivosemp");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
-
+        $stmt->bindParam(':p2', $_P['archivo'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_INT);
         $stmt->bindParam(':idobejtivosemp', $_P['idobejtivosemp'] , PDO::PARAM_INT);
+        
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
+        
+        $id =  $_P['idobejtivosemp'];
+        $Upd="UPDATE obejtivosemp
+            SET img= :p2
+          WHERE idobejtivosemp!= :p1";
+        $stmt1 = $this->db->prepare($Upd);
+        $stmt1->bindParam(':p1', $id , PDO::PARAM_INT);
+        $stmt1->bindParam(':p2', $_P['archivo'] , PDO::PARAM_STR);
+        $stmt1->execute();
+        
         return array($p1 , $p2[2]);
     }
     

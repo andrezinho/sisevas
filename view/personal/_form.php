@@ -96,10 +96,20 @@
             <br/>
 
             <label for="fechaing" class="labels">Fecha Ingreso:</label>
-            <input type="text" id="fechaing" maxlength="10" name="fechaing" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->fechareg=='') echo date('d/m/Y'); else echo fdate($obj->fechareg,'ES'); ?>" />
+            <input type="text" id="fechaing" maxlength="10" name="fechaing" class="text ui-widget-content ui-corner-all" style=" width: 80px; text-align: center;" value="<?php if($obj->fechareg=='') echo date('d/m/Y'); else echo fdate($obj->fechareg,'ES'); ?>" />
             
-            <label for="fechaing" class="labels">Asumir Cargo:</label>
-            <input type="text" id="asumircargo" maxlength="10" name="asumircargo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->asumircargo=='') echo date('d/m/Y'); else echo fdate($obj->asumircargo,'ES'); ?>" />
+            <label for="fechaing" class="labeless">Asumir Cargo:</label>
+            <input type="text" id="asumircargo" maxlength="10" name="asumircargo" class="text ui-widget-content ui-corner-all" style=" width: 80px; text-align: center;" value="<?php if($obj->asumircargo=='') echo date('d/m/Y'); else echo fdate($obj->asumircargo,'ES'); ?>" />
+            
+            <label for="Suel" class="labels">Sueldo:</label>
+            <input type="text" id="sueldo" name="sueldo" maxlength="10" value="<?php echo $obj->sueldo; ?>"  class="text ui-widget-content ui-corner-all" style=" width: 80px; text-align: left;" />
+            <br/>
+
+            <label for="fechaing" class="labels">Vacaciones Inicio:</label>
+            <input type="text" id="vacacionesinicio" maxlength="10" name="vacacionesinicio" class="text ui-widget-content ui-corner-all" style=" width: 80px; text-align: center;" value="<?php if($obj->vacacionesinicio=='') echo date(''); else echo fdate($obj->vacacionesinicio,'ES'); ?>" />
+            
+            <label for="fechaing" class="labeless">Vacaciones Fin:</label>
+            <input type="text" id="vacacionesfin" maxlength="10" name="vacacionesfin" class="text ui-widget-content ui-corner-all" style=" width: 80px; text-align: center;" value="<?php if($obj->vacacionesfin=='') echo date(''); else echo fdate($obj->vacacionesfin,'ES'); ?>" />
             <br/>
 
             <label for="user" class="labels">Usuario:</label>
@@ -126,22 +136,22 @@
 
         <div id="tabs-3">
 
-            <label for="ruc" class="labels">RUC:</label>
-            <input id="ruc" name="ruc" onkeypress="return permite(event,'num');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->ruc; ?>"  />
+            <label for="ruc" class="labeless">RUC:</label>
+            <input id="ruc" name="ruc" onkeypress="return permite(event,'num');" class="text ui-widget-content ui-corner-all" style=" width: 150px; text-align: left;" value="<?php echo $obj->ruc; ?>"  />
             
             <label for="codafp" class="labels">Cod. AFP:</label>
-            <input id="codafp" name="codafp" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->codafp; ?>"  />
+            <input id="codafp" name="codafp" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 150px; text-align: left;" value="<?php echo $obj->codafp; ?>"  />
             <br/>
 
-            <label for="ruc" class="labels">Cod. Essalud:</label>
-            <input id="codessalud" name="codessalud" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->codessalud; ?>"  />
+            <label for="ruc" class="labeless">Cod. Essalud:</label>
+            <input id="codessalud" name="codessalud" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 150px; text-align: left;" value="<?php echo $obj->codessalud; ?>"  />
             <br/>
             
-            <label for="fechanaci" class="labeless">Cumpleaños Espo.:</label>
-            <input type="text" id="cumpleesposa" maxlength="10" name="cumpleesposa" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->cumpleesposa=='') echo date('d/m/Y'); else echo fdate($obj->cumpleesposa,'ES'); ?>" />
+            <label for="fechanaci" class="labeless">Cumpleaños Esposa:</label>
+            <input type="text" id="cumpleesposa" maxlength="10" name="cumpleesposa" class="text ui-widget-content ui-corner-all" style=" width: 110px; text-align: center;" value="<?php if($obj->cumpleesposa=='') echo date(''); else echo fdate($obj->cumpleesposa,'ES'); ?>" />
             
-            <label for="fechanaci" class="labeless">Cumpleaños Hijo.:</label>
-            <input type="text" id="cumplehijo" maxlength="10" name="cumplehijo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->cumplehijo=='') echo date('d/m/Y'); else echo fdate($obj->cumplehijo,'ES'); ?>" />
+            <label for="fechanaci" class="labeless">Cumpleaños Hijo:</label>
+            <input type="text" id="cumplehijo" maxlength="10" name="cumplehijo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: center;" value="<?php if($obj->cumplehijo=='') echo date(''); else echo fdate($obj->cumplehijo,'ES'); ?>" />
             <br/>
         </div>
         <div id="tabs-4">            

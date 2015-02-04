@@ -18,7 +18,7 @@
         <label for="descripcion" class="labels">Descripcion:</label>
         <input id="descripcion" maxlength="100" name="descripcion" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 450px; text-align: left;" value="<?php echo $obj->descripcion; ?>" />
         <br />
-        <!--
+        
         <label for="descripcion" class="labels">Subir Imagen:</label>
         <div class="subir_file">
             <input type="hidden" name="archivo" id="archivo" value="<?php echo $obj->img; ?>" />
@@ -30,11 +30,11 @@
                 ?>
             <div id="queue"></div>
             <input id="file_upload" name="file_upload" type="file" multiple="true" />    
-            <a target="_blank" href="images/index/<?php echo $obj->file ?>" style="display:<?php echo $d; ?>;cursor:pointer; font-size: 11px;" id="VerImagennn"><img src="images/pdf.png" />Abrir Archivo</a>
+            <a target="_blank" href="images/index/<?php echo $obj->img ?>" style="display:<?php echo $d; ?>;cursor:pointer; font-size: 11px;" id="VerImagennn"><img src="images/pdf.png" />Abrir Archivo</a>
             
         </div>
         <br />
-        -->
+        
         <label for="estado" class="labels">Activo:</label>
         <div id="estados" style="display:inline">
             <?php                   

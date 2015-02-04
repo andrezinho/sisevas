@@ -148,3 +148,17 @@ footer p {padding-bottom:15px}
 #sign_up a {font-size:16px;float:left;background:url(../images/sign_up.gif) no-repeat;width:77px;text-align:center;line-height:24px;height:29px;color:#363636;text-decoration:none}
 #sign_up a:hover {color:#006abb}
 #sign_up{}
+
+/**/
+.fieldset{
+    padding: 10px;
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    //background: #F5F5F5;
+}
+.legend{
+    padding: 0.5em 0.8em;
+    text-align:left;
+    text-transform: uppercase;
+}

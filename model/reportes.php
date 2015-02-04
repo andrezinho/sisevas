@@ -138,8 +138,6 @@ class reportes extends Main
                             'res'=>array()
                            );
 
-
-
             $s = "SELECT  t1.idaspecto,
                           t1.aspecto,
                           coalesce(t2.valor,0) as valor,
@@ -178,6 +176,107 @@ class reportes extends Main
             }
             $c += 1;
         }
+        return array($data,$datos);
+    }
+    
+    function data_rep05($g)
+    {
+        if(isset($g['idperiodo'])&&$g['idperiodo']!="")
+            $idperiodo = $g['idperiodo'];
+        else 
+            $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
+
+        $anio = $g['anio'];
+
+        $s = "SELECT descripcion from evaluacion.periodo where idperiodo = ".$idperiodo;
+        $stmt = $this->db->prepare($s);
+        $stmt->execute();
+        $rec = $stmt->fetchObject();
+
+        $periodo = $rec->descripcion;
+
+        $sql = "SELECT p.idperfil,p.nombres,p.apellidos,c.descripcion as perfil 
+                FROM personal as p inner join seguridad.perfil as c on 
+                    c.idperfil = p.idperfil
+                WHERE p.idpersonal = :id ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+        $stmt->execute();
+        $r = $stmt->fetchObject();
+        $idperfil = $r->idperfil;
+        $personal = $r->nombres.' '.$r->apellidos;
+        $perfil = $r->perfil;
+
+        $datos = array($personal, $perfil, $anio);
+
+        $sql1 = "SELECT
+            c.codigo,
+            c.tema,
+            c.fecha,
+            c.hora,
+            c.expositor,
+            t.descripcion,
+            c.estado           
+            FROM capacitacion.capacitacion AS c
+            INNER JOIN capacitacion.capacitacion_asignacion AS a ON a.idcapacitacion = c.idcapacitacion
+            INNER JOIN public.personal AS p ON a.idpersonalasig = p.idpersonal
+            INNER JOIN capacitacion.tipoalcance AS t ON a.idtipoalcance = t.idtipoalcance
+            WHERE a.idpersonalasig = :id
+            ORDER BY 
+            c.idcapacitacion ";
+                
+        $stmt1 = $this->db->prepare($sql1);
+        $stmt1->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+        $stmt1->execute();
+        $data= $stmt1->fetchAll();
+        
+        return array($data,$datos);
+    }
+    
+    function data_rep06($g)
+    {
+        $anio = $g['anio'];
+        $idtipodoc= $g['idtipo_documento'];
+        
+        $sql = "SELECT p.idperfil,p.nombres,p.apellidos,c.descripcion as perfil 
+                FROM personal as p inner join seguridad.perfil as c on 
+                    c.idperfil = p.idperfil
+                WHERE p.idpersonal = :id ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+        $stmt->execute();
+        $r = $stmt->fetchObject();
+        $idperfil = $r->idperfil;
+        $personal = $r->nombres.' '.$r->apellidos;
+        $perfil = $r->perfil;
+
+        $datos = array($personal, $perfil, $anio);
+
+        $sql1 = "SELECT
+            t.idtramite,
+            t.idtipo_documento,
+            d.idpersonal,
+            t.idpersonalresp,
+            t.codigo,
+            t.asunto,
+            t.fechainicio,
+            p.nombres||' '||p.apellidos AS remitente
+            
+            FROM
+            evaluacion.tramite AS t
+            INNER JOIN public.personal AS p ON p.idpersonal = t.idpersonalresp
+            INNER JOIN evaluacion.derivaciones AS d ON t.idtramite = d.idtramite
+            WHERE t.idtipo_documento= :idtpdoc AND
+            d.idpersonal= :id AND t.anio= :anio
+            ORDER BY t.fechainicio ";
+                
+        $stmt1 = $this->db->prepare($sql1);
+        $stmt1->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+        $stmt1->bindParam(':idtpdoc',$idtipodoc,PDO::PARAM_INT);
+        $stmt1->bindParam(':anio', $anio,PDO::PARAM_INT);
+        $stmt1->execute();
+        $data= $stmt1->fetchAll();
+        
         return array($data,$datos);
     }
 }

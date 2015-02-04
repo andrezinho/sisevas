@@ -28,9 +28,8 @@ class aspectos extends Main
     function insert($_P ) 
     {       
         $fecha_reg = date('Y-m-d');
-        $stmt = $this->db->prepare("INSERT INTO evaluacion.aspectos(
-                                        descripcion, idcompetencia, fecha_reg, estado)
-                                    VALUES (:p1, :p2, :p3, :p4);");
+        $stmt = $this->db->prepare("INSERT INTO evaluacion.aspectos(descripcion, idcompetencia, fecha_reg, estado)
+            VALUES (:p1, :p2, :p3, :p4);");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
         $stmt->bindParam(':p2', $_P['idcompetencia'] , PDO::PARAM_INT);
         $stmt->bindParam(':p3', $fecha_reg , PDO::PARAM_STR);

@@ -21,30 +21,51 @@ class objetivoscal extends Main
     }
 
     function insert($_P ) {
-        $stmt = $this->db->prepare("INSERT INTO obejtivoscalidad (descripcion, estado) VALUES(:p1,:p2)");
+        $stmt = $this->db->prepare("INSERT INTO obejtivoscalidad (descripcion, img, estado) VALUES(:p1, :p2, :p3)");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p2', $_P['archivo'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_INT);
         
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
+        
+        $id =  $this->IdlastInsert('obejtivosemp','idobejtivosemp');
+        $Upd="UPDATE obejtivosemp
+            SET img= :p2
+          WHERE idobejtivosemp!= :p1";
+        $stmt1 = $this->db->prepare($Upd);
+        $stmt1->bindParam(':p1', $id , PDO::PARAM_INT);
+        $stmt1->bindParam(':p2', $_P['archivo'] , PDO::PARAM_STR);
+        $stmt1->execute();
+        
         return array($p1 , $p2[2]);
+        
     }
 
     function update($_P ) {
         $stmt = $this->db->prepare("UPDATE obejtivoscalidad 
-                    set 
-                        descripcion = :p1, 
-                        estado = :p2
-                        
-                    WHERE idobejtivoscalidad = :idobejtivoscalidad");
+            SET descripcion = :p1, img= :p2, estado = :p3
+            WHERE idobejtivoscalidad = :idobejtivoscalidad");
 
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p2', $_P['archivo'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p3', $_P['activo'] , PDO::PARAM_INT);
 
         $stmt->bindParam(':idobejtivoscalidad', $_P['idobejtivoscalidad'] , PDO::PARAM_INT);
 
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
+        
+        $id =  $_P['idobejtivoscalidad'];
+        $Upd="UPDATE obejtivoscalidad
+            SET img= :p2
+          WHERE idobejtivoscalidad!= :p1";
+        $stmt1 = $this->db->prepare($Upd);
+        //print_r($stmt1);
+        $stmt1->bindParam(':p1', $id , PDO::PARAM_INT);
+        $stmt1->bindParam(':p2', $_P['archivo'] , PDO::PARAM_STR);
+        $stmt1->execute();
+        
         return array($p1 , $p2[2]);
     }
 

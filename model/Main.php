@@ -120,16 +120,25 @@ class Main extends Spdo {
         $sth->execute();
         return $sth->fetchAll();
     }
-    function getAlmacenes($idsucursal)
+    
+    function getAsistentesSql($idcapacitacion)
     {
-        $sth = $this->db->prepare("SELECT idalmacen,descripcion 
-                                    FROM produccion.almacenes
-                                    where idsucursal = ".$idsucursal."
-                                   order by 1");
+        $sql ="SELECT
+            ca.idpersonalasig,
+            p.nombres||' '||p.apellidos
+            FROM
+            capacitacion.capacitacion AS c
+            INNER JOIN capacitacion.capacitacion_asignacion AS ca ON ca.idcapacitacion = c.idcapacitacion
+            INNER JOIN public.personal AS p ON p.idpersonal = ca.idpersonalasig
+            WHERE
+            ca.idcapacitacion=".$idcapacitacion."
+            ORDER BY
+            p.nombres ASC";
+        $sth = $this->db->prepare($sql);
         $sth->execute();
         $data = array();
         foreach ($sth->fetchAll() as $key => $value) {
-            $data[] = array($value['idalmacen'],$value['descripcion']);
+            $data[] = array($value[0],$value[1]);
         }
         return $data;
     }

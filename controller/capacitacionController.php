@@ -126,6 +126,8 @@ class capacitacionController extends Controller
         if ($p[0]) $result = array(1,$p[1]);
         else $result = array(2,$p[1]);
         print_r(json_encode($result));
+
+    
     }
 
     public function end()

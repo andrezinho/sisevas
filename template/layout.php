@@ -9,7 +9,7 @@
     <link href="css/cssmenu.css" rel="stylesheet" type="text/css" />
     <link href="css/style_forms.css" rel="stylesheet" type="text/css" />
     <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>    
     <script type="text/javascript" src="js/menus.js"></script>
@@ -37,28 +37,37 @@
  -->
  
  <script type="text/javascript">
- jQuery(document).ready(function($) {
- 
-    $('#tabsindex .tabscontent>div').not('div:first').hide();
-    $('#tabsindex ul li:first,#tabsindex .tabscontent>div:first').addClass('active');
- 
-    $('#tabsindex ul li a').click(function(){
- 
-        var currentTab = $(this).parent();
-        if(!currentTab.hasClass('active')){
-            $('#tabsindex ul li').removeClass('active');             
- 
-            $('#tabsindex .tabscontent>div').slideUp('fast').removeClass('active');
- 
-            var currentcontent = $($(this).attr('href'));
-            currentcontent.slideDown('fast', function() {
-                currentTab.addClass('active');
-                currentcontent.addClass('active');
-            });
-        }
-        return false;                           
+    jQuery(document).ready(function($) {
+    
+        $('#tabsindex .tabscontent>div').not('div:first').hide();
+        $('#tabsindex ul li:first,#tabsindex .tabscontent>div:first').addClass('active');
+        
+        $('#tabsindex ul li a').click(function(){
+        
+            var currentTab = $(this).parent();
+            if(!currentTab.hasClass('active')){
+                $('#tabsindex ul li').removeClass('active');             
+        
+                $('#tabsindex .tabscontent>div').slideUp('fast').removeClass('active');
+        
+                var currentcontent = $($(this).attr('href'));
+                currentcontent.slideDown('fast', function() {
+                    currentTab.addClass('active');
+                    currentcontent.addClass('active');
+                });
+            }
+            return false;                           
+        });
     });
-});
+    
+    /// <reference path="../../../lib/jquery-1.2.6.js" />
+/*
+	Masked Input plugin for jQuery
+	Copyright (c) 2007-2009 Josh Bush (digitalbush.com)
+	Licensed under the MIT license (http://digitalbush.com/projects/masked-input-plugin/#license) 
+	Version: 1.2.2 (03/09/2009 22:39:06)
+*/
+
  </script>   
 <style type="text/css">
     .content *:first-child {margin-top: 0;}

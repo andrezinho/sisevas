@@ -5,8 +5,7 @@ include_once("tipodocumento.php");
 class Envio extends Main
 {    
     function indexGrid($page,$limit,$sidx,$sord,$filtro,$query,$cols)
-    {
-        
+    {        
         $sql = "SELECT
             t.idtramite,
             td.descripcion,
@@ -17,9 +16,10 @@ class Envio extends Main
             
             FROM
             evaluacion.tramite AS t
-            INNER JOIN public.tipo_documento AS td ON td.idtipo_documento = t.idtipo_documento
-            INNER JOIN evaluacion.derivaciones AS d ON t.idtramite = d.idtramite
-            INNER JOIN public.personal AS p ON p.idpersonal = d.idpersonal ";
+            LEFT JOIN public.tipo_documento AS td ON td.idtipo_documento = t.idtipo_documento
+            LEFT JOIN evaluacion.derivaciones AS d ON t.idtramite = d.idtramite
+            LEFT JOIN public.personal AS p ON p.idpersonal = d.idpersonal 
+            WHERE t.anio='2015' ";
 
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
@@ -128,17 +128,17 @@ class Envio extends Main
         $idpaciente= $_P['idremitente'];
         $idpersonalreg= $_SESSION['idusuario'];
         $horafin= date('H:i:s');
-        $fechafin= date('Y-m-d');       
+        $fechafin= date('Y-m-d');   
+        $anio= date('Y');
         $derivado='N';
 
         $obj_td->UpdateCorrelativo($idtipodocumento);
         
         /* MEMORANDUN */
-        $sql = "INSERT INTO evaluacion.tramite(
-                idtipo_documento, problema, fechainicio, horainicio, idpersonalresp, 
-                asunto, estado, docref, codigo,derivado)
+        $sql = "INSERT INTO evaluacion.tramite( idtipo_documento, problema, fechainicio, horainicio, 
+            idpersonalresp, asunto, estado, docref, codigo,derivado, anio)
 
-            VALUES(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10) ";
+            VALUES(:p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8, :p9, :p10, :p11) ";
 
         $st = $this->db->prepare($sql);
 
@@ -152,9 +152,9 @@ class Envio extends Main
         /* SNC y IR */
         $sqlf1 = "INSERT INTO evaluacion.tramite(idpaciente, idtipo_documento, problema, 
             fechainicio, horainicio, usuarioreg, estado, codigo, 
-            idtipo_problema, idareai, idpersonalresp,derivado)
+            idtipo_problema, idareai, idpersonalresp,derivado, anio)
 
-                VALUES(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12) ";
+                VALUES(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13) ";
 
         $stmt1 = $this->db->prepare($sqlf1);
 
@@ -208,6 +208,7 @@ class Envio extends Main
                     $stmt1->bindParam(':p10', $idcon , PDO::PARAM_INT);
                     $stmt1->bindParam(':p11', $idperinvestigad , PDO::PARAM_INT);
                     $stmt1->bindParam(':p12', $derivado , PDO::PARAM_STR);
+                    $stmt1->bindParam(':p13', $anio , PDO::PARAM_INT);
                     $stmt1->execute();
                     //print_r($stmt1);
                     
@@ -222,21 +223,18 @@ class Envio extends Main
             }
             else
                 {
-                    //idtipo_documento, problema, fechainicio, horainicio, idpersonalresp, 
-                    //asunto, estado, docref, codigo,derivado)
-                    //print_r($_P);
-                    //$docref=''
+                    
                     $st->bindParam(':p1', $_P['idtipo_documento'] , PDO::PARAM_STR);
                     $st->bindParam(':p2', $_P['problema'] , PDO::PARAM_STR);
                     $st->bindParam(':p3', $_P['fechainicio'] , PDO::PARAM_STR);
-                    $st->bindParam(':p4', $_P['horainicio'] , PDO::PARAM_STR);        
-                    
+                    $st->bindParam(':p4', $_P['horainicio'] , PDO::PARAM_STR);                    
                     $st->bindParam(':p5', $_P['idperremitente'] , PDO::PARAM_STR);
                     $st->bindParam(':p6', $_P['asunto'] , PDO::PARAM_STR);
                     $st->bindParam(':p7', $estado , PDO::PARAM_STR);
                     $st->bindParam(':p8', $_P['docref'] , PDO::PARAM_STR);
                     $st->bindParam(':p9', $_P['correlativo'] , PDO::PARAM_STR);
                     $st->bindParam(':p10', $derivado , PDO::PARAM_STR);
+                    $st->bindParam(':p11', $anio , PDO::PARAM_INT);
                     $st->execute();
 
                     $id =  $this->IdlastInsert('evaluacion.tramite','idtramite');
@@ -246,13 +244,7 @@ class Envio extends Main
                     
                     foreach($_P['idpersonaldet'] as $i => $iddet)
                     {   
-                        //echo $iddet;         
-                        //echo $id;
-                        //$st2->bindParam(':p1',$id,PDO::PARAM_INT);
-                        //$st2->bindParam(':p2',$_P['idpersonal'],PDO::PARAM_INT);
-                        //$st2->bindParam(':p3',$fechafin,PDO::PARAM_STR);
-                        //$st2->bindParam(':p4',$horafin,PDO::PARAM_STR);
-                        //$st2->bindParam(':p5',$derivado,PDO::PARAM_STR);
+                        
                         $st2= $this->db->prepare(" INSERT INTO evaluacion.derivaciones( idtramite, idpersonal, fechader, 
                         horader, capacitacion) VALUES($id ,$iddet,'$fechafin','$horafin','$derivado')" );
                         //print_r($st2);

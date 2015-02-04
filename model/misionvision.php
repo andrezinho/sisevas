@@ -19,7 +19,7 @@ class misionvision extends Main
     }
 
     function insert($_P ) {
-        $stmt = $this->db->prepare("INSERT INTO misionvision ( mision, vision, , img_v) VALUES(:p1,:p2,:p3,:p4)");
+        $stmt = $this->db->prepare("INSERT INTO misionvision ( mision, vision, img_m, img_v) VALUES(:p1,:p2,:p3,:p4)");
         $stmt->bindParam(':p1', $_P['mision'] , PDO::PARAM_STR);
         $stmt->bindParam(':p2', $_P['vision'] , PDO::PARAM_STR);
         $stmt->bindParam(':p3', $_P['archivo'] , PDO::PARAM_STR);
@@ -34,11 +34,9 @@ class misionvision extends Main
 	//echo 
 	$id=$_P['idmisionvision'];
         $stmt = $this->db->prepare("UPDATE misionvision 
-			set 
-			mision = :p1, 
-			vision = :p2, img_m= :p3 , img_v= :p4
-            
-			WHERE idmisionvision = ".$id);
+            SET 
+		mision = :p1, vision = :p2, img_m= :p3 , img_v= :p4
+            WHERE idmisionvision = ".$id);
         $stmt->bindParam(':p1', $_P['mision'] , PDO::PARAM_STR);
         $stmt->bindParam(':p2', $_P['vision'] , PDO::PARAM_STR);
         $stmt->bindParam(':p3', $_P['archivo'] , PDO::PARAM_STR);

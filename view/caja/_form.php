@@ -1,8 +1,7 @@
 <?php  include("../lib/helpers.php"); 
        include("../view/header_form.php");
 ?>
-
-   
+  
 <form id="frm_maderba" >
     <fieldset class="ui-corner-all" style="padding: 2px 10px 7px">
         <input type="hidden" name="controller" value="Caja" />

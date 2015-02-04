@@ -73,7 +73,7 @@ class evaluacion extends Main
                     from evaluacion.resultados as r inner join evaluacion.valores as v  
                     on v.idvalor = r.idvalor
                     inner join evaluacion.aspectos as a on a.idaspecto = v.idaspecto
-                    where r.idpersonal = ".$idp." and r.estado = 1 
+                    where r.idpersonal = ".$idp." and r.estado = 1 and v.idperiodo = ".$_SESSION['idperiodo']."
                     group by a.idcompetencia
                       ) as t2 on t1.idcompetencia = t2.idcompetencia
                     order by t1.idcompetencia";
@@ -204,7 +204,8 @@ class evaluacion extends Main
             $s = "SELECT  t1.idaspecto,
                           t1.aspecto,
                           coalesce(t2.valor,0) as valor,
-                          t1.valor_max
+                          t1.valor_max,
+                          coalesce(t3.valor,0) as promedio
                     FROM (
                         SELECT  a.idaspecto as idaspecto,
                             a.descripcion as aspecto,
@@ -222,7 +223,21 @@ class evaluacion extends Main
                     FROM    evaluacion.resultados as r INNER JOIN 
                         evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1
                         INNER JOIN evaluacion.aspectos as a on a.idaspecto = v.idaspecto    
-                    WHERE v.idperfil = :idcon AND a.idcompetencia = :idcom and v.idperiodo = :idper and r.idpersonal = :idpers) as t2 on t1.idaspecto = t2.idaspecto
+                    WHERE v.idperfil = :idcon AND a.idcompetencia = :idcom and v.idperiodo = :idper and r.idpersonal = :idpers) as t2 
+                    on t1.idaspecto = t2.idaspecto
+
+                    LEFT OUTER JOIN 
+
+                    (SELECT  a.idaspecto as idaspecto,
+                        a.descripcion as aspecto,   
+                        avg(r.valor) as valor
+                    FROM    evaluacion.resultados as r INNER JOIN 
+                        evaluacion.valores as v on v.idvalor = r.idvalor and r.estado = 1
+                        INNER JOIN evaluacion.aspectos as a on a.idaspecto = v.idaspecto    
+                    WHERE v.idperfil = :idcon AND a.idcompetencia = :idcom and v.idperiodo = :idper
+                    group by a.idaspecto,a.descripcion) as t3
+                    on t1.idaspecto = t3.idaspecto
+
                     ORDER BY t1.idaspecto";
             $Q = $this->db->prepare($s);
             $Q->bindParam(':idcon',$idperfil,PDO::PARAM_INT);
@@ -235,7 +250,8 @@ class evaluacion extends Main
                 $data[$c]['res'][] = array('idaspecto'=>$r[0],
                                             'aspecto'=>$r[1],
                                             'valor'=>$r[2],
-                                            'valor_max'=>$r[3]);
+                                            'valor_max'=>$r[3],
+                                            'promedio'=>$r[4]);
             }
             $c += 1;
         }

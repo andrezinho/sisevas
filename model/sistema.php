@@ -83,7 +83,8 @@ class Sistema extends Main
         $objemp="SELECT
             obejtivosemp.idobejtivosemp,
             obejtivosemp.descripcion,
-            obejtivosemp.estado
+            obejtivosemp.estado,
+            obejtivosemp.img
             FROM
             public.obejtivosemp
             WHERE
@@ -96,7 +97,8 @@ class Sistema extends Main
         $objcal="SELECT
             obejtivoscalidad.idobejtivoscalidad,
             obejtivoscalidad.descripcion,
-            obejtivoscalidad.estado
+            obejtivoscalidad.estado,
+            obejtivoscalidad.img
             FROM
             public.obejtivoscalidad
             WHERE

@@ -6,10 +6,10 @@ require_once '../model/objetivoscal.php';
 class objetivoscalController extends Controller
 {
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'idobejtivoscalidad','align'=>'center','width'=>'20'),
-                        2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),
-                        3 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'20','align'=>'center')
-                     );
+        1 => array('Name'=>'Codigo','NameDB'=>'idobejtivoscalidad','align'=>'center','width'=>'20'),
+        2 => array('Name'=>'Descripcion','NameDB'=>'descripcion','search'=>true),
+        3 => array('Name'=>'Estado','NameDB'=>'estado','width'=>'20','align'=>'center')
+     );
     
     public function index() 
     {

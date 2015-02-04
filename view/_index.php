@@ -45,31 +45,37 @@
                         <br />
                         <div style="text-align: justify;float: left;width: 420px;margin-right: 10px;">
                             <p>
-                                <?php
+                                <?php                                  
+                                
                                     if(count($obejtivosemp)>0)
                                     {    $cn=0;
                                         foreach ($obejtivosemp as $i => $r) 
                                         {   
                                             $cn ++;
-                                            echo $cn.'.- '.$r['descripcion'].'<br />';
+                                            echo $cn.'. '.$r['descripcion'].'<br />';
                                         }
                                     }
+                                    
                                 ?>
-                                <!--
-                                1. Impulsar acciones de prevenci&oacute;n y promoci&oacute;n en base a paquetes de atenci&oacute;n con &eacute;nfasis en la atenci&oacute;n de la mujer (COMUNICACI&Oacute;N).<br />
-                    			2. Fortalecer  la calidad de la atenci&oacute;n de los consultorios (IDENTIDAD).<br />
-                    			3. Garantizar la calidad de los sistemas de soporte. (IMAGEN).<br />
-                    			4. Fortalecer  el programa de inversiones de la empresa (IMAGEN).<br />
-                                5. Desarrollar  la red privada en salud (IMAGEN).<br />
-                                6. Desarrollo de una pol&iacute;tica de marketing institucional (COMUNICACI&Oacute;N).<br />
-                                7. Desarrollo de un sistema de captaci&oacute;n de clientes con reglas claras del mercado (COMUNICACI&Oacute;N).<br />
-                                8. Garantizar la calidad de la hospitalizaci&oacute;n y emergencia (IDENTIDAD).<br />
-                                9. Promover el desarrollo de las competencias del RRHH(IDENTIDAD).<br /><br />*/
-                                -->
+                               
                             </p>
                         </div>
                         <div style="float: left;">
-                            <img src="../web/images/OBJETIBOSC.png" width="232" height="145" style="float: left;" />
+                            <?php
+                                $c=0;
+                                    foreach ($obejtivosemp as $i => $img) 
+                                    {  
+                                        $c ++;
+                                        if($c== 1)
+                                        {
+                                            
+                                ?>
+                                <img src="../web/images/index/<?php echo $img['img']; ?>" width="232" height="145" style="float: left;" />
+                                <?php
+                                
+                                        }
+                                    }
+                            ?>
                         </div>
                         
                         
@@ -86,7 +92,7 @@
                                         foreach ($obejtivoscal as $i => $rs) 
                                         {   
                                             $cnn ++;
-                                            echo $cnn.'.- '.$rs['descripcion'].'<br />';
+                                            echo $cnn.'. '.$rs['descripcion'].'<br />';
                                         }
                                     }
                                 ?>
@@ -99,7 +105,21 @@
                             </p>
                         </div>
                         <div style="float: left;">
-                            <img src="../web/images/OBJETIVOSCA.png" width="232" height="145" style="float: left;" />
+                            <?php
+                                $c=0;
+                                    foreach ($obejtivoscal as $i => $img) 
+                                    {  
+                                        $c ++;
+                                        if($c== 1)
+                                        {
+                                            
+                                ?>
+                                <img src="../web/images/index/<?php echo $img['img']; ?>" width="232" height="145" style="float: left;" />
+                                <?php
+                                
+                                        }
+                                    }
+                            ?>
                         </div>
                         
                         

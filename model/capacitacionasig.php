@@ -24,31 +24,30 @@ class capacitacionasig extends Main
             capacitacion.capacitacion AS c
             INNER JOIN capacitacion.fuentecapacitacion AS f ON f.idfuentecapacitacion = c.idfuentecapacitacion
             INNER JOIN capacitacion.ejecapacitacion AS e ON e.idejecapacitacion = c.idejecapacitacion
-            INNER JOIN capacitacion.metodoscapacitacion AS m ON m.idmetodoscapacitacion = c.idmetodoscapacitacion"; 
+            INNER JOIN capacitacion.metodoscapacitacion AS m ON m.idmetodoscapacitacion = c.idmetodoscapacitacion
+            WHERE c.anio='2015' "; 
                
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
 
     function edit($id ) {
         $stmt = $this->db->prepare("SELECT
-            c.idcapacitacion, c.idfuentecapacitacion,
-            c.idejecapacitacion, c.tema,
-            c.idobejtivoscap, c.idmetodoscapacitacion,
-            c.idtipoevaluacion, 
-            c.propuesta, c.referencias, c.palabrasclaves,
-            c.externo, c.idpersonal, c.expositor,    
-            c.fecha, 
-            substr(cast(c.hora as text),1,8) AS hora,          
-            d.idobejtivosemp, 
-            p.mail, p.dni,p.nombres, p.apellidos
-            
-            FROM
-            capacitacion.capacitacion AS c
-            LEFT JOIN capacitacion.capacitacion_obejtivosemp AS d ON c.idcapacitacion = d.idcapacitacion
-            LEFT JOIN public.obejtivosemp AS oe ON oe.idobejtivosemp = d.idobejtivosemp
-            LEFT JOIN public.personal AS p ON p.idpersonal = c.idpersonal
-            
-            WHERE c.idcapacitacion = :id");
+                c.idcapacitacion, c.idfuentecapacitacion,
+                c.idejecapacitacion, c.tema,
+                c.idobejtivoscap, c.idmetodoscapacitacion,
+                c.idtipoevaluacion, 
+                c.propuesta, c.referencias, c.palabrasclaves,
+                c.externo, c.idpersonal, c.expositor,    
+                c.fecha, substr(cast(c.hora as text),1,5) AS hora,          
+                d.idobejtivosemp, p.mail, p.dni,p.nombres, p.apellidos,
+                c.nrohoras
+                FROM
+                capacitacion.capacitacion AS c
+                LEFT JOIN capacitacion.capacitacion_obejtivosemp AS d ON c.idcapacitacion = d.idcapacitacion
+                LEFT JOIN public.obejtivosemp AS oe ON oe.idobejtivosemp = d.idobejtivosemp
+                LEFT JOIN public.personal AS p ON p.idpersonal = c.idpersonal
+                
+                WHERE c.idcapacitacion = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_STR);
         $stmt->execute();
         //print_r($stmt);
@@ -58,7 +57,6 @@ class capacitacionasig extends Main
     function getDetails($id)
     {
 
-        //echo $idtpdoc;
         $stmt = $this->db->prepare("SELECT
             d.idobejtivosemp,
             d.idcapacitacion,
@@ -94,8 +92,37 @@ class capacitacionasig extends Main
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    
+    function getDetailsPre($id)
+    {
+        
+        $stmt = $this->db->prepare("SELECT
+            p.idcapacitacion,
+            p.idcatpresupuesto,
+            cat.descripcion AS categoria,
+            p.idconcepto,
+            co.descripcion AS concepto,
+            p.tiempo,
+            p.idunidad_medida,
+            un.descripcion AS unidad,            
+            p.cantidad,
+            p.preciounitario,
+            p.subtotal
+            FROM
+            capacitacion.presupuesto AS p
+            INNER JOIN capacitacion.capacitacion AS c ON c.idcapacitacion = p.idcapacitacion
+            LEFT JOIN capacitacion.categoriapresupuesto AS cat ON cat.idcatpresupuesto = p.idcatpresupuesto
+            LEFT JOIN public.conceptos AS co ON co.idconcepto = p.idconcepto
+            LEFT JOIN public.unidad_medida AS un ON un.idunidad_medida = p.idunidad_medida
+            WHERE p.idcapacitacion = :id ");
 
-    function update($_P ) {        
+        $stmt->bindParam(':id', $id , PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    function update($_P ) {   
+        //print_r($_P);     
         
         $id           = $_P['idcapacitacion'];
         $idcapacitador= $_P['idpersonal'];
@@ -105,8 +132,8 @@ class capacitacionasig extends Main
             idfuentecapacitacion= :p1, idejecapacitacion= :p2, 
             tema= :p3, idobejtivoscap= :p4, idmetodoscapacitacion= :p5, idtipoevaluacion= :p6, 
             propuesta= :p8, referencias= :p9, palabrasclaves= :p10, externo= :p11, 
-            idpersonal= :p12, expositor= :p13, fecha= :p14, hora= :p15, estado= :p16
-
+            idpersonal= :p12, expositor= :p13, fecha= :p14, hora= :p15, estado= :p16,
+            nrohoras= :p17
             WHERE idcapacitacion= :idcapacitacion";
 
         $stmt = $this->db->prepare($sql);
@@ -118,10 +145,9 @@ class capacitacionasig extends Main
         {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->db->beginTransaction();
-            //echo $_P['fechacap'];
+            //echo $_P['nrohoras'];
             if($idcapacitador== '' || $_P['activo']== 1)
             {
-
                 $stmt1->bindParam(':p1', $_P['expositordni'] , PDO::PARAM_INT);
                 $stmt1->bindParam(':p2', $_P['nombresexpositor'] , PDO::PARAM_INT);
                 $stmt1->bindParam(':p3', $_P['apellidosexpositor'] , PDO::PARAM_STR);
@@ -130,6 +156,7 @@ class capacitacionasig extends Main
 
                 $idpercar =  $this->IdlastInsert('personal','idpersonal');
                 $row = $stmt->fetchAll();
+
 
                 $nombresexpositor= $_P['nombresexpositor'].' '.$_P['apellidosexpositor'];
                 $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
@@ -148,13 +175,14 @@ class capacitacionasig extends Main
                 $stmt->bindParam(':p14', $_P['fechacap'] , PDO::PARAM_BOOL);
                 $stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
                 $stmt->bindParam(':p16', $estado , PDO::PARAM_INT);
-
+                $stmt->bindParam(':p17', $_P['nrohoras'] , PDO::PARAM_INT);
+                
                 $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
                 $stmt->execute();
             }
             else
                 {
-
+                    //echo $_P['nrohoras'];
                     $nombresexpositor= $_P['nombresexpositor'].' '.$_P['apellidosexpositor'];
 
                     $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
@@ -173,47 +201,95 @@ class capacitacionasig extends Main
                     $stmt->bindParam(':p14', $_P['fechacap'] , PDO::PARAM_BOOL);
                     $stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
                     $stmt->bindParam(':p16', $estado , PDO::PARAM_INT);
-
+                    $stmt->bindParam(':p17', $_P['nrohoras'] , PDO::PARAM_INT);
+                    
                     $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
                     $stmt->execute();
                 }
-
             
-            /**/
-            $sqld="DELETE FROM capacitacion.capacitacion_obejtivosemp
-                   WHERE idcapacitacion= ".$id;
-                $stmt0 = $this->db->prepare($sqld);                    
-                $stmt0->execute();                    
+            /**** INSERTAMOS obejtivos del empresa ****/
+            $sqldel="DELETE FROM capacitacion.capacitacion_obejtivosemp WHERE idcapacitacion= ".$id;
+            $exec = $this->db->prepare($sqldel);                    
+            $exec->execute();                    
                
             $stmt2  = $this->db->prepare("INSERT INTO capacitacion.capacitacion_obejtivosemp(
                                         idcapacitacion, idobejtivosemp)
                                 VALUES (:p1, :p2) ");
 
-            foreach($_P['idobejtivosemp'] as $i => $idobejtivosemp)
-            {                
-                $stmt2->bindParam(':p1',$id,PDO::PARAM_INT);                    
-                $stmt2->bindParam(':p2',$idobejtivosemp,PDO::PARAM_INT);
-                $stmt2->execute();                
-            
+            if($_P['idobejtivosemp']!= ''){
+                foreach($_P['idobejtivosemp'] as $i => $idobejtivosemp)
+                {   
+                    //print_r($_P['idobejtivosemp']);
+                    $stmt2->bindParam(':p1',$id,PDO::PARAM_INT);                    
+                    $stmt2->bindParam(':p2',$idobejtivosemp,PDO::PARAM_INT);
+                    $stmt2->execute();                
+
+                }
             }
-            
-            
-            /**/
-            $sqldasig="DELETE FROM capacitacion.capacitacion_asignacion
-                   WHERE idcapacitacion= ".$id;
-                $stmt01 = $this->db->prepare($sqldasig);                    
-                $stmt01->execute();  
+           
+            /**** ASIGANACION de capacitación ****/
+            $sqldasig="DELETE FROM capacitacion.capacitacion_asignacion WHERE idcapacitacion= ".$id;
+            $stmt01 = $this->db->prepare($sqldasig);                    
+            $stmt01->execute();  
                 
             $stmt3  = $this->db->prepare("INSERT INTO capacitacion.capacitacion_asignacion(
                                         idcapacitacion, idpersonalasig, idtipoalcance)
                                 VALUES (:p1, :p2, :p3) ");
 
-            foreach($_P['idpersonalasignado'] as $i => $idpersonalasig)
-            {                
-                $stmt3->bindParam(':p1',$id,PDO::PARAM_INT);                    
-                $stmt3->bindParam(':p2',$idpersonalasig,PDO::PARAM_INT);
-                $stmt3->bindParam(':p3',$_P['idtipoalcance'][$i],PDO::PARAM_INT);
-                $stmt3->execute();                
+            if($_P['idpersonalasignado']!= '')
+            {
+                foreach($_P['idpersonalasignado'] as $i => $idpersonalasig)
+                {                
+                    $stmt3->bindParam(':p1',$id,PDO::PARAM_INT);                    
+                    $stmt3->bindParam(':p2',$idpersonalasig,PDO::PARAM_INT);
+                    $stmt3->bindParam(':p3',$_P['idtipoalcance'][$i],PDO::PARAM_INT);
+                    $stmt3->execute();                
+
+                }
+            }
+            
+            
+            /**** PRESUPUESTO ****/
+            $sqlPre="DELETE FROM capacitacion.presupuesto
+                   WHERE idcapacitacion= ".$id;
+                $stmt01 = $this->db->prepare($sqlPre);                    
+                $stmt01->execute();  
+                
+            $stmt4  = $this->db->prepare("INSERT INTO capacitacion.presupuesto(
+                idcapacitacion, idcatpresupuesto, idconcepto, tiempo, idunidad_medida, 
+                cantidad, preciounitario, subtotal)
+                VALUES (:p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8) ");
+
+            if($_P['idcatpresupuestodet']!= '')
+            {
+                foreach($_P['idcatpresupuestodet'] as $i => $idcatpresupuestodet)
+                {   
+                    if($_P['tiempodet']== '' || $_P['tiempodet']== 0)
+                    {
+                        $_P['tiempodet']=0;
+                    }
+
+                    if($_P['idconceptodet']== '' || $_P['idconceptodet']== 0)
+                    {
+                        $_P['idconceptodet']=0;
+                    }
+
+                    if($_P['idunidad_medidadet']== '' || $_P['idunidad_medidadet']== 0)
+                    {
+                        $_P['idunidad_medidadet']=0;
+                    }
+
+                    $stmt4->bindParam(':p1',$id,PDO::PARAM_INT);                    
+                    $stmt4->bindParam(':p2',$idcatpresupuestodet,PDO::PARAM_INT);
+                    $stmt4->bindParam(':p3',$_P['idconceptodet'][$i],PDO::PARAM_INT);
+                    $stmt4->bindParam(':p4',$_P['tiempodet'][$i],PDO::PARAM_INT);
+                    $stmt4->bindParam(':p5',$_P['idunidad_medidadet'][$i],PDO::PARAM_INT);
+                    $stmt4->bindParam(':p6',$_P['cantidaddet'][$i],PDO::PARAM_INT);
+                    $stmt4->bindParam(':p7',$_P['preciodet'][$i],PDO::PARAM_INT);
+                    $stmt4->bindParam(':p8',$_P['subtotal'][$i],PDO::PARAM_INT);
+                    $stmt4->execute();                
+
+                }
             
             }
             
@@ -228,12 +304,28 @@ class capacitacionasig extends Main
             } 
     }
     
-    function printDoc($id)
-    {   
+    function delete($id ) {
+        //echo $id;
+        $stmt0 = $this->db->prepare("DELETE FROM capacitacion.capacitacion_obejtivosemp WHERE idcapacitacion = :p1");
+        $stmt0->bindParam(':p1', $id , PDO::PARAM_INT);
+        $stmt0->execute();
+
+        $st= $this->db->prepare("DELETE FROM capacitacion.capacitacion_asignacion WHERE idcapacitacion = :p1");
+        $st->bindParam(':p1', $id , PDO::PARAM_INT);
+        $st->execute();
         
+        $stmt = $this->db->prepare("DELETE FROM capacitacion.capacitacion WHERE idcapacitacion = :p1");
+        $stmt->bindParam(':p1', $id , PDO::PARAM_INT);
+        $p1 = $stmt->execute();
+
+        $p2 = $stmt->errorInfo();
+        return array($p1 , $p2[2]);
+    }
+
+    function printDoc($id)
+    {           
         //echo $id;        
-        $cab= "SELECT
-            ca.idcapacitacion, ca.codigo,
+        $cab= "SELECT ca.idcapacitacion, ca.codigo,
             fu.descripcion AS fuente,
             ej.descripcion AS eje,
             ca.tema, me.descripcion AS metodo,
@@ -247,8 +339,7 @@ class capacitacionasig extends Main
             pe.nombres||' '||pe.apellidos AS expoitor,
             pe.mail
 
-            FROM
-            capacitacion.capacitacion AS ca
+            FROM capacitacion.capacitacion AS ca
             INNER JOIN public.personal AS pe ON pe.idpersonal = ca.idpersonal
             INNER JOIN capacitacion.fuentecapacitacion AS fu ON ca.idfuentecapacitacion = fu.idfuentecapacitacion
             INNER JOIN capacitacion.ejecapacitacion AS ej ON ca.idejecapacitacion = ej.idejecapacitacion
@@ -256,17 +347,14 @@ class capacitacionasig extends Main
             INNER JOIN capacitacion.metodoscapacitacion AS me ON ca.idmetodoscapacitacion = me.idmetodoscapacitacion
             INNER JOIN seguridad.perfil AS p ON ca.idtipoevaluacion = p.idperfil
         
-            WHERE
-            ca.idcapacitacion=".$id;
+            WHERE ca.idcapacitacion=".$id;
 
         $stmt = $this->db->prepare($cab); 
         $stmt->execute();
         $cab= $stmt->fetch();
         
-        $objemp= "SELECT
-            o.descripcion
-            FROM
-            capacitacion.capacitacion_obejtivosemp AS d
+        $objemp= "SELECT o.descripcion
+            FROM capacitacion.capacitacion_obejtivosemp AS d
             INNER JOIN capacitacion.capacitacion AS c ON d.idcapacitacion = c.idcapacitacion
             INNER JOIN public.obejtivosemp AS o ON d.idobejtivosemp = o.idobejtivosemp
             WHERE
@@ -275,39 +363,84 @@ class capacitacionasig extends Main
         $stmt1->execute();
         $objemp= $stmt1->fetchAll();
         
-        $asig= "SELECT
-            p.dni,
+        $asig= "SELECT p.dni,
             p.nombres||' '||p.apellidos AS personal,
             t.descripcion
-            FROM
-            capacitacion.capacitacion AS c
+            FROM capacitacion.capacitacion AS c
             INNER JOIN capacitacion.capacitacion_asignacion AS d ON d.idcapacitacion = c.idcapacitacion
             INNER JOIN public.personal AS p ON p.idpersonal = d.idpersonalasig
             INNER JOIN capacitacion.tipoalcance AS t ON t.idtipoalcance = d.idtipoalcance
-            WHERE
-            d.idcapacitacion=".$id;
+            WHERE d.idcapacitacion=".$id;
         $stmt2 = $this->db->prepare($asig); 
         $stmt2->execute();
-        $asig= $stmt2->fetchAll();
-
-        return array($cab,$objemp,$asig);
+        $asig= $stmt2->fetchAll();  
+        
+        return array($cab, $objemp, $asig);
     }
-
+    
+    function printPre($id)
+    {        
+        /*-------- PRESUPUESTO -----------*/
+        $caT="SELECT
+            cp.idcatpresupuesto,
+            cp.descripcion,
+            cp.estado
+            FROM
+            capacitacion.categoriapresupuesto AS cp
+            INNER JOIN capacitacion.presupuesto AS p ON cp.idcatpresupuesto = p.idcatpresupuesto
+            INNER JOIN capacitacion.capacitacion AS c ON c.idcapacitacion = p.idcapacitacion
+            WHERE
+            p.idcapacitacion=".$id."
+            GROUP BY
+            cp.idcatpresupuesto,
+            cp.descripcion,
+            cp.estado";
+        $stmt3 = $this->db->prepare($caT); 
+        $stmt3->execute();
+        $data= array();
+        
+        foreach ($stmt3->fetchAll() as $f)
+        {
+            $DetCat="SELECT            
+                c.descripcion,
+                p.tiempo,
+                u.descripcion AS unidad,
+                p.cantidad,
+                p.preciounitario
+                FROM
+                capacitacion.presupuesto AS p
+                INNER JOIN capacitacion.capacitacion AS ca ON ca.idcapacitacion = p.idcapacitacion
+                LEFT JOIN public.conceptos AS c ON c.idconcepto = p.idconcepto
+                LEFT JOIN public.unidad_medida AS u ON u.idunidad_medida = p.idunidad_medida
+                WHERE p.idcapacitacion=".$id." and p.idcatpresupuesto= ".$f['idcatpresupuesto'];
+            //print_r($DetCat);
+            $stmt4 = $this->db->prepare($DetCat); 
+            $stmt4->execute();
+            
+            $data[]= array(
+                'Cat' => $f['descripcion'],
+                'Det' => $stmt4->fetchAll()
+            );
+        }
+        
+        return $data;   
+    }
+    
     function upload_files($_P,$_F)
     {
         $result = array();
         if (!empty($_F)) 
         {
-            $tempFile = $_F['Filedata']['tmp_name'];                          // 1
+            $tempFile  = $_F['Filedata']['tmp_name'];                          // 1
             $fileparts = pathinfo($_F['Filedata']['name']);
-            $ext = $fileparts['extension'];
+            $ext       = $fileparts['extension'];
          
             $targetPath = 'files_uploads/';
             $filetypes = array("pdf","doc","odt","docx","rtf","ppt","pptx","jpg","jpeg","png","gif","xls","xlsx");
             $flag = false;
             foreach($filetypes as $typ)
             {
-                if($typ==strtolower($ext))
+                if($typ== strtolower($ext))
                 {
                     $flag = true;
                 }
@@ -334,23 +467,23 @@ class capacitacionasig extends Main
                     chmod($targetFile, 0777);
                 }
                 else
-                {
-                    $stmt = $this->db->prepare("DELETE from capacitacion.anexos where idanexo = ".$idanexo);
-                    $stmt->execute();                    
-                    $result = '0###Error al intentar subir el archivo.';
-                }
+                    {
+                        $stmt = $this->db->prepare("DELETE from capacitacion.anexos WHERE idanexo = ".$idanexo);
+                        $stmt->execute();                    
+                        $result = '0###Error al intentar subir el archivo.';
+                    }
             }
             else 
-            {
-                $result = '0###Extension no apcetada, debe ser (doc, odt, docx, rtf, pdf, imagenes)';
-            }    
+                {
+                    $result = '0###Extension no apcetada, debe ser (doc, odt, docx, rtf, pdf, imagenes)';
+                }    
         }        
         return $result;
     }
 
     function getAnexos($idc)
     {
-        $stmt = $this->db->prepare("SELECT * from capacitacion.anexos where idcapacitacion = :id order by idanexo");
+        $stmt = $this->db->prepare("SELECT * from capacitacion.anexos WHERE idcapacitacion = :id ORDER BY idanexo");
         $stmt->bindParam(':id',$idc,PDO::PARAM_INT);
         $stmt->execute();
         $data = array();
@@ -401,7 +534,7 @@ class capacitacionasig extends Main
 
     function delete_anexo($ida)
     {
-        $stmt = $this->db->prepare("DELETE from capacitacion.anexos where idanexo = ".$ida);
+        $stmt = $this->db->prepare("DELETE from capacitacion.anexos WHERE idanexo = ".$ida);
         $stmt->execute();                    
     }
 

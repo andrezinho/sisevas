@@ -5,7 +5,7 @@
 ?>
    
 <form id="frm_cap" >
-    <input type="hidden" name="controller" value="capacitacion" />
+    <input type="hidden" name="controller" value="desarrollocap" />
     <input type="hidden" name="action" value="save" />
     <input type="hidden" id="idcapacitacion" name="idcapacitacion" value="<?php echo $obj->idcapacitacion; ?>" />
     

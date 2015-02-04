@@ -26,7 +26,7 @@ class desarrollocap extends Main
             INNER JOIN capacitacion.fuentecapacitacion AS f ON f.idfuentecapacitacion = c.idfuentecapacitacion
             INNER JOIN capacitacion.ejecapacitacion AS e ON e.idejecapacitacion = c.idejecapacitacion
             INNER JOIN capacitacion.metodoscapacitacion AS m ON m.idmetodoscapacitacion = c.idmetodoscapacitacion
-            WHERE c.anio='2015' AND c.estado=1 "; 
+            WHERE c.estado=1 AND c.anio= ".date(Y); 
                
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
@@ -122,178 +122,53 @@ class desarrollocap extends Main
         return $stmt->fetchAll();
     }
 
-    function update($_P ) {   
-        //print_r($_P);     
+    function update($_P ) 
+    {   
+        $id        = $_P['idcapacitacion'];
+        $horacap   = $_P['horacap'];
+        $horacapfin= $_P['horacapfin'];
+        $si        = $_P['activo'];
         
-        $id           = $_P['idcapacitacion'];
-        $idcapacitador= $_P['idpersonal'];
-        $si           = $_P['activo'];
-        $estado       = 1;
+        if($si!= 1) { $si=1; }else{ $si=2; }        
+        
         $sql = "UPDATE capacitacion.capacitacion SET 
-            idfuentecapacitacion= :p1, idejecapacitacion= :p2, 
-            tema= :p3, idobejtivoscap= :p4, idmetodoscapacitacion= :p5, idtipoevaluacion= :p6, 
-            propuesta= :p8, referencias= :p9, palabrasclaves= :p10, externo= :p11, 
-            idpersonal= :p12, expositor= :p13, fecha= :p14, hora= :p15, estado= :p16,
-            nrohoras= :p17
-            WHERE idcapacitacion= :idcapacitacion";
-
+            hora= :p1, horafin= :p2, estado= :p3
+            WHERE idcapacitacion= :idcapacitacion ";
         $stmt = $this->db->prepare($sql);
         
-        $sqlper= "INSERT INTO personal(dni, nombres, apellidos, mail) VALUES (:p1, :p2, :p3, :p4)";
-        $stmt1 = $this->db->prepare($sqlper);
-
+        $stmt->bindParam(':p1', $horacap , PDO::PARAM_INT);
+        $stmt->bindParam(':p2', $horacapfin , PDO::PARAM_INT);
+        $stmt->bindParam(':p3', $si , PDO::PARAM_INT);
+        $stmt->bindParam(':idcapacitacion', $id , PDO::PARAM_INT);
+        $stmt->execute();
+            
         try 
         {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->db->beginTransaction();
-            //echo $_P['nrohoras'];
-            if($idcapacitador== '' || $_P['activo']== 1)
-            {
-                $stmt1->bindParam(':p1', $_P['expositordni'] , PDO::PARAM_INT);
-                $stmt1->bindParam(':p2', $_P['nombresexpositor'] , PDO::PARAM_INT);
-                $stmt1->bindParam(':p3', $_P['apellidosexpositor'] , PDO::PARAM_STR);
-                $stmt1->bindParam(':p3', $_P['emailexp'] , PDO::PARAM_STR);
-                $stmt1->execute();
-
-                $idpercar =  $this->IdlastInsert('personal','idpersonal');
-                $row = $stmt->fetchAll();
-
-
-                $nombresexpositor= $_P['nombresexpositor'].' '.$_P['apellidosexpositor'];
-                $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
-                $stmt->bindParam(':p2', $_P['idejecapacitacion'] , PDO::PARAM_INT);
-                $stmt->bindParam(':p3', $_P['tema'] , PDO::PARAM_STR);
-                $stmt->bindParam(':p4', $_P['idobejtivoscap'] , PDO::PARAM_INT);
-                $stmt->bindParam(':p5', $_P['idmetodoscapacitacion'] , PDO::PARAM_INT);
-                $stmt->bindParam(':p6', $_P['idperfil'] , PDO::PARAM_INT);
-                //$stmt->bindParam(':p7', $_P['idtipopersonal'] , PDO::PARAM_INT);
-                $stmt->bindParam(':p8', $_P['propuesta'] , PDO::PARAM_STR);
-                $stmt->bindParam(':p9', $_P['referencias'] , PDO::PARAM_STR);
-                $stmt->bindParam(':p10', $_P['palabrasclaves'] , PDO::PARAM_STR);
-                $stmt->bindParam(':p11', $_P['activo'] , PDO::PARAM_INT);
-                $stmt->bindParam(':p12', $idpercar , PDO::PARAM_INT);
-                $stmt->bindParam(':p13', $nombresexpositor , PDO::PARAM_STR);
-                $stmt->bindParam(':p14', $_P['fechacap'] , PDO::PARAM_BOOL);
-                $stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
-                $stmt->bindParam(':p16', $estado , PDO::PARAM_INT);
-                $stmt->bindParam(':p17', $_P['nrohoras'] , PDO::PARAM_INT);
-                
-                $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
-                $stmt->execute();
-            }
-            else
-                {
-                    //echo $_P['nrohoras'];
-                    $nombresexpositor= $_P['nombresexpositor'].' '.$_P['apellidosexpositor'];
-
-                    $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
-                    $stmt->bindParam(':p2', $_P['idejecapacitacion'] , PDO::PARAM_INT);
-                    $stmt->bindParam(':p3', $_P['tema'] , PDO::PARAM_STR);
-                    $stmt->bindParam(':p4', $_P['idobejtivoscap'] , PDO::PARAM_INT);
-                    $stmt->bindParam(':p5', $_P['idmetodoscapacitacion'] , PDO::PARAM_INT);
-                    $stmt->bindParam(':p6', $_P['idperfil'] , PDO::PARAM_INT);
-                    //$stmt->bindParam(':p7', $_P['idtipopersonal'] , PDO::PARAM_INT);
-                    $stmt->bindParam(':p8', $_P['propuesta'] , PDO::PARAM_STR);
-                    $stmt->bindParam(':p9', $_P['referencias'] , PDO::PARAM_STR);
-                    $stmt->bindParam(':p10', $_P['palabrasclaves'] , PDO::PARAM_STR);
-                    $stmt->bindParam(':p11', $_P['activo'] , PDO::PARAM_INT);
-                    $stmt->bindParam(':p12', $_P['idpersonal'] , PDO::PARAM_INT);
-                    $stmt->bindParam(':p13', $nombresexpositor , PDO::PARAM_STR);
-                    $stmt->bindParam(':p14', $_P['fechacap'] , PDO::PARAM_BOOL);
-                    $stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
-                    $stmt->bindParam(':p16', $estado , PDO::PARAM_INT);
-                    $stmt->bindParam(':p17', $_P['nrohoras'] , PDO::PARAM_INT);
-                    
-                    $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
-                    $stmt->execute();
-                }
+            $this->db->beginTransaction();            
             
-            /**** INSERTAMOS obejtivos del empresa ****/
-            $sqldel="DELETE FROM capacitacion.capacitacion_obejtivosemp WHERE idcapacitacion= ".$id;
+            /**** INSERTAMOS Acuerdos de Capacitacion ****/
+            $sqldel="DELETE FROM capacitacion.capacitacion_acuerdos WHERE idcapacitacion= ".$id;
             $exec = $this->db->prepare($sqldel);                    
             $exec->execute();                    
                
-            $stmt2  = $this->db->prepare("INSERT INTO capacitacion.capacitacion_obejtivosemp(
-                                        idcapacitacion, idobejtivosemp)
-                                VALUES (:p1, :p2) ");
+            $sqlac= "INSERT INTO capacitacion.capacitacion_acuerdos (
+                idcapacitacion, acuerdo, idasistente ) 
+                VALUES ( :p1, :p2, :p3)";
+            $stmt2 = $this->db->prepare($sqlac);
 
-            if($_P['idobejtivosemp']!= ''){
-                foreach($_P['idobejtivosemp'] as $i => $idobejtivosemp)
+            if($_P['acuerdocap']!= ''){
+                foreach($_P['acuerdocap'] as $i => $acuerdocap)
                 {   
                     //print_r($_P['idobejtivosemp']);
                     $stmt2->bindParam(':p1',$id,PDO::PARAM_INT);                    
-                    $stmt2->bindParam(':p2',$idobejtivosemp,PDO::PARAM_INT);
+                    $stmt2->bindParam(':p2',$acuerdocap,PDO::PARAM_STR);
+                    $stmt2->bindParam(':p3',$_P['idasistente'],PDO::PARAM_INT);
                     $stmt2->execute();                
 
                 }
             }
-           
-            /**** ASIGANACION de capacitación ****/
-            $sqldasig="DELETE FROM capacitacion.capacitacion_asignacion WHERE idcapacitacion= ".$id;
-            $stmt01 = $this->db->prepare($sqldasig);                    
-            $stmt01->execute();  
-                
-            $stmt3  = $this->db->prepare("INSERT INTO capacitacion.capacitacion_asignacion(
-                                        idcapacitacion, idpersonalasig, idtipoalcance)
-                                VALUES (:p1, :p2, :p3) ");
-
-            if($_P['idpersonalasignado']!= '')
-            {
-                foreach($_P['idpersonalasignado'] as $i => $idpersonalasig)
-                {                
-                    $stmt3->bindParam(':p1',$id,PDO::PARAM_INT);                    
-                    $stmt3->bindParam(':p2',$idpersonalasig,PDO::PARAM_INT);
-                    $stmt3->bindParam(':p3',$_P['idtipoalcance'][$i],PDO::PARAM_INT);
-                    $stmt3->execute();                
-
-                }
-            }
-            
-            
-            /**** PRESUPUESTO ****/
-            $sqlPre="DELETE FROM capacitacion.presupuesto
-                   WHERE idcapacitacion= ".$id;
-                $stmt01 = $this->db->prepare($sqlPre);                    
-                $stmt01->execute();  
-                
-            $stmt4  = $this->db->prepare("INSERT INTO capacitacion.presupuesto(
-                idcapacitacion, idcatpresupuesto, idconcepto, tiempo, idunidad_medida, 
-                cantidad, preciounitario, subtotal)
-                VALUES (:p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8) ");
-
-            if($_P['idcatpresupuestodet']!= '')
-            {
-                foreach($_P['idcatpresupuestodet'] as $i => $idcatpresupuestodet)
-                {   
-                    if($_P['tiempodet']== '' || $_P['tiempodet']== 0)
-                    {
-                        $_P['tiempodet']=0;
-                    }
-
-                    if($_P['idconceptodet']== '' || $_P['idconceptodet']== 0)
-                    {
-                        $_P['idconceptodet']=0;
-                    }
-
-                    if($_P['idunidad_medidadet']== '' || $_P['idunidad_medidadet']== 0)
-                    {
-                        $_P['idunidad_medidadet']=0;
-                    }
-
-                    $stmt4->bindParam(':p1',$id,PDO::PARAM_INT);                    
-                    $stmt4->bindParam(':p2',$idcatpresupuestodet,PDO::PARAM_INT);
-                    $stmt4->bindParam(':p3',$_P['idconceptodet'][$i],PDO::PARAM_INT);
-                    $stmt4->bindParam(':p4',$_P['tiempodet'][$i],PDO::PARAM_INT);
-                    $stmt4->bindParam(':p5',$_P['idunidad_medidadet'][$i],PDO::PARAM_INT);
-                    $stmt4->bindParam(':p6',$_P['cantidaddet'][$i],PDO::PARAM_INT);
-                    $stmt4->bindParam(':p7',$_P['preciodet'][$i],PDO::PARAM_INT);
-                    $stmt4->bindParam(':p8',$_P['subtotal'][$i],PDO::PARAM_INT);
-                    $stmt4->execute();                
-
-                }
-            
-            }
-            
+                        
             $this->db->commit();            
             return array('1','Bien!',$id);
 

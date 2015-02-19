@@ -101,6 +101,11 @@ function deleting(i)
                 <label for="eje" class="labeless">Eje de capac.:</label> 
                 <?php echo $eje; ?>
                 <br />
+                
+                <label for="linea" class="labeless">Linea Accion:</label>
+                <input id="lineaaccion" name="lineaaccion" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 520px; text-align: left;" value="<?php echo $obj->descripcion; ?>" />
+                <input type="hidden" name="idlineaaccion" id="idlineaaccion" value="<?php echo $obj->idlineaaccion; ?>" />
+                <br />
                   
                 <label for="tem" class="labeless">Tema:</label>
                 <input id="tema" name="tema" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 520px; text-align: left;" value="<?php echo $obj->tema; ?>" />

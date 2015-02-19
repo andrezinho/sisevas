@@ -1,6 +1,5 @@
 $(function() 
 {	
-	
 	$("#list").on('click','.finalizar',function(){
 		var i = $(this).attr("id");
 		i = i.split('-');

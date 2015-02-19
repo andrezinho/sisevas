@@ -120,12 +120,9 @@ class desarrollocapController extends Controller
     
     public function VerNroActa()
     {
-        $obj = new desarrollocap();
-        $result = array();        
-        $p = $obj->VerNroActa($Id);
-        if ($p[0]=="1") $result = array(1,$p[1]);
-        else $result = array(2,$p[1]);
-        print_r(json_encode($result));
+        $obj = new desarrollocap();        
+        $rows = $obj->VerNroActaSql($_GET['idcap']);                               
+        print_r(json_encode($rows));
     }
     
     public function printeract()
@@ -134,11 +131,11 @@ class desarrollocapController extends Controller
         $data = array();
         $view = new View();
         $ro = $obj->printDoc($_GET['id']);
-        $res= $obj->printPre($_GET['id']);
+        //$res= $obj->printPre($_GET['id']);
         $data['cab']    = $ro[0];
-        $data['objemp'] = $ro[1];
+        $data['acuerdo']= $ro[1];
         $data['asig']   = $ro[2];
-        $data['rowsd']  = $res;
+        //$data['rowsd']  = $res;
         $view->setData($data);
         $view->setTemplate( '../view/desarrollocap/_actapdf.php' );
         //$view->setLayout( '../template/empty.php' );

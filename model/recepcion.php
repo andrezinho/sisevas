@@ -26,9 +26,8 @@ class Recepcion extends Main
             evaluacion.tramite AS t
             INNER JOIN public.tipo_documento AS td ON td.idtipo_documento = t.idtipo_documento
             INNER JOIN evaluacion.derivaciones AS d ON t.idtramite = d.idtramite
-            INNER JOIN public.personal AS p ON p.idpersonal = d.idpersonal
-    
-           WHERE d.idpersonal = ".$_SESSION['idusuario'];
+            INNER JOIN public.personal AS p ON p.idpersonal = d.idpersonal    
+            WHERE d.idpersonal = ".$_SESSION['idusuario'];
         //echo $sql;    
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }

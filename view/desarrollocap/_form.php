@@ -2,6 +2,7 @@
     include("../lib/helpers.php"); 
     include("../view/header_form.php");       
     
+    $si=1;
 ?>
    
 <form id="frm_cap" >
@@ -45,14 +46,18 @@
                         </thead>  
                         <tbody>
                             <?php 
-                                if(count($rowsd)>0)
+                                if(count($rowsac)>0)
                                 {    
-                                    foreach ($rowsd as $i => $r) 
-                                    {                                          
+                                    foreach ($rowsac as $i => $r) 
+                                    {   
+                                        if($r['asistente']=='')
+                                        {
+                                            $r['asistente']= 'NINGUNO';
+                                        }
                                         ?>
                                         <tr class="tr-detalle" style="height: 23px">
-                                            <td align="left"><?php echo $r['acuerdo']; ?><input type="hidden" name="idobejtivosempresa[]" value="<?php echo $r['acuerdo']; ?>" /></td>
-                                            <td align="left"><?php echo $r['personal']; ?><input type="hidden" name="idobejtivosempresa[]" value="<?php echo $r['personal']; ?>" /></td>
+                                            <td align="left"><?php echo $r['acuerdo']; ?><input type="hidden" name="acuerdocap[]" value="<?php echo $r['acuerdo']; ?>" /></td>
+                                            <td align="left"><?php echo $r['asistente']; ?><input type="hidden" name="idasistente[]" value="<?php echo $r['idasistente']; ?>" /></td>
                                             <td align="center"><a class="box-boton boton-delete" href="#" title="Quitar" ></a></td>
                                         </tr>
                                         <?php    
@@ -78,15 +83,15 @@
                 <input type="text" name="horacap" id="horacap" value="<?php if($obj->hora!=""){echo $obj->hora; } else {echo date('H:i');} ?>" class="ui-widget-content ui-corner-all text" style="width:60px; text-align:center" />
                                
                 <label for="objcap" class="labels">Hora Fin:</label> 
-                <input type="text" name="horacapfin" id="horacapfin" value="<?php if($obj->horacapfin!=""){echo $obj->horacapfin; } else {echo date('H:i');} ?>" class="ui-widget-content ui-corner-all text" style="width:60px; text-align:center" />               
+                <input type="text" name="horacapfin" id="horacapfin" value="<?php if($obj->horafin!=""){echo $obj->horafin; } else {echo date('H:i');} ?>" class="ui-widget-content ui-corner-all text" style="width:60px; text-align:center" />               
                                 
                 <label for="estado" class="labeless">Fin de la capacitacion?:</label>
                 <div id="estados" style="display:inline">                
                 <?php                   
-                    if($obj->externo==1 || $obj->externo==0)
+                    if($si==1 || $si==0)
                     {
-                        if($obj->externo==1){$rep=1;}
-                        else {$rep=0;}
+                        if($si==1){$rep=1;}
+                        else {$rep=1;}
                     }
                     else {$rep = 1;}                    
                         activo('activo',$rep);

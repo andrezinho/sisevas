@@ -43,7 +43,7 @@ $(function()
             .appendTo(ul);
     };
       
-        //buscar Expositor NOMBRES
+    //buscar Expositor NOMBRES
     $("#nombresexpositor").autocomplete({        
         minLength: 0,
         source: 'index.php?controller=personal&action=get&tipo=2',
@@ -74,7 +74,7 @@ $(function()
         source: 'index.php?controller=personal&action=get&tipo=2',
         focus: function( event, ui ) 
         {
-            $( "#nombresexpositor" ).val( ui.item.nombres );
+            $( "#personalasig" ).val( ui.item.nombres );
             return false;
         },
         select: function( event, ui ) 
@@ -90,7 +90,30 @@ $(function()
             .append( "<a>"+ item.nombres + " "+item.apellidos + "</a>" )
             .appendTo(ul);
       };
-
+    
+    //buscar LINEAS DE ACCION
+    $("#lineaaccion").autocomplete({        
+        minLength: 0,
+        source: 'index.php?controller=lineaaccion&action=get&tipo=2',
+        focus: function( event, ui ) 
+        {
+            $( "#lineaaccion" ).val( ui.item.descripcion );
+            return false;
+        },
+        select: function( event, ui ) 
+        {
+            $("#idlineaaccion").val(ui.item.idlineaaccion);            
+            $("#lineaaccion").val( ui.item.descripcion);
+            
+            return false;
+        }
+    }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {        
+        return $( "<li></li>" )
+            .data( "item.autocomplete", item )
+            .append( "<a>"+ item.descripcion +"</a>" )
+            .appendTo(ul);
+      };
+      
     $("#table-pers").on('click','#addDetails',function(){
         addDetails();
     });
@@ -114,14 +137,14 @@ $(function()
 function addDetail()
 {
   
-      bval = true;      
-      bval = bval && $("#idobejtivosemp").required();      
-
-      if(!bval) return 0;
-        idobjemp= $("#idobejtivosemp").val(),
-        desc = $("#idobejtivosemp option:selected").html()        
-       
-        addDetalle(idobjemp,desc);
+    bval = true;      
+    bval = bval && $("#idobejtivosemp").required();      
+         
+    if(!bval) return 0;
+    idobjemp= $("#idobejtivosemp").val(),
+    desc = $("#idobejtivosemp option:selected").html()        
+    
+    addDetalle(idobjemp,desc);
         
 }
 
@@ -272,8 +295,8 @@ function addDetallesP(idcat,cat,idcon,con,cant,iduni,uni,tiem,pre)
 function save()
 {
   bval = true;        
-  bval = bval && $( "#descripcion" ).required();        
-  //bval = bval && $( "#orden" ).required();
+  bval = bval && $("#descripcion" ).required();        
+  bval = bval && $("#lineaaccion").required();
   var str = $("#frm_cap").serialize();
   if ( bval ) 
   {

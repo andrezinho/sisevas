@@ -36,7 +36,7 @@
         if ($obj->idtipo_documento== 2 || $obj->idtipo_documento== 3) {
         ?>
         <label for="destinatario" class="labels">Remitente:</label>
-        <?php echo $remitentes; ?>
+        <?php echo $remitente; ?>
         <br />
         
         <label for="problem">Descripción del problema</label><br />

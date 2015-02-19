@@ -8,7 +8,6 @@ $(function()
     $( "#fechacap" ).datepicker({dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true});
     $( "#idobejtivosemp,#idobejtivoscap" ).css({'width':'550px'});
     
-    
     $("#table-per").on('click','#addDetail',function(){
         addDetail();
     });
@@ -19,15 +18,34 @@ $(function()
     if(idcap == '')
     {load_correlativo(8);}
     
+    //buscar LINEAS DE ACCION
+    $("#lineaaccion").autocomplete({        
+        minLength: 0,
+        source: 'index.php?controller=lineaaccion&action=get&tipo=2',
+        focus: function( event, ui ) 
+        {
+            $( "#lineaaccion" ).val( ui.item.descripcion );
+            return false;
+        },
+        select: function( event, ui ) 
+        {
+            $("#idlineaaccion").val(ui.item.idlineaaccion);            
+            $("#lineaaccion").val( ui.item.descripcion);
+            
+            return false;
+        }
+    }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {        
+        return $( "<li></li>" )
+            .data( "item.autocomplete", item )
+            .append( "<a>"+ item.descripcion +"</a>" )
+            .appendTo(ul);
+      };
     
 });
 
 function load_correlativo(idtp)
 {
     $.get('index.php','controller=tipodocumento&action=Correlativo&idtp='+idtp,function(r){
-          
-        //$("#serie").val(r.serie);
-        //$("#numero").val(r.numero);
         $("#correlativo").val(r.correlativo);
         $("#codigo").val(r.correlativo);
     },'json');

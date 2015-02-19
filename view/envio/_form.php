@@ -1,6 +1,8 @@
-<?php  include("../lib/helpers.php"); 
-       include("../view/header_form.php");
-       
+<?php 
+    include("../lib/helpers.php"); 
+    include("../view/header_form.php");
+    /*$idtpproblema= $obj->idtramite;
+    $idtramite =  $obj->idtramite;*/
 ?>
 <div style="padding:10px 20px; min-width:630px; min-height:450px;">
 <form id="frm_envio" >
@@ -12,8 +14,7 @@
         <label for="tipodoc" class="labels">Tipo documento:</label>
         <?php echo $tipodoc; ?>
         <input type="text" id="correlativo" name="correlativo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php echo $obj->codigo; ?>" readonly />
-        <!-- <a id="newLine" href="javascript:"><span class="box-boton">&nbsp;</span></a> 
-        <div id="correlativo"></div>-->
+        
         <br/>
         <hr />
         <br/>
@@ -23,4 +24,11 @@
 
         
 </form>
+<script>
+    /*if(idtramite= '')
+    {
+        load_problema($(this).val()); 
+    }*/
+    
+</script>
 </div>

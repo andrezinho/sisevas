@@ -36,14 +36,14 @@ class capacitacion extends Main
                 c.propuesta, c.referencias, c.palabrasclaves,
                 c.externo, c.idpersonal, c.expositor,                
                 d.idobejtivosemp,
-                p.mail
+                p.mail, l.descripcion
                 
                 FROM
                 capacitacion.capacitacion AS c
                 LEFT JOIN capacitacion.capacitacion_obejtivosemp AS d ON c.idcapacitacion = d.idcapacitacion
                 LEFT JOIN public.obejtivosemp AS oe ON oe.idobejtivosemp = d.idobejtivosemp
                 LEFT JOIN public.personal AS p ON p.idpersonal = c.idpersonal
-                
+                LEFT JOIN capacitacion.lineaaccion AS l ON l.idlineaaccion = c.idlineaaccion
                 WHERE c.idcapacitacion = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_STR);
         $stmt->execute();
@@ -85,6 +85,7 @@ class capacitacion extends Main
         $propuesta            = $_P['propuesta'];
         $referencias          = $_P['referencias'];
         $palabrasclaves       = $_P['palabrasclaves'];
+        $idlineaaccion        = $_P['idlineaaccion'];
         $anio= date('Y');
 
         $obj_td->UpdateCorrelativo($idtipodocumento);
@@ -96,9 +97,9 @@ class capacitacion extends Main
             $this->db->beginTransaction();
             
             $sql= "INSERT INTO capacitacion.capacitacion( idfuentecapacitacion, idejecapacitacion, tema, idobejtivoscap, idmetodoscapacitacion, idtipoevaluacion, 
-            codigo,propuesta, referencias, palabrasclaves, anio)
+            codigo,propuesta, referencias, palabrasclaves, anio, idlineaaccion)
             VALUES($idfuentecapacitacion,$idejecapacitacion,'$tema',$idobejtivoscap,$idmetodoscapacitacion,
-                $idperfil,'$codigo','$propuesta','$referencias','$palabrasclaves', $anio) ";
+                $idperfil,'$codigo','$propuesta','$referencias','$palabrasclaves', $anio, $idlineaaccion) ";
             $stmt = $this->db->prepare($sql);
 
             /*
@@ -149,8 +150,8 @@ class capacitacion extends Main
         $sql = "UPDATE capacitacion.capacitacion SET 
             idfuentecapacitacion= :p1, idejecapacitacion= :p2, 
             tema= :p3, idobejtivoscap= :p4, idmetodoscapacitacion= :p5, idtipoevaluacion= :p6, 
-            propuesta= :p8, referencias= :p9, palabrasclaves= :p10
-            
+            propuesta= :p8, referencias= :p9, palabrasclaves= :p10,
+            idlineaaccion= :p11            
             WHERE idcapacitacion= :idcapacitacion";
 
         $stmt = $this->db->prepare($sql);
@@ -173,7 +174,7 @@ class capacitacion extends Main
             $stmt->bindParam(':p8', $_P['propuesta'] , PDO::PARAM_STR);
             $stmt->bindParam(':p9', $_P['referencias'] , PDO::PARAM_STR);
             $stmt->bindParam(':p10', $_P['palabrasclaves'] , PDO::PARAM_STR);
-            //$stmt->bindParam(':p11', $exter , PDO::PARAM_INT);
+            $stmt->bindParam(':p11', $_P['idlineaaccion'] , PDO::PARAM_INT);
             //$stmt->bindParam(':p12', $_P['idpersonal'] , PDO::PARAM_INT);
             //$stmt->bindParam(':p13', $_P['expositor'] , PDO::PARAM_STR);
             //$stmt->bindParam(':p14', $_P['fechacap'] , PDO::PARAM_BOOL);

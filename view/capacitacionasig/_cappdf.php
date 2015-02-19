@@ -69,10 +69,10 @@ class PDF extends FPDF
         foreach ($objemp as $r){                
             $this->SetX(20);
             $c++;
-            $this->MultiCell(125,4,utf8_decode($c.".- ".$r['descripcion']),0,'J',false);
+            $this->MultiCell(180,4,utf8_decode($c.".- ".$r['descripcion']),0,'J',false);
             $this->Ln(5);      
         }                
-        $this->Ln(3);         
+        $this->Ln(2);         
         
         $this->SetFont('Arial','B',8);
         $this->Cell($w, 5,strtoupper(utf8_decode('Método de capacitaciÓn')), 0, 0, 'L');        
@@ -94,23 +94,23 @@ class PDF extends FPDF
         $this->SetFont('Arial','',$f);
         $this->SetX(20);
         $this->MultiCell(180,5,utf8_decode($cab['propuesta']),0,'J',false);
-        $this->Ln(15);
+        $this->Ln(20);
         
         $this->SetFont('Arial','B',8);
         $this->Cell($w, 5,strtoupper(utf8_decode('Referencia Bibliográfica')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 1, 'C');
         $this->SetFont('Arial','',$f);
         $this->SetX(20);
-        $this->MultiCell(170,5,utf8_decode($cab['referencias']),0,'J',false);
-        $this->Ln(10);
+        $this->MultiCell(180,5,utf8_decode($cab['referencias']),0,'J',false);
+        $this->Ln(15);
         
         $this->SetFont('Arial','B',8);
         $this->Cell($w, 5,strtoupper(utf8_decode('Palabras Claves del Tema')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 1, 'C');
         $this->SetFont('Arial','',$f);
         $this->SetX(20);
-        $this->MultiCell(170,5,utf8_decode($cab['palabrasclaves']),0,'J',false);
-        $this->Ln(10);
+        $this->MultiCell(180,5,utf8_decode($cab['palabrasclaves']),0,'J',false);
+        $this->Ln(15);
         
         $this->SetFont('Arial','B',8);
         $this->Cell($w, 5,strtoupper(utf8_decode('Expositor')), 0, 0, 'L');        
@@ -134,72 +134,76 @@ class PDF extends FPDF
         $this->Cell($w, 5,strtoupper(utf8_decode('Hora de la Capacitación')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 0, 'C');
         $this->SetFont('Arial','',$f);
-        $this->Cell(0, 5, utf8_decode($cab['hora']), 0, 1, 'L');
+        
+        $hora= date_format(date_create($cab['hora']),'h:i a');
+        $this->Cell(0, 5, utf8_decode($hora), 0, 1, 'L');
         $this->Ln(3);
 
         $this->SetFont('Arial','U',9);
         $this->Cell(0, 5, strtoupper(utf8_decode('Asignados (as) a la Capacitación : ')), 0, 1, 'L');
         $this->Ln(2);
         $cc=0;
+        $Alt= 7;
         $h0= 5;
-        $h1=15; $h2=30; $h3=70; $h4=40;
-        $this->SetX(20);
+        $h1=10; $h2=25; $h3=90; $h4=30; $h5= 35;
+        $this->SetX(10);
         $this->SetFillColor(224,235,255);
         $this->SetFont('Arial','B',9);
         
         $this->Cell($h1, $h0,strtoupper(utf8_decode('n° ')), 1, 0, 'C');
         $this->Cell($h2, $h0,strtoupper(utf8_decode('dni')), 1, 0, 'C');
         $this->Cell($h3, $h0,strtoupper(utf8_decode('nombres y apellidos')), 1, 0, 'C');
-        $this->Cell($h4, $h0,strtoupper(utf8_decode('tipo alcance')), 1, 1, 'C');
-
+        $this->Cell($h4, $h0,strtoupper(utf8_decode('tipo alcance')), 1, 0, 'C');
+        $this->Cell($h5, $h0,strtoupper(utf8_decode('firma')), 1, 1, 'C');
         foreach ($asig as $rs){                
-            $this->SetX(20);
+            $this->SetX(10);
             $cc++;
             $this->SetFont('Arial','',9);
-            $this->Cell($h1, 5,strtoupper(utf8_decode($cc)), 0, 0, 'C');
-            $this->Cell($h2, 5,strtoupper(utf8_decode($rs['dni'])), 0, 0, 'C');
-            $this->Cell($h3, 5,strtoupper(utf8_decode($rs['personal'])), 0, 0, 'L');
-            $this->Cell($h4, 5,strtoupper(utf8_decode($rs['descripcion'])), 0, 1, 'L');
-            $this->SetX(20);
-            $this->Cell(155,0,'',1,1,'C');   
+            $this->Cell($h1, $Alt,strtoupper(utf8_decode($cc)), 0, 0, 'C');
+            $this->Cell($h2, $Alt,strtoupper(utf8_decode($rs['dni'])), 0, 0, 'C');
+            $this->Cell($h3, $Alt,strtoupper(utf8_decode($rs['personal'])), 0, 0, 'L');
+            $this->Cell($h4, $Alt,strtoupper(utf8_decode($rs['descripcion'])), 0, 1, 'C');
+            $this->SetX(10);
+            $this->Cell(190,0,'',1,1,'C');   
         } 
         
         $this->AddPage('A','A4');
-        //$this->Ln(3);
+        $this->SetMargins(30,0,2);
         
         $this->SetFont('Arial','U',9);
+        $this->SetX(28);
         $this->Cell(0, 5, strtoupper(utf8_decode('Presupuesto detallado del proyecto : ')), 0, 1, 'L');
         $this->Ln(2);
         
         $con=1;
         
-        $h1=160; $h2=10; $h3=15; $h4=20; $h5=155; $h6=150; $h7=25;
-        $this->SetFont('Arial','B',9);
+        $h1=160; $h2=10; $h3=15; $h4=13; $h5=155; $h6=150; $h7=20; $h8=20;
+        $this->SetFont('Arial','B',8);
         $this->Cell($h1, $h0,strtoupper(utf8_decode('Concepto')), 1, 0, 'C');
         $this->Cell($h2, $h0,strtoupper(utf8_decode('')), 1, 0, 'C');
         $this->Cell($h3, $h0,strtoupper(utf8_decode('Unidad')), 1, 0, 'C');
-        $this->Cell($h4, $h0,strtoupper(utf8_decode('Cantidad')), 1, 0, 'C');
+        $this->Cell($h4, $h0,strtoupper(utf8_decode('Cant.')), 1, 0, 'C');
         $this->Cell($h7, $h0,strtoupper(utf8_decode('Precio Uni.')), 1, 0, 'C');
-        $this->Cell($h4, $h0,strtoupper(utf8_decode('Sub Total')), 1, 1, 'C');
+        $this->Cell($h8, $h0,strtoupper(utf8_decode('Sub Total')), 1, 1, 'C');
         //$this->Cell($h4, $h0,strtoupper(utf8_decode('Total')), 1, 1, 'C');
         
-         $Total=0; $subtotal=0; $TotalF=0;
+        $Total=0; $subtotal=0; $TotalF=0;
         foreach ($rowsd as $i => $r) 
         {   
             $cond=1;
-            $this->SetFont('Arial','B',9);
+            $this->SetFont('Arial','B',8);
             $this->Cell(5, $h0,$con." .", 0, 0, 'C');
             $this->Cell($h5, $h0,strtoupper(utf8_decode($r['Cat'])), 0, 0, 'L');
             $this->Cell($h2, $h0,strtoupper(''), 0, 0, 'C');
             $this->Cell($h3, $h0,strtoupper(''), 0, 0, 'C');
             $this->Cell($h4, $h0,strtoupper(''), 0, 0, 'C');
             $this->Cell($h7, $h0,strtoupper(''), 0, 0, 'C');
-            $this->Cell($h4, $h0,strtoupper(''), 0, 1, 'C');
-            //$this->Cell($h4, $h0,number_format($subtotals, 2) , 0, 1, 'C');
-            
+            $this->Cell($h8, $h0,strtoupper(''), 0, 1, 'C');
+            //$this->Cell($h4, $h0,number_format($subtotals, 2) , 0, 1, 'C');            
             
             foreach ($r['Det'] as $f => $d) 
             {
+                //$this->SetFont('Arial','B',7);
                 $tiempo= $d['tiempo'];
                 
                 if($tiempo==0){
@@ -214,7 +218,7 @@ class PDF extends FPDF
                         //$subtotal= number_format($subtotal, 2);
                     }         
                 $Total= $Total + $subtotal;
-                $this->SetFont('Arial','',9);
+                $this->SetFont('Arial','',7);
                 $this->Cell(5, $h0,"", 0, 0, 'C');
                 if($d['descripcion']!= '')
                 {
@@ -225,10 +229,10 @@ class PDF extends FPDF
                     }
                 $this->Cell($h6, $h0,strtoupper(utf8_decode($d['descripcion'])), 0, 0, 'L');
                 $this->Cell($h2, $h0,$tiempo, 0, 0, 'C');
-                $this->Cell($h3, $h0,strtoupper(utf8_decode($d['unidad'])), 0, 0, 'L');
+                $this->Cell($h3, $h0,strtoupper(utf8_decode($d['unidad'])), 0, 0, 'C');
                 $this->Cell($h4, $h0,$d['cantidad'], 0, 0, 'C');
                 $this->Cell($h7, $h0,strtoupper($d['preciounitario']), 0, 0, 'R');
-                $this->Cell($h4, $h0,strtoupper(number_format($subtotal,2)), 0, 1, 'R');
+                $this->Cell($h8, $h0,strtoupper(number_format($subtotal,2)), 0, 1, 'R');
                 //$this->Cell($h4, $h0,strtoupper(''), 0, 1, 'C');
                 $cond++;
             }          
@@ -250,7 +254,7 @@ class PDF extends FPDF
 
     function Footer()
     {
-        $this->SetY(-10);
+        $this->SetY(-20);
         $this->SetFont('Arial','',6);
         $this->Cell(0, 4, utf8_decode('Prohibida la Reproducción Total o Parcial de este documento sin la autorización del Representante de la Dirección.'), 0, 1, 'C');
         $this->Cell(0, 4, utf8_decode('SISEVAS v. 1.5'), 0, 1, 'C');
@@ -261,7 +265,7 @@ class PDF extends FPDF
 //$nombre = $cabecera[0]['nombres'];
 //print_r($rowsd);
 $pdf= new PDF('P','mm', 'A4');
-$pdf->SetAutoPageBreak(0.2 ,0.2);
+//$pdf->SetAutoPageBreak(0.2 ,0.2);
 //$pdf->SetTitle($title);
 $pdf->SetTitle(':: CMSM - CAPACITACION ::');
 $pdf->SetMargins(10,5,8);

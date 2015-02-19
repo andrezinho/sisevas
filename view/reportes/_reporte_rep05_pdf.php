@@ -62,14 +62,20 @@ class PDF extends FPDF {
         $this->Cell($w3, $h, utf8_decode('Fecha'), 1, 0, 'C', $fill);
         $this->Cell($w4, $h, utf8_decode('Expositor'), 1, 0, 'C', $fill);
         $this->Cell($w5, $h, utf8_decode('Estado'), 1, 1, 'C', $fill);
+        
+        $es1=0; $es2=0; $es3=0;
+        
         foreach ($rows as $k => $r) {
             switch ($r['estado']) {
                 case 0:
                     $est='Falta Asignar'; break;
+                    $es1=0;
                 case 1:
                     $est='En Proceso'; break;
+                    $es2=0;
                 case 2:
                     $est='Finalizado'; break;
+                    $es3=0;
             }
             
             $s = 0;
@@ -83,7 +89,25 @@ class PDF extends FPDF {
             $this->Cell($w4, $h, utf8_decode($r['expositor']), 1, 0, 'L', $fill);
             $this->Cell($w5, $h, utf8_decode($est), 1, 1, 'C', $fill);
         }
-
+        
+        /*$this->Ln(10);
+        foreach ($rows as $k => $rs) {
+            if($rs['estado']==0)
+            {
+                $es1++;
+            }
+            if($rs['estado']==1)
+            {
+                $es2++;
+            }
+            if($rs['estado']==2)
+            {
+                $es3++;
+            }
+        }
+        $this->Cell($w1, $h, utf8_decode('Total Cap:'), 0, 0, 'C');
+        $this->Cell($w1, $h, $es1, 0, 0, 'C');
+        */
     }
 
 }

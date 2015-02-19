@@ -6,251 +6,145 @@ class PDF extends FPDF
     function Header()
     {
         //global ;
-        /*$this->Line(8, 18, 142, 18);         
+        //$this->Ln(10);
+        $fechahoy= date('d/m/Y');
+        $this->Line(8, 32, 202, 32);  
+        //$this->Line(8, 18, 202, 18);         
         //$this->Image('../../images/logos.jpg',8,4,30,12);
-        $this->SetFont('Arial','B',8); 
-        $this->SetXY(40, 1$f);
+        $this->SetFont('Arial','B',9); 
+        $this->SetXY(45, 34);
         //$this->Cell(0,5,'MANUAL DE BUENAS PRÁCTICAS DE MANUFACTURA Y GESTIÓN',1,1,'L');
-        /*$this->MultiCell(55,4,utf8_decode('MANUAL DE BUENAS PRÁCTICAS DE MANUFACTURA Y GESTIÓN'),0,'C');
-        $this->SetXY(105, 18);
+        $this->MultiCell(80, 6,utf8_decode('MANUAL DE BUENAS PRÁCTICAS DE MANUFACTURA Y GESTIÓN'),0,'C');
+        $this->SetXY(120, 18);
         $this->SetFont('Arial','I',6);
         //$this->Cell(12,4,'CODIGO :',0,0,'L');
         //$this->Cell(0,4,$cab[0]['codigo'],0,1,'L');
-        $this->SetXY(105, 21);
+        $this->SetXY(140, 36);
         $this->Cell(12,4,'VERSION :',0,0,'L');
         $this->Cell(0,4,'1.0',0,1,'L');
-        $this->Line(8, 28, 142, 28);  */          
+        $this->SetXY(140, 41);
+        $this->Cell(12,4,'Fecha :',0,0,'L');
+        $this->Cell(12,4,$fechahoy,0,1,'L');
         
-        $this->Ln(28);       
+        $this->Line(8, 47, 202, 47);           
+        
+        $this->Ln(15);       
        
     }
     
-    function cuerpo($cab,$objemp,$asig, $rowsd)
+    function cuerpo($cab, $acuerdo, $asig)
     {
+        $anio= date('Y');
+        $Serie= str_pad($Serie, 4, "000", STR_PAD_LEFT);
         
         $this->SetFont('Arial','B',11);
-        $this->Cell(0, 5, strtoupper(utf8_decode('CAPACITACIÓN : '.$cab['codigo'])), 0, 1, 'C');
+        $this->Cell(0, 5, strtoupper(utf8_decode($cab['nroacta'].'-CORPOMEDIC-'.$anio)), 0, 1, 'C');
         $this->Ln(2);
-        $this->Cell(0,0,'',1,1,'C'); 
+        //$this->Cell(0,0,'',1,1,'C'); 
         $this->Ln(3);
         
         $w=48; $f=10;
         $this->SetFont('Arial','B',8);        
-        $this->Cell($w, 5,strtoupper(utf8_decode('Fuente de la capacitaciÓn')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 0, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->Cell(0, 5, utf8_decode($cab['fuente']), 0, 1, 'L');
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Eje de la capacitaciÓn')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 0, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->Cell(0, 5, utf8_decode($cab['eje']), 0, 1, 'L');
-
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Tema de la capacitaciÓn')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 0, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->Cell(0, 5, utf8_decode($cab['tema']), 0, 1, 'L');
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Objetivo de la capacitaciÓn')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 0, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->MultiCell(140,5,utf8_decode($cab['obejtivoscap']),0,'J',false);
-        $this->Ln(10);
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell(54, 5,strtoupper(utf8_decode('Alcance al Objetivo de la empresa')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 1, 'C');
-        $this->SetFont('Arial','',$f);        
-        
-        $c=0;
-        foreach ($objemp as $r){                
-            $this->SetX(20);
-            $c++;
-            $this->MultiCell(125,4,utf8_decode($c.".- ".$r['descripcion']),0,'J',false);
-            $this->Ln(5);      
-        }                
-        $this->Ln(3);         
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Método de capacitaciÓn')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 0, 'C');
-        $this->SetFont('Arial','',$f);
-        //$this->Cell($f0, 5, utf8_decode($cab['metodo']), 1, 1, 'L');
-        $this->MultiCell(130,5,utf8_decode($cab['metodo']),0,'J',false);
-        $this->Ln(10);
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Tipo de evaluación')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 0, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->Cell(0, 5, utf8_decode($cab['tipoeval']), 0, 1, 'L');
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Propuesta (Contenido)')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 1, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->SetX(20);
-        $this->MultiCell(180,5,utf8_decode($cab['propuesta']),0,'J',false);
-        $this->Ln(15);
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Referencia Bibliográfica')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 1, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->SetX(20);
-        $this->MultiCell(170,5,utf8_decode($cab['referencias']),0,'J',false);
-        $this->Ln(10);
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Palabras Claves del Tema')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 1, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->SetX(20);
-        $this->MultiCell(170,5,utf8_decode($cab['palabrasclaves']),0,'J',false);
-        $this->Ln(10);
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Expositor')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 0, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->Cell(0, 5, utf8_decode($cab['expoitor']), 0, 1, 'L');
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Email del Expositor')), 0, 0, 'L');        
-        $this->Cell(3, 5, ' :', 0, 0, 'C');
-        $this->SetFont('Arial','',$f);
-        $this->Cell(0, 5, utf8_decode($cab['mail']), 0, 1, 'L');
-        
-        $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Fecha de la Capacitación')), 0, 0, 'L');        
+        $this->Cell($w, 5,strtoupper(utf8_decode('Fecha Capacitación')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 0, 'C');
         $this->SetFont('Arial','',$f);
         $this->Cell(0, 5, utf8_decode($cab['fecha']), 0, 1, 'L');
         
         $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Hora de la Capacitación')), 0, 0, 'L');        
+        $this->Cell($w, 5,strtoupper(utf8_decode('Lugar de la capacitaciÓn')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 0, 'C');
         $this->SetFont('Arial','',$f);
-        $this->Cell(0, 5, utf8_decode($cab['hora']), 0, 1, 'L');
-        $this->Ln(3);
-
+        $this->Cell(0, 5, strtoupper(utf8_decode($cab['lugarreunion'])), 0, 1, 'L');
+        $this->Ln(3); 
+        
+        $this->SetFont('Arial','B',8);
+        $this->Cell($w, 5,strtoupper(utf8_decode('Tema de la capacitaciÓn')), 0, 0, 'L');        
+        $this->Cell(3, 5, ' :', 0, 0, 'C');
+        $this->SetFont('Arial','',$f);
+        $this->Cell(0, 5, utf8_decode($cab['tema']), 0, 1, 'L'); 
+        
+        $this->SetFont('Arial','B',8);
+        $this->Cell($w, 5,strtoupper(utf8_decode('Hora Inicio')), 0, 0, 'L');        
+        $this->Cell(3, 5, ' :', 0, 0, 'C');
+        $this->SetFont('Arial','',$f);
+        
+        $hora= date_format(date_create($cab['hora']),'h:i a');
+        $this->Cell(40, 5, utf8_decode($hora), 0, 0, 'L'); 
+        
+        $this->SetFont('Arial','B',8);
+        $this->Cell(35, 5,strtoupper(utf8_decode('Hora Fin')), 0, 0, 'L');        
+        $this->Cell(3, 5, ' :', 0, 0, 'C');
+        $this->SetFont('Arial','',$f);
+        
+        $horafin= date_format(date_create($cab['horafin']),'h:i a');
+        $this->Cell(30, 5, utf8_decode($horafin), 0, 0, 'L');
+              
+        $this->Ln(10);        
+        
         $this->SetFont('Arial','U',9);
-        $this->Cell(0, 5, strtoupper(utf8_decode('Asignados (as) a la Capacitación : ')), 0, 1, 'L');
+        $this->Cell(0, 5, strtoupper(utf8_decode('ACUERDOS / AGENDAS : ')), 0, 1, 'L');
         $this->Ln(2);
         $cc=0;
         $h0= 5;
-        $h1=15; $h2=30; $h3=70; $h4=40;
-        $this->SetX(20);
+        $h1=7; $h2=30; $h3=160; $h4=25;
+        $this->SetX(10);
+        $this->SetFillColor(224,235,255);
+        $this->SetFont('Arial','B',8);
+        
+        $this->Cell($h1, $h0,strtoupper(utf8_decode('n° ')), 1, 0, 'C');
+        $this->Cell($h3, $h0,strtoupper(utf8_decode('ACUERDO')), 1, 0, 'C');
+        $this->Cell($h4, $h0,strtoupper(utf8_decode('Responsable')), 1, 1, 'C');
+        
+        
+        foreach ($acuerdo as $rs){  
+            //print_r($rs);
+            $this->SetX(10);
+            $cc++;
+            $this->SetFont('Arial','',8);
+            $this->Cell($h1, 5,strtoupper(utf8_decode($cc)), 0, 0, 'C');
+            $this->MultiCell($h3,5,utf8_decode($rs['acuerdo']),0,'J',false);
+            //$this->Cell($h3, 5,utf8_decode($rs['acuerdo']), 0, 0, 'L');
+            $this->Cell($h4, 5,strtoupper(utf8_decode($rs['nombres'])), 0, 1, 'L');
+            $y = $this->GetY();
+            //$this->SetX();
+            //$this->SetXY(10,$y);
+            $this->Line(10, $y+5, 202, $y+5);
+            //$this->Cell(192,0,'',1,1,'C');   
+        } 
+        
+        $this->Ln(10);
+        $this->SetFont('Arial','U',9);
+        $this->Cell(0, 5, strtoupper(utf8_decode('Asistentes a la Capacitación : ')), 0, 1, 'L');
+        $this->Ln(2);
+        $cc=0; $Alt= 7;
+        $h0= 5;
+        $h1=10; $h2=25; $h3=90; $h4=30; $h5= 35;
+        $this->SetX(10);
         $this->SetFillColor(224,235,255);
         $this->SetFont('Arial','B',9);
         
         $this->Cell($h1, $h0,strtoupper(utf8_decode('n° ')), 1, 0, 'C');
         $this->Cell($h2, $h0,strtoupper(utf8_decode('dni')), 1, 0, 'C');
         $this->Cell($h3, $h0,strtoupper(utf8_decode('nombres y apellidos')), 1, 0, 'C');
-        $this->Cell($h4, $h0,strtoupper(utf8_decode('tipo alcance')), 1, 1, 'C');
-
+        $this->Cell($h4, $h0,strtoupper(utf8_decode('tipo alcance')), 1, 0, 'C');
+        $this->Cell($h5, $h0,strtoupper(utf8_decode('firma')), 1, 1, 'C');
         foreach ($asig as $rs){                
-            $this->SetX(20);
+            $this->SetX(10);
             $cc++;
-            $this->SetFont('Arial','',9);
-            $this->Cell($h1, 5,strtoupper(utf8_decode($cc)), 0, 0, 'C');
-            $this->Cell($h2, 5,strtoupper(utf8_decode($rs['dni'])), 0, 0, 'C');
-            $this->Cell($h3, 5,strtoupper(utf8_decode($rs['personal'])), 0, 0, 'L');
-            $this->Cell($h4, 5,strtoupper(utf8_decode($rs['descripcion'])), 0, 1, 'L');
-            $this->SetX(20);
-            $this->Cell(155,0,'',1,1,'C');   
+            $this->SetFont('Arial','',8);
+            $this->Cell($h1, $Alt,strtoupper(utf8_decode($cc)), 0, 0, 'C');
+            $this->Cell($h2, $Alt,strtoupper(utf8_decode($rs['dni'])), 0, 0, 'C');
+            $this->Cell($h3, $Alt,strtoupper(utf8_decode($rs['personal'])), 0, 0, 'L');
+            $this->Cell($h4, $Alt,strtoupper(utf8_decode($rs['descripcion'])), 0, 1, 'C');
+            $this->SetX(10);
+            $this->Cell(190,0,'',1,1,'C');   
         } 
-        
-        $this->AddPage('A','A4');
-        //$this->Ln(3);
-        
-        $this->SetFont('Arial','U',9);
-        $this->Cell(0, 5, strtoupper(utf8_decode('Presupuesto detallado del proyecto : ')), 0, 1, 'L');
-        $this->Ln(2);
-        
-        $con=1;
-        
-        $h1=160; $h2=10; $h3=15; $h4=20; $h5=155; $h6=150; $h7=25;
-        $this->SetFont('Arial','B',9);
-        $this->Cell($h1, $h0,strtoupper(utf8_decode('Concepto')), 1, 0, 'C');
-        $this->Cell($h2, $h0,strtoupper(utf8_decode('')), 1, 0, 'C');
-        $this->Cell($h3, $h0,strtoupper(utf8_decode('Unidad')), 1, 0, 'C');
-        $this->Cell($h4, $h0,strtoupper(utf8_decode('Cantidad')), 1, 0, 'C');
-        $this->Cell($h7, $h0,strtoupper(utf8_decode('Precio Uni.')), 1, 0, 'C');
-        $this->Cell($h4, $h0,strtoupper(utf8_decode('Sub Total')), 1, 1, 'C');
-        //$this->Cell($h4, $h0,strtoupper(utf8_decode('Total')), 1, 1, 'C');
-        
-         $Total=0; $subtotal=0; $TotalF=0;
-        foreach ($rowsd as $i => $r) 
-        {   
-            $cond=1;
-            $this->SetFont('Arial','B',9);
-            $this->Cell(5, $h0,$con." .", 0, 0, 'C');
-            $this->Cell($h5, $h0,strtoupper(utf8_decode($r['Cat'])), 0, 0, 'L');
-            $this->Cell($h2, $h0,strtoupper(''), 0, 0, 'C');
-            $this->Cell($h3, $h0,strtoupper(''), 0, 0, 'C');
-            $this->Cell($h4, $h0,strtoupper(''), 0, 0, 'C');
-            $this->Cell($h7, $h0,strtoupper(''), 0, 0, 'C');
-            $this->Cell($h4, $h0,strtoupper(''), 0, 1, 'C');
-            //$this->Cell($h4, $h0,number_format($subtotals, 2) , 0, 1, 'C');
-            
-            
-            foreach ($r['Det'] as $f => $d) 
-            {
-                $tiempo= $d['tiempo'];
-                
-                if($tiempo==0){
-                    
-                    $subtotal= ($d['preciounitario'] * $d['cantidad']);
-                    //$subtotal= number_format($subtotal, 2);
-                    $tiempo='';
-                    
-                }else
-                    {
-                        $subtotal= ($d['preciounitario'] * $d['cantidad'] * $tiempo);
-                        //$subtotal= number_format($subtotal, 2);
-                    }         
-                $Total= $Total + $subtotal;
-                $this->SetFont('Arial','',9);
-                $this->Cell(5, $h0,"", 0, 0, 'C');
-                if($d['descripcion']!= '')
-                {
-                    $this->Cell(5, $h0,$con.".".$cond, 0, 0, 'C');
-                }else
-                    {
-                        $this->Cell(5, $h0,"", 0, 0, 'C');
-                    }
-                $this->Cell($h6, $h0,strtoupper(utf8_decode($d['descripcion'])), 0, 0, 'L');
-                $this->Cell($h2, $h0,$tiempo, 0, 0, 'C');
-                $this->Cell($h3, $h0,strtoupper(utf8_decode($d['unidad'])), 0, 0, 'L');
-                $this->Cell($h4, $h0,$d['cantidad'], 0, 0, 'C');
-                $this->Cell($h7, $h0,strtoupper($d['preciounitario']), 0, 0, 'R');
-                $this->Cell($h4, $h0,strtoupper(number_format($subtotal,2)), 0, 1, 'R');
-                //$this->Cell($h4, $h0,strtoupper(''), 0, 1, 'C');
-                $cond++;
-            }          
-            
-            $con++;
-        }
-        $TotalF= $TotalF+ $Total;
-        
-        $this->Ln(2);
-        $this->SetFont('Arial','B',10);
-        $this->Cell($h1, $h0,strtoupper(utf8_decode('Total')), 0, 0, 'C');
-        $this->Cell($h2, $h0,strtoupper(utf8_decode('')), 0, 0, 'C');
-        $this->Cell($h3, $h0,'', 0, 0, 'C');
-        $this->Cell($h4, $h0,strtoupper(utf8_decode('')), 0, 0, 'C');
-        $this->Cell($h7, $h0,strtoupper(utf8_decode('')), 0, 0, 'C');
-        $this->Cell($h4, $h0,$TotalF, 0, 1, 'R');
         
     } 
 
     function Footer()
     {
-        $this->SetY(-10);
+        $this->SetY(-20);
         $this->SetFont('Arial','',6);
         $this->Cell(0, 4, utf8_decode('Prohibida la Reproducción Total o Parcial de este documento sin la autorización del Representante de la Dirección.'), 0, 1, 'C');
         $this->Cell(0, 4, utf8_decode('SISEVAS v. 1.5'), 0, 1, 'C');
@@ -261,15 +155,15 @@ class PDF extends FPDF
 //$nombre = $cabecera[0]['nombres'];
 //print_r($rowsd);
 $pdf= new PDF('P','mm', 'A4');
-$pdf->SetAutoPageBreak(0.2 ,0.2);
+//$pdf->SetAutoPageBreak(0.2 ,0.2);
 //$pdf->SetTitle($title);
-$pdf->SetTitle(':: CMSM - CAPACITACION ::');
-$pdf->SetMargins(10,5,8);
+$pdf->SetTitle(':: CMSM - ACTA DE CAPACITACION ::');
+$pdf->SetMargins(10,10,8);
 $pdf->AliasNbPages();
 $pdf->AddPage('P','A4');
 $pdf->AliasNbPages();
 //$pdf->AddPage();
-$pdf->cuerpo($cab,$objemp,$asig, $rowsd);
+$pdf->cuerpo($cab, $acuerdo, $asig);
 //$pdf->Header($cab);
 $pdf->Output();	
 

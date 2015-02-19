@@ -8,7 +8,7 @@ class capacitacionasig extends Main
             c.idcapacitacion,
             c.tema,                        
             f.descripcion,
-            c.expositor,
+            UPPER(c.expositor),
             substr(cast(c.fecha as text),9,2)||'/'||substr(cast(c.fecha as text),6,2)||'/'||substr(cast(c.fecha as text),1,4),
             case c.estado 
                 when 0 then '<p style=\"color:green;font-weight: bold;\">FALTA ASIGNAR</p>'
@@ -40,13 +40,13 @@ class capacitacionasig extends Main
                 c.externo, c.idpersonal, c.expositor,    
                 c.fecha, substr(cast(c.hora as text),1,5) AS hora,          
                 d.idobejtivosemp, p.mail, p.dni,p.nombres, p.apellidos,
-                c.nrohoras
+                c.nrohoras, c.idlineaaccion, l.descripcion
                 FROM
                 capacitacion.capacitacion AS c
                 LEFT JOIN capacitacion.capacitacion_obejtivosemp AS d ON c.idcapacitacion = d.idcapacitacion
                 LEFT JOIN public.obejtivosemp AS oe ON oe.idobejtivosemp = d.idobejtivosemp
                 LEFT JOIN public.personal AS p ON p.idpersonal = c.idpersonal
-                
+                LEFT JOIN capacitacion.lineaaccion AS l ON l.idlineaaccion = c.idlineaaccion
                 WHERE c.idcapacitacion = :id");
         $stmt->bindParam(':id', $id , PDO::PARAM_STR);
         $stmt->execute();
@@ -127,13 +127,15 @@ class capacitacionasig extends Main
         $id           = $_P['idcapacitacion'];
         $idcapacitador= $_P['idpersonal'];
         $si           = $_P['activo'];
+        $idlineaaccion= $_P['idlineaaccion'];
+        
         $estado       = 1;
         $sql = "UPDATE capacitacion.capacitacion SET 
             idfuentecapacitacion= :p1, idejecapacitacion= :p2, 
             tema= :p3, idobejtivoscap= :p4, idmetodoscapacitacion= :p5, idtipoevaluacion= :p6, 
             propuesta= :p8, referencias= :p9, palabrasclaves= :p10, externo= :p11, 
             idpersonal= :p12, expositor= :p13, fecha= :p14, hora= :p15, estado= :p16,
-            nrohoras= :p17
+            nrohoras= :p17, idlineaaccion= :p18
             WHERE idcapacitacion= :idcapacitacion";
 
         $stmt = $this->db->prepare($sql);
@@ -157,7 +159,6 @@ class capacitacionasig extends Main
                 $idpercar =  $this->IdlastInsert('personal','idpersonal');
                 $row = $stmt->fetchAll();
 
-
                 $nombresexpositor= $_P['nombresexpositor'].' '.$_P['apellidosexpositor'];
                 $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p2', $_P['idejecapacitacion'] , PDO::PARAM_INT);
@@ -176,6 +177,7 @@ class capacitacionasig extends Main
                 $stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
                 $stmt->bindParam(':p16', $estado , PDO::PARAM_INT);
                 $stmt->bindParam(':p17', $_P['nrohoras'] , PDO::PARAM_INT);
+                $stmt->bindParam(':p18', $_P['idlineaaccion'] , PDO::PARAM_INT);
                 
                 $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
                 $stmt->execute();
@@ -202,9 +204,12 @@ class capacitacionasig extends Main
                     $stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
                     $stmt->bindParam(':p16', $estado , PDO::PARAM_INT);
                     $stmt->bindParam(':p17', $_P['nrohoras'] , PDO::PARAM_INT);
+                    $stmt->bindParam(':p18', $_P['idlineaaccion'] , PDO::PARAM_INT);
                     
                     $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
-                    $stmt->execute();
+                    
+                    
+                    $stmt->execute();//print_r($stmt);
                 }
             
             /**** INSERTAMOS obejtivos del empresa ****/

@@ -129,9 +129,9 @@ class PersonalController extends Controller
                         "idpersonal"=>$val['idpersonal'],
                         "mail"=>$val['mail'],
                         "dni"=>$val['dni'],
-                        "nompersonal"=> strtoupper($val['nompersonal']),
-                        "nombres"=> strtoupper($val['nombres']),
-                        "apellidos"=> strtoupper($val['apellidos'])
+                        "nompersonal"=> $val['nompersonal'],
+                        "nombres"=> $val['nombres'],
+                        "apellidos"=> $val['apellidos']
                     )
                 );
               if ( $key > 7 ) { break; }

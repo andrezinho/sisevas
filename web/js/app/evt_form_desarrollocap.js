@@ -26,9 +26,9 @@ function load_correlativo(idtp)
 {   
     var idcap = $("#idcapacitacion").val();
     
-    $.get('index.php','controller=desarrollocap&action=VerNroActa&idcap='+idcap,function(rs){
-        //alert(rs.nroacta);
-        if(rs.nroacta== undefined)
+    $.get('index.php','controller=desarrollocap&action=VerNroActa&idcap='+idcap,function(res){
+        //alert(res.nroacta);
+        if(res.nroacta== 0)
         {
             $.get('index.php','controller=tipodocumento&action=Correlativo&idtp='+idtp,function(r){
                 $("#nroacta").val(r.correlativo);

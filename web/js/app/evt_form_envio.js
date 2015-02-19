@@ -13,7 +13,7 @@ $(function()
 
     $("#idtipo_problema").change(function(){
         load_problema($(this).val()); 
-        $("#idtipo_problema").focus();
+        $("#idareai").focus();
     });
 
     $("#estados").buttonset();
@@ -23,7 +23,10 @@ $(function()
     });
     
     $("#table-detalle").on('click','.boton-delete',function(){var v = $(this).parent().parent().remove();})
-
+    
+    var idtramite= $("#idtramite").val();
+    
+    
 });
 
 function load_formato(idtipodoc)

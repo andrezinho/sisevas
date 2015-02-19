@@ -3,6 +3,7 @@
         $("#fechai,#fechaf").datepicker({dateFormat: 'dd/mm/yy'});
         $("#idperiodo").css("width", "auto");
         $("#idarticulo").focus();
+        $( "#estados").buttonset();
         $("#personal_name").autocomplete({
             minLength: 0,
             source: 'index.php?controller=personal&action=get&tipo=0',
@@ -56,6 +57,21 @@
         bval = bval && $("#fechaf").required();
         return bval;
     }
+    
+    function TpFiltro(Op)
+    {
+        //alert(Op);
+        if(Op==1)
+        {
+            $("#personal_name").attr('disabled',true)
+            $("#idp").val('0')
+        }
+        else
+            {
+                $("#personal_name").attr('disabled',false)
+                $("#idp").val('')
+            }
+    }
 </script>
 <div class="div_container">
     <h6 class="ui-widget-header ui-state-hover">Reporte: Capacitaciones por Personal</h6>
@@ -66,7 +82,23 @@
             <br/>
             <label class="labels" for="personal">Personal: </label>        
             <input type="hidden" name="idp" id="idp" value="" />        
-            <input type="text" name="personal_name" id="personal_name" value="" placeholder="Nombre del Personal" style="width:65%" class="text ui-widget-content ui-corner-all" />        
+            <input type="text" name="personal_name" id="personal_name" value="" placeholder="Nombre del Personal" style="width:45%" class="text ui-widget-content ui-corner-all" /> 
+             || Todos
+            <div id="estados" style="display: inline;">
+                <?php                                     
+                    if($medfil==1 || $medfil==0)
+                        {
+                            if($medfil==1){$act="checked='checked' "; //$inac="";
+                            }
+                            else {$inac="checked='checked' ";}
+                        }
+                        else {$act = "checked='checked' ";}
+                ?>
+                <input type="radio" id="todos1" name="todos" value='1' onchange="TpFiltro(1)" <?php echo $act; ?> />
+                <label for="todos1">SI</label>
+                <input type="radio" id="todos0" name="todos" value='0' onchange="TpFiltro(0)"  <?php echo $inac; ?> />
+                <label for="todos0">NO</label>
+            </div> 
         </form>
         <div style="clear: both; padding: 5px; width: auto;text-align: center">        
             <a href="#" id="consultar" class="button">CONSULTAR</a>

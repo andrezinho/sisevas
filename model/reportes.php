@@ -206,12 +206,12 @@ class reportes extends Main
             $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
 
         $anio = $g['anio'];
-
+        $todos= $g['todos'];
+        
         $s = "SELECT descripcion from evaluacion.periodo where idperiodo = ".$idperiodo;
         $stmt = $this->db->prepare($s);
         $stmt->execute();
         $rec = $stmt->fetchObject();
-
         $periodo = $rec->descripcion;
 
         $sql = "SELECT p.idperfil,p.nombres,p.apellidos,c.descripcion as perfil 
@@ -227,8 +227,10 @@ class reportes extends Main
         $perfil = $r->perfil;
 
         $datos = array($personal, $perfil, $anio);
-
-        $sql1 = "SELECT
+        
+        if($todos!= 1)
+        {
+            $sql1 = "SELECT
             c.codigo,
             c.tema,
             c.fecha,
@@ -240,14 +242,40 @@ class reportes extends Main
             INNER JOIN capacitacion.capacitacion_asignacion AS a ON a.idcapacitacion = c.idcapacitacion
             INNER JOIN public.personal AS p ON a.idpersonalasig = p.idpersonal
             INNER JOIN capacitacion.tipoalcance AS t ON a.idtipoalcance = t.idtipoalcance
-            WHERE a.idpersonalasig = :id
+            WHERE a.idpersonalasig = :id AND c.anio= :anio
             ORDER BY 
             c.idcapacitacion ";
                 
-        $stmt1 = $this->db->prepare($sql1);
-        $stmt1->bindParam(':id',$g['idp'],PDO::PARAM_INT);
-        $stmt1->execute();
-        $data= $stmt1->fetchAll();
+            $stmt1 = $this->db->prepare($sql1);
+            $stmt1->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+            $stmt1->bindParam(':anio', $anio,PDO::PARAM_INT);
+            $stmt1->execute();
+            $data= $stmt1->fetchAll();
+        }else
+            {
+               $sql1 = "SELECT DISTINCT c.idcapacitacion,
+                c.codigo,
+                c.tema,
+                c.fecha,
+                c.hora,
+                c.expositor,
+                t.descripcion,
+                c.estado           
+                FROM capacitacion.capacitacion AS c
+                INNER JOIN capacitacion.capacitacion_asignacion AS a ON a.idcapacitacion = c.idcapacitacion
+                INNER JOIN public.personal AS p ON a.idpersonalasig = p.idpersonal
+                INNER JOIN capacitacion.tipoalcance AS t ON a.idtipoalcance = t.idtipoalcance
+                WHERE c.anio= :anio
+                ORDER BY 
+                c.idcapacitacion ";
+                    
+                $stmt1 = $this->db->prepare($sql1);
+                //$stmt1->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+                $stmt1->bindParam(':anio', $anio,PDO::PARAM_INT);
+                $stmt1->execute();
+                $data= $stmt1->fetchAll(); 
+            }
+        
         
         return array($data,$datos);
     }
@@ -297,6 +325,40 @@ class reportes extends Main
         $data= $stmt1->fetchAll();
         
         return array($data,$datos);
+    }
+    
+    function data_rep07($g)
+    {
+        $anio = $g['anio'];
+        //$idtipodoc= $g['idtipo_documento'];
+        
+        $sqlal="SELECT ob.idobejtivoscap, ob.descripcion FROM capacitacion.obejtivoscap AS ob WHERE ob.estado= 1 ORDER BY ob.descripcion";
+        $stmt = $this->db->prepare($sqlal);
+        $stmt->execute();
+        
+        //print_r($stmt);
+        $data= array();
+
+        foreach ($stmt->fetchAll() as $f)
+        {
+            $sql="SELECT t.descripcion,
+                COUNT (d.idtipoalcance) AS nro
+                FROM
+                capacitacion.capacitacion AS c
+                LEFT JOIN capacitacion.capacitacion_asignacion AS d ON d.idcapacitacion = c.idcapacitacion
+                LEFT JOIN capacitacion.tipoalcance AS t ON d.idtipoalcance = t.idtipoalcance 
+                WHERE c.idobejtivoscap= ".$f['idobejtivoscap']." GROUP BY
+                t.descripcion";
+            $stmt2 = $this->db->prepare($sql);                
+            $stmt2->execute();
+            //print_r($stmt2);
+            $data[]= array(
+                'obj' =>$f['descripcion'],
+                'det' =>$stmt2->fetchAll()
+                );
+                
+        }        
+        return $data;
     }
 }
 ?>

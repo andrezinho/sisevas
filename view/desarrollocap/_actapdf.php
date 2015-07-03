@@ -58,13 +58,13 @@ class PDF extends FPDF
         $this->Ln(3); 
         
         $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Tema de la capacitaciÓn')), 0, 0, 'L');        
+        $this->Cell($w, 5, strtoupper(utf8_decode('Tema de la capacitaciÓn')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 0, 'C');
         $this->SetFont('Arial','',$f);
         $this->Cell(0, 5, utf8_decode($cab['tema']), 0, 1, 'L'); 
         
         $this->SetFont('Arial','B',8);
-        $this->Cell($w, 5,strtoupper(utf8_decode('Hora Inicio')), 0, 0, 'L');        
+        $this->Cell($w, 5, strtoupper(utf8_decode('Hora Inicio')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 0, 'C');
         $this->SetFont('Arial','',$f);
         
@@ -86,29 +86,39 @@ class PDF extends FPDF
         $this->Ln(2);
         $cc=0;
         $h0= 5;
-        $h1=7; $h2=30; $h3=160; $h4=25;
+        $h1=7; $h2=30; $h3=145; $h4=40;
         $this->SetX(10);
         $this->SetFillColor(224,235,255);
         $this->SetFont('Arial','B',8);
         
+        $this->SetWidths(array($h1,$h3,$h4 ));
+		$this->SetAligns(array(C,C,C));
+		$this->Row(array( strtoupper(utf8_decode('n° ')),
+			 strtoupper(utf8_decode('ACUERDO')),
+			 strtoupper(utf8_decode('Responsable')) ));
+        /*
         $this->Cell($h1, $h0,strtoupper(utf8_decode('n° ')), 1, 0, 'C');
         $this->Cell($h3, $h0,strtoupper(utf8_decode('ACUERDO')), 1, 0, 'C');
         $this->Cell($h4, $h0,strtoupper(utf8_decode('Responsable')), 1, 1, 'C');
-        
+        */
         
         foreach ($acuerdo as $rs){  
             //print_r($rs);
             $this->SetX(10);
             $cc++;
             $this->SetFont('Arial','',8);
-            $this->Cell($h1, 5,strtoupper(utf8_decode($cc)), 0, 0, 'C');
+            $this->SetWidths(array($h1,$h3,$h4 ));
+            $this->SetAligns(array(C,L,L));
+            $this->Row(array( strtoupper(utf8_decode($cc)),
+			 strtoupper(utf8_decode($rs['acuerdo'])),
+			 strtoupper(utf8_decode($rs['asistente'])) ));
+            /*$this->Cell($h1, 5,strtoupper(utf8_decode($cc)), 0, 0, 'C');
             $this->MultiCell($h3,5,utf8_decode($rs['acuerdo']),0,'J',false);
             //$this->Cell($h3, 5,utf8_decode($rs['acuerdo']), 0, 0, 'L');
             $this->Cell($h4, 5,strtoupper(utf8_decode($rs['nombres'])), 0, 1, 'L');
             $y = $this->GetY();
-            //$this->SetX();
-            //$this->SetXY(10,$y);
-            $this->Line(10, $y+5, 202, $y+5);
+            */
+            //$this->Line(10, $y+5, 202, $y+5);
             //$this->Cell(192,0,'',1,1,'C');   
         } 
         

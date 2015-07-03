@@ -9,20 +9,20 @@ class capacitacion extends Main
     {
         $sql = "SELECT
             c.idcapacitacion,
-            c.codigo, c.tema,
+            c.codigo, te.descripcion AS temas,
             f.descripcion AS fuente,            
-            m.descripcion,
+            '',
             case c.estado 
-                when 0 then '<p style=\"color:green;font-weight: bold;\">FALTA ASIGNAR</p>'
-                when 1 then '<a class=\"finalizar box-boton boton-hand\" id=\"f-'||c.idcapacitacion||'\" href=\"#\" title=\"Finalizar Capacitacion\" ></a>'
-                when 2 then '<a class=\"box-boton boton-ok\" title=\"Capacitacion Fonalizada\" ></a>'
+            when 0 then '<p style=\"color:green;font-weight: bold;\">FALTA ASIGNAR</p>'
+            when 1 then '<a class=\"finalizar box-boton boton-hand\" id=\"f-'||c.idcapacitacion||'\" href=\"#\" title=\"Finalizar Capacitacion\" ></a>'
+            when 2 then '<a class=\"box-boton boton-ok\" title=\"Capacitacion Fonalizada\" ></a>'
             else '' end    
-            
+
             FROM
             capacitacion.capacitacion AS c
             INNER JOIN capacitacion.fuentecapacitacion AS f ON f.idfuentecapacitacion = c.idfuentecapacitacion
             INNER JOIN capacitacion.ejecapacitacion AS e ON e.idejecapacitacion = c.idejecapacitacion
-            INNER JOIN capacitacion.metodoscapacitacion AS m ON m.idmetodoscapacitacion = c.idmetodoscapacitacion
+            INNER JOIN capacitacion.temas AS te ON te.idtemas = c.idtemas
             WHERE c.anio='2015' ";    
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
@@ -36,7 +36,8 @@ class capacitacion extends Main
                 c.propuesta, c.referencias, c.palabrasclaves,
                 c.externo, c.idpersonal, c.expositor,                
                 d.idobejtivosemp,
-                p.mail, l.descripcion
+                p.mail,c.idlineaaccion, l.descripcion,
+                c.idtemas, c.idobejtivosemp
                 
                 FROM
                 capacitacion.capacitacion AS c
@@ -77,20 +78,44 @@ class capacitacion extends Main
         
         $idfuentecapacitacion = $_P['idfuentecapacitacion'];
         $idejecapacitacion    = $_P['idejecapacitacion'];
+        $idlineaaccion        = $_P['idlineaaccion'];
+        $idtema               = $_P['idtema'];
         $tema                 = $_P['tema'];
         $idobejtivoscap       = $_P['idobejtivoscap'];
+        $idobejtivosemp       = $_P['idobejtivosemp'];
         $idmetodoscapacitacion= $_P['idmetodoscapacitacion'];
         $idperfil             = $_P['idperfil'];
         $codigo               = $_P['codigo'];
         $propuesta            = $_P['propuesta'];
         $referencias          = $_P['referencias'];
         $palabrasclaves       = $_P['palabrasclaves'];
-        $idlineaaccion        = $_P['idlineaaccion'];
+        
         $anio= date('Y');
+        
+        if($idtema==0)
+        {
+            $sqlT= "INSERT INTO capacitacion.temas(idlineaaccion, descripcion, estado)
+                    VALUES ($idlineaaccion, '$tema', 1)";
+            $stmt1 = $this->db->prepare($sqlT);
+            $stmt1->execute();
 
+            $idtema =  $this->IdlastInsert('capacitacion.temas','idtemas');
+            //$row = $stmt->fetchAll();
+        }
+        
+        $sql= "INSERT INTO capacitacion.capacitacion( idfuentecapacitacion, idejecapacitacion, tema, idobejtivoscap, idmetodoscapacitacion,
+            idtipoevaluacion, codigo, propuesta, referencias, palabrasclaves, anio, idlineaaccion, idtemas, idobejtivosemp)
+            VALUES( $idfuentecapacitacion, $idejecapacitacion,'$tema', $idobejtivoscap, $idmetodoscapacitacion,
+                $idperfil, '$codigo', '$propuesta', '$referencias', '$palabrasclaves', $anio, $idlineaaccion,
+                $idtema, $idobejtivosemp) ";
+        $stmt = $this->db->prepare($sql);
+        $p1 = $stmt->execute();
+        
         $obj_td->UpdateCorrelativo($idtipodocumento);
-
-
+        
+        $p2 = $stmt->errorInfo();
+        return array($p1 , $p2[2]);    
+        /*
         try 
         {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -101,7 +126,7 @@ class capacitacion extends Main
             VALUES($idfuentecapacitacion,$idejecapacitacion,'$tema',$idobejtivoscap,$idmetodoscapacitacion,
                 $idperfil,'$codigo','$propuesta','$referencias','$palabrasclaves', $anio, $idlineaaccion) ";
             $stmt = $this->db->prepare($sql);
-
+            */
             /*
             $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
             $stmt->bindParam(':p2', $_P['idejecapacitacion'] , PDO::PARAM_INT);
@@ -116,8 +141,8 @@ class capacitacion extends Main
             
             //$stmt->bindParam(':p14', $_P['horacap'] , PDO::PARAM_BOOL);
             //$stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
-            $stmt->execute();
-            
+            //$stmt->execute();
+            /*
             $id =  $this->IdlastInsert('capacitacion.capacitacion','idcapacitacion');
             $row = $stmt->fetchAll();
             
@@ -142,31 +167,31 @@ class capacitacion extends Main
             $this->db->rollBack();
             return array('2',$e->getMessage().$str,'');
         } 
-        
+        */
     }
 
     function update($_P ) {
         
         $sql = "UPDATE capacitacion.capacitacion SET 
             idfuentecapacitacion= :p1, idejecapacitacion= :p2, 
-            tema= :p3, idobejtivoscap= :p4, idmetodoscapacitacion= :p5, idtipoevaluacion= :p6, 
+            idobejtivoscap= :p4, idmetodoscapacitacion= :p5, idtipoevaluacion= :p6, 
             propuesta= :p8, referencias= :p9, palabrasclaves= :p10,
-            idlineaaccion= :p11            
+            idlineaaccion= :p11, idtemas= :p12, idobejtivosemp= :p13          
             WHERE idcapacitacion= :idcapacitacion";
 
         $stmt = $this->db->prepare($sql);
-        
+        /*
         try 
         {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->db->beginTransaction();
-            
+            */
             $id= $_P['idcapacitacion'];
             
             //$stmt->bindParam(':p0', $_P['correlativo'] , PDO::PARAM_STR);
             $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
             $stmt->bindParam(':p2', $_P['idejecapacitacion'] , PDO::PARAM_INT);
-            $stmt->bindParam(':p3', $_P['tema'] , PDO::PARAM_STR);
+            //$stmt->bindParam(':p3', $_P['tema'] , PDO::PARAM_STR);
             $stmt->bindParam(':p4', $_P['idobejtivoscap'] , PDO::PARAM_INT);
             $stmt->bindParam(':p5', $_P['idmetodoscapacitacion'] , PDO::PARAM_INT);
             $stmt->bindParam(':p6', $_P['idperfil'] , PDO::PARAM_INT);
@@ -175,15 +200,17 @@ class capacitacion extends Main
             $stmt->bindParam(':p9', $_P['referencias'] , PDO::PARAM_STR);
             $stmt->bindParam(':p10', $_P['palabrasclaves'] , PDO::PARAM_STR);
             $stmt->bindParam(':p11', $_P['idlineaaccion'] , PDO::PARAM_INT);
-            //$stmt->bindParam(':p12', $_P['idpersonal'] , PDO::PARAM_INT);
-            //$stmt->bindParam(':p13', $_P['expositor'] , PDO::PARAM_STR);
+            $stmt->bindParam(':p12', $_P['idtema'] , PDO::PARAM_INT);
+            $stmt->bindParam(':p13', $_P['idobejtivosemp'] , PDO::PARAM_STR);
             //$stmt->bindParam(':p14', $_P['fechacap'] , PDO::PARAM_BOOL);
             //$stmt->bindParam(':p15', $_P['horacap'] , PDO::PARAM_BOOL);
             
             $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
-            $stmt->execute();
+            $p1 = $stmt->execute();
+        $p2 = $stmt->errorInfo();
+        return array($p1 , $p2[2]);
             
-            
+        /*    
             $sqld="DELETE FROM capacitacion.capacitacion_obejtivosemp
                    WHERE idcapacitacion= ".$id;
                 $stmt0 = $this->db->prepare($sqld);                    
@@ -209,7 +236,7 @@ class capacitacion extends Main
             {
                 $this->db->rollBack();
                 return array('2',$e->getMessage().$str,'');
-            } 
+            } */
     }
     
     function delete($id ) {

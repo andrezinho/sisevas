@@ -5,8 +5,8 @@ $(function()
     $( "#acuerdo" ).focus();    
     $( "#idpersonal" ).css({'width':'250px'});
     $( "#fechacap" ).datepicker({dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true});
-    
-    $( "#estados").buttonset();
+    $( "#estados, #todosp").buttonset();
+    //$( "#estados").buttonset();
     
     $("#table-per").on('click','#addDetail',function(){
         addDetail();
@@ -17,8 +17,7 @@ $(function()
     var idcap=$("#idcapacitacion").val();
     if(idcap != '')
     {load_correlativo(9);}
-    
-    
+        
     
 });
 
@@ -38,30 +37,61 @@ function load_correlativo(idtp)
     },'json');
 }
 
+function verificar(v)
+    {
+        $("#todosvalor").val(v)
+        if(v==1) { $("#idpersonal").val('');$("#idpersonal").attr('disabled',true) }
+        else { $("#idpersonal").attr('disabled',false) }
+    }
+    
 function addDetail()
 {  
-      bval = true;
-      bval = bval && $("#acuerdo").required();
-      if(!bval) return 0;
-        ac = $("#acuerdo").val(),
-        idp= $("#idpersonal").val(),
-        per= $("#idpersonal option:selected").html()        
-       
-        addDetalle(ac, idp,per);
+    bval = true;
+    bval = bval && $("#acuerdo").required();
+    if(!bval) return 0;
+    
+    ver= $("#todosvalor").val(),
+    idcap= $("#idcapacitacion").val(),
+    ac = $("#acuerdo").val(),
+    idp= '';
+    per= $("#personalasist").val()
+    
+    addDetalle(ver, idcap, ac, idp, per);
         
 }
 
-function addDetalle(ac, idp, per)
-{    
-    if(idp=='')
-    {idp=0; per='NINGUNO';}
-    var html = '';
-    html += '<tr class="tr-detalle" style="height: 23px;">';  
-    html += '<td>'+ac+'<input type="hidden" name="acuerdocap[]" value="'+ac+'" /></td>';
-    html += '<td>'+per+'<input type="hidden" name="idasistente[]" value="'+idp+'" /></td>';
-    html += '<td align="center"><a class="box-boton boton-delete" href="#" title="Quitar" ></a></td>';
-    html += '</tr>';    
-    $("#table-detalle").find('tbody').append(html);
+function addDetalle(ver, idcap, ac, idp, per)
+{   
+    if(ver==0)
+    {
+        if(idp=='')
+        {idp=0;}
+        if(per=='')
+        {per='';}
+        var html = '';
+        html += '<tr class="tr-detalle" style="height: 23px;">';  
+        html += '<td>'+ac+'<input type="hidden" name="acuerdocap[]" value="'+ac+'" /></td>';
+        html += '<td>'+per+'<input type="hidden" name="idasistente[]" value="" />';
+        html += '<input type="hidden" name="asistentedet[]" value="'+per+'" /></td>';
+        html += '<td align="center"><a class="box-boton boton-delete" href="#" title="Quitar" ></a></td>';
+        html += '</tr>';    
+        $("#table-detalle").find('tbody').append(html);
+    }
+    else
+        {
+            $.get('index.php','controller=personal&action=getListaAsist&idcap='+idcap,function(r){    
+                var html = '';
+                $.each(r,function(i,j){
+                    html += '<tr class="tr-detalle" style="height: 23px;">';  
+                    html += '<td>'+ac+'<input type="hidden" name="acuerdocap[]" value="'+ac+'" /></td>';
+                    html += '<td>'+j.personal+'<input type="hidden" name="idasistente[]" value="'+j.idpersonal+'" /></td>';
+                    html += '<td align="center"><a class="box-boton boton-delete" href="#" title="Quitar" ></a></td>';
+                    html += '</tr>';
+                });      
+                $("#table-detalle").find('tbody').append(html);
+            },'json');
+        }
+        
     
     $("#acuerdo").val('');
     $("#idpersonal").val('');

@@ -1,7 +1,6 @@
 <?php  
     include("../lib/helpers.php"); 
-    include("../view/header_form.php");       
-    
+    include("../view/header_form.php");
 ?>
    
 <form id="frm_cap" >
@@ -22,12 +21,13 @@
                 <label for="cod" class="labeless">Codigo:</label>
                 <input type="text" id="correlativo" name="correlativo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php echo $obj->codigo; ?>" readonly="">
                 <input type="hidden" id="codigo" name="codigo"  value="<?php echo $obj->codigo; ?>" />
+                <input type="hidden" id="idtemaselect" name="idtemaselect"  value="<?php echo $obj->idtemas; ?>" />
                 
                 <br />
                 <label for="fuente" class="labeless">Fuente de cap.:</label> 
                 <?php echo $fuente; ?>
                 
-                <label for="eje" class="labeless">Eje de capac.:</label> 
+                <label for="eje" class="labeless">Ejes Tiempo de Dedic.:</label> 
                 <?php echo $eje; ?>
                 <br />
                 
@@ -37,7 +37,17 @@
                 <br />
                 
                 <label for="tem" class="labeless">Tema:</label>
-                <input id="tema" name="tema" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 520px; text-align: left;" value="<?php echo $obj->tema; ?>" />
+                <!--<div id="SelectedTema">-->
+                    <select name="idtema" id="idtema" class="text ui-widget-content ui-corner-all">
+                        <option value="0">.:: Seleccione ::.</option>
+                    </select>
+                <!--</div>-->
+                &nbsp;&nbsp;<b>Nuevo</b>&nbsp;<input name="nuevotem" id="nuevotem" type="checkbox" />
+                
+                <div id="temanuevo" style="display:none;">
+                    <label for="tem" class="labeless">&nbsp;</label>
+                    <input id="tema" name="tema" class="text ui-widget-content ui-corner-all" style=" width: 520px; text-align: left;" value="<?php echo $obj->tema; ?>" />
+                </div>
                 <br />
                 
                 <label for="objcap" class="labeless">Objetivo de capac.:</label> 
@@ -46,6 +56,8 @@
                 
                 <label for="objemp" class="labeless">Objetivo de emp.:</label> 
                 <?php echo $objemp; ?>
+                
+                <!--
                 <a href="javascript:" id="addDetail" class="nuevo" title="Nuevo Registro"><span class="box-boton boton-new"></span></a>       
                 
                 <table id="table-detalle" class="ui-widget ui-widget-content" style="margin: 0 auto; width:640px" border="0" >
@@ -78,12 +90,14 @@
                        
                     </tfoot>
                 </table>
+                -->
                 <br />
                 
-                <label for="objcap" class="labels">Metodo:</label> 
+                <label for="objcap" class="labeless">Metodo:</label> 
                 <?php echo $metodo; ?>
+                <br />
                 
-                <label for="objcap" class="labels">Tipo Evaluacion:</label> 
+                <label for="objcap" class="labeless">Tipo Evaluacion:</label> 
                 <?php echo $tipoeva; ?>
                 
             </div>

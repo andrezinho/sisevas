@@ -1,12 +1,13 @@
 $(function() 
 {   
-    $("#tabs").tabs({ collapsible: false });
+    $( "#tabs").tabs({ collapsible: false });
     $( "#descripcion" ).focus();
     $( "#dos" ).css({'width':'700px'});
-    $( "#idfuentecapacitacion, #idejecapacitacion" ).css({'width':'210px'});
-    $( "#idperfil, #idmetodoscapacitacion  " ).css({'width':'220px'});
+    $( "#idfuentecapacitacion, #idperfil" ).css({'width':'210px'});
+    $( "#idmetodoscapacitacion" ).css({'width':'430px'});
+    $( "#idejecapacitacion" ).css({'width':'250px'});
     $( "#fechacap" ).datepicker({dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true});
-    $( "#idobejtivosemp,#idobejtivoscap" ).css({'width':'550px'});
+    $( "#idobejtivosemp, #idobejtivoscap, #idtema" ).css({'width':'550px'});
     
     $("#table-per").on('click','#addDetail',function(){
         addDetail();
@@ -15,8 +16,9 @@ $(function()
     $("#table-detalle").on('click','.boton-delete',function(){var v = $(this).parent().parent().remove();})
     
     var idcap=$("#idcapacitacion").val();
+    var idlin= $("#idlineaaccion").val();
     if(idcap == '')
-    {load_correlativo(8);}
+    {load_correlativo(8);}else{ loadTemas(idlin) }
     
     //buscar LINEAS DE ACCION
     $("#lineaaccion").autocomplete({        
@@ -31,7 +33,7 @@ $(function()
         {
             $("#idlineaaccion").val(ui.item.idlineaaccion);            
             $("#lineaaccion").val( ui.item.descripcion);
-            
+            loadTemas(ui.item.idlineaaccion);
             return false;
         }
     }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {        
@@ -40,6 +42,23 @@ $(function()
             .append( "<a>"+ item.descripcion +"</a>" )
             .appendTo(ul);
       };
+      
+    $("#nuevotem").click(function(){
+        //if (!$('#nuevotem').attr('checked'))
+        if($("#nuevotem").is(':checked'))
+        { 
+            $("#temanuevo").show();
+            $("#idtema").val(0);
+            $('#idtema').attr('disabled', true);
+            $("#tema").val('');
+        }
+        else { 
+            $("#temanuevo").hide();
+            $("#idtema").val(0);
+            $('#idtema').attr('disabled', false);
+            $("#tema").val('');
+        }
+    })
     
 });
 
@@ -51,6 +70,23 @@ function load_correlativo(idtp)
     },'json');
 }
 
+function loadTemas(idl)
+{
+    var idt= $("#idtemaselect").val();
+    //alert(idl);
+    $.get('index.php','idlinea='+idl+'&controller=lineaaccion&action=getTemas',function(r){
+        var options = "<option value='0'>.:: Seleccione ::.</option>";
+        $.each(r,function(i,j){
+            var sel = '';
+            var id= j['id']; //alert(id);
+            if (idt == id){ sel = "selected='selected' "; }
+            options += "<option "+sel+" value='"+j['id']+"'>"+j['descripcion']+"</option>";
+        });						
+        $("#idtema").empty().append(options);
+    },'json');
+    
+}
+    
 function addDetail()
 {
   
@@ -80,8 +116,9 @@ function save()
 {
     bval = true;
     bval = bval && $( "#idfuentecapacitacion" ).required();        
-    bval = bval && $( "#idejecapacitacion" ).required();        
-    bval = bval && $( "#tema" ).required();
+    bval = bval && $( "#idejecapacitacion" ).required();
+    bval = bval && $( "#lineaaccion" ).required();        
+    //bval = bval && $( "#tema" ).required();    
     bval = bval && $( "#idobejtivoscap" ).required();
     bval = bval && $( "#idmetodoscapacitacion" ).required();
     bval = bval && $( "#idperfil" ).required();

@@ -83,32 +83,18 @@ class lineaaccion extends Main
         return $statement->fetchAll();
     }
     
-    public function RFinanciamiento($idfinanc)
+    function getTemas($G)
     {
-        $sql = "SELECT
-            f.idlineaaccion,
-            f.descripcion,
-            f.adicional,
-            f.inicial,
-            ff.meses,
-            ff.factor
-            FROM
-            capacitacion.lineaaccion AS f
-            INNER JOIN capacitacion.lineaaccionfactor AS ff ON f.idlineaaccion = ff.idlineaaccion
-
-            WHERE ff.idlineaaccion='$idfinanc' AND f.estado=1 ";    
-        $stmt=$this->db->prepare($sql);
-        $stmt->execute();       
+        $idlinea= $G['idlinea'];
+        
+        $sql = "SELECT idtemas, descripcion FROM capacitacion.temas
+            WHERE idlineaaccion=".$idlinea." ORDER BY descripcion ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
         $data = array();
-        foreach ($stmt->fetchAll() as $row) {
-            $data[] = array(
-                    'codigo'=>$row[0],
-                    'descripcion'=>$row[1],
-                    'adicional'=>$row[2],
-                    'inicial'=>$row[3],
-                    'meses'=>$row[4],
-                    'factor'=>$row[5]
-                );
+        foreach($stmt->fetchAll() as $r)
+        {
+            $data[] = array('id'=>$r[0],'descripcion'=>$r[1]);
         }
         return $data;
     }

@@ -9,22 +9,27 @@ include_once("Main.php");
 class User extends Main {
 
     function Start() {
-        $statement = $this->db->prepare("SELECT personal.dni,
-                                personal.idperfil,
-                                personal.nombres||' '||personal.apellidos as nombres,
-                                p.descripcion as perfil,
-                                personal.usuario as login,
-                                c.descripcion as oficina,
-                                c.idconsultorio as idoficina,
-                                s.descripcion as sede,
-                                s.idsede as idsucursal,
-                                '' as turno,
-                                personal.idpersonal
-                            FROM personal 
-                                inner join seguridad.perfil as p on personal.idperfil = p.idperfil 
-                                inner join consultorio as c on c.idconsultorio = personal.idarea
-                                inner join seguridad.sedes as s on s.idsede = c.idsede 
-                            WHERE personal.usuario = :user AND personal.clave = :password ");
+        $statement = $this->db->prepare("SELECT
+            per.dni,
+            per.idperfil,
+            per.nombres||' '||per.apellidos AS nombres,
+            p.descripcion AS perfil,
+            per.usuario AS login,
+            c.descripcion AS oficina,
+            c.idconsultorio AS idoficina,
+            s.descripcion AS sede,
+            s.idsede AS idsucursal,
+            '' AS turno,
+            per.idpersonal,
+            per.idempresa, em.logo,
+            per.idcargo
+            FROM
+            public.personal AS per
+            INNER JOIN seguridad.perfil AS p ON per.idperfil = p.idperfil
+            INNER JOIN public.consultorio AS c ON c.idconsultorio = per.idarea
+            INNER JOIN seguridad.sedes AS s ON s.idsede = c.idsede
+            INNER JOIN public.empresa AS em ON em.idempresa = per.idempresa 
+            WHERE per.usuario = :user AND per.clave = :password ");
         $statement->bindParam(":user", $_POST['usuario'], PDO::PARAM_STR);
         $statement->bindParam(":password", $_POST['password'], PDO::PARAM_STR);
 
@@ -97,19 +102,19 @@ class User extends Main {
     function insert($_P) {
 
         $stmt = $this->db->prepare('insert into empleado (  idempleado,
-                                                            idtipo_empleado,
-                                                            idoficina,                                                            
-                                                            idperfil,
-                                                            nombre,
-                                                            apellidos,
-                                                            aleas,
-                                                            ruc,
-                                                            fecha_nacimiento,
-                                                            estado,
-                                                            login,
-                                                            password,
-                                                            celular,
-                                                            fecha_registro)
+            idtipo_empleado,
+            idoficina,                                                            
+            idperfil,
+            nombre,
+            apellidos,
+            aleas,
+            ruc,
+            fecha_nacimiento,
+            estado,
+            login,
+            password,
+            celular,
+            fecha_registro)
                                     values(:p1,:p2,:p3,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13,:p14,:p15)');
         $stmt->bindParam(':p1', $_P['idempleado'], PDO::PARAM_STR);
         $stmt->bindParam(':p2', $_P['idtipo_empleado'], PDO::PARAM_INT);

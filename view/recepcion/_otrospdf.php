@@ -58,24 +58,24 @@ class PDF extends FPDF
             $this->Cell(85,5,$cab[0]['horainicio'],1,0,'L');
         
         /* TERCER RECTANGULO */
-        $this->Rect(7, 71, 195, 85,'D');
+        //$this->Rect(7, 71, 195, 85,'D');
         $this->SetXY(9, 72);
         
         $this->Cell(5,5,'1.- ',0,0,'L');
-        $this->SetFont('Arial','U',8);
+        $this->SetFont('Arial','U',9);
         $this->Cell(80,5,'DATOS DEL CLIENTE :',0,1,'L');
 
             $this->SetXY(14, 78);
             $this->SetFont('Arial','',8);
             $this->Cell(25,5,utf8_decode('NOMBRE'),0,0,'L');
             $this->SetFont('Arial','',9);
-            $this->Cell(85,5,': '.$cab[0]['paciente'],0,1,'L');
+            $this->Cell(85,5,': '.utf8_decode(strtoupper($cab[0]['paciente'])),0,1,'L');
 
             $this->SetXY(14, 83);
             $this->SetFont('Arial','',8);
             $this->Cell(25,5,utf8_decode('DOMICILIO'),0,0,'L');
             $this->SetFont('Arial','',9);
-            $this->Cell(85,5,': '.$cab[0]['direccion'],0,1,'L');
+            $this->Cell(85,5,': '.utf8_decode($cab[0]['direccion']),0,1,'L');
 
             $this->SetXY(14, 89);
             $this->SetFont('Arial','',8);
@@ -86,63 +86,59 @@ class PDF extends FPDF
         $this->SetXY(9, 98);
         
         $this->Cell(5,5,'2.- ',0,0,'L');
-        $this->SetFont('Arial','U',8);
+        $this->SetFont('Arial','U',9);
         $this->Cell(80,5,'DESCRIPCION :',0,1,'L');
 
             $this->SetXY(14, 104);
             $this->SetFont('Arial','',10);
             //$this->Cell(25,5,utf8_decode($row['problema']),0,0,'L');
-            $this->MultiCell(185,4,utf8_decode($cab[0]['problema']),0,'J');
-
+            $this->MultiCellp(185,4,utf8_decode($cab[0]['problema']),0,'J');
+            $this->Ln(7);
+            $y= $this->GetY();
         /* CUARTO RECTANGULO */
-        $this->Rect(7, 156, 195, 8, 'D');
-        $this->SetFont('Arial','',9);
-        $this->SetXY(9, 158);
-        $this->Cell(25,5,utf8_decode('Área o Servicio :'),0,0,'L');
-        if ($cab[0]['idtipo_problema']==1) {
-            
+        $this->Rect(7, $y, 195, 8, 'D');
+        $this->SetFont('Arial','B',10);
+        $this->SetXY(9, $y+2);
+        $this->Cell(30,5,utf8_decode('Área o Servicio :'),0,0,'L');
+        if ($cab[0]['idtipo_problema']==1) {            
             $this->Cell(40,5,$cab[0]['areai'],0,0,'L');
-
         }else
             {
-                $this->Cell(40,5,$cab[0]['remitente'],0,0,'L');
-
-            }
-            
+                $this->Cell(80,5,$cab[0]['remitente'],0,0,'L');
+            }            
         
-        $this->SetXY(120, 158);
-        $this->Cell(22,5,utf8_decode('Fecha y Firma'),0,0,'L');
-
+        //$this->SetXY(120, 158);
+        $this->Cell(30,5,utf8_decode('Fecha y Firma'),0,0,'R');
+        $this->Ln(4);
         /* QUINTO RECTANGULO */
-        $this->Rect(7, 164, 195, 60, 'D');
-        $this->SetXY(9, 166);
+        //$this->Rect(7, 164, 195, 60, 'D');
+        $this->SetXY(9, $y+10);
         $this->Cell(5,5,'3.- ',0,0,'L');
-        $this->SetFont('Arial','U',8);
+        $this->SetFont('Arial','U',9);
         $this->Cell(80,5,utf8_decode('RESULTADOS DE LA INVESTIGACIÓN REALIZADA :'),0,1,'L');
-
-            $this->SetXY(14, 171);
+            $this->SetXY(14, $y+17);
             $this->SetFont('Arial','',10);
             //$this->Cell(25,5,utf8_decode($row['resultados']),1,1,'L');
-            $this->MultiCell(185,4,utf8_decode($cab[0]['resultados']),0,'J');
-          
-        /*SEXTO RECTANGULO*/
-        $this->Rect(7, 224, 195, 8, 'D');
-        $this->SetXY(9, 226);
-        $this->SetFont('Arial','',9);
-        $this->Cell(25,5,utf8_decode('Área o Servicio :'),0,0,'L');
-        $this->Cell(40,5,$cab[0]['destinatario'],0,0,'L');
+            $this->MultiCellp(185,4,utf8_decode($cab[0]['resultados']),0,'J');
+            $this->Ln(7);
+        $y= $this->GetY(); 
         
-        $this->SetXY(120, 226);
+        /*SEXTO RECTANGULO*/
+        $this->Rect(7, $y, 195, 8, 'D');
+        $this->SetXY(9, $y+2);
+        $this->SetFont('Arial','B', 10);
+        $this->Cell(30,5,utf8_decode('Área o Servicio :'),0,0,'L');
+        $this->Cell(70,5,$cab[0]['destinatario'],0,0,'L');        
         $this->Cell(22,5,utf8_decode('Fecha y Firma'),0,0,'L');
 
         /* SEPTIMO RECTANGULO */
-        $this->Rect(7, 232, 195, 30, 'D');
-        $this->SetXY(9, 235);
+        $this->Rect(7, $y+8, 195, 30, 'D');
+        $this->SetXY(9, $y+10);
         $this->Cell(5,5,'4.- ',0,0,'L');
-        $this->SetFont('Arial','U',8);
+        $this->SetFont('Arial','U',9);
         $this->Cell(80,5,utf8_decode('CIERRE DE LA RECLAMACIÓN :'),0,1,'L');
 
-            $this->SetXY(14, 240);
+            $this->SetXY(14, $y+15);
             $this->SetFont('Arial','',9);            
             
             foreach( $rowsc as $asigna=>$var )
@@ -159,8 +155,8 @@ class PDF extends FPDF
                         }
                 }
         /**/
-        $this->Rect(7, 262, 195, 8, 'D');
-        $this->SetXY(7, 262);
+        $this->Rect(7, $y+38, 195, 8, 'D');
+        $this->SetXY(7, $y+38);
         $this->Cell(50,8,utf8_decode('Fecha : ').$cab[0]['fechainicio'],1,0,'L');
         //$this->Cell(40,8,': OFICINA DE CALIDAD',1,0,'L');
         
@@ -171,7 +167,7 @@ class PDF extends FPDF
     function Footer()
     {
         global $conexion;        
-        $this->SetY(-10);
+        $this->SetY(-7);
         $this->SetFont('Arial','',7);
         $this->Cell(0, 4, utf8_decode('Prohibida la Reproducción Total o Parcial de este documento sin la autorización del Representante de la Dirección.'), 0, 1, 'C');
        
@@ -182,10 +178,10 @@ class PDF extends FPDF
 
 //print_r($cab);
 $pdf= new PDF('P','mm', 'A4');
-$pdf->SetAutoPageBreak(1 ,0.5);
+//$pdf->SetAutoPageBreak(1 ,0.5);
 //$pdf->SetTitle($title);
 $pdf->SetTitle(':: CMSM TRAMITE DOCUMENTARIO ::');
-//$pdf->SetMargins(2,3,7);
+//$pdf->SetMargins(10,8,2);
 $pdf->AliasNbPages();
 $pdf->AddPage('P','A4');
 //$pdf->cabecera($idtramite);

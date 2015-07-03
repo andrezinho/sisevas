@@ -51,13 +51,33 @@ class desarrollocap extends Main
         return $stmt->fetchObject();
     }
     
+    function getAsistentes($id)
+    {
+        
+        $stmt = $this->db->prepare("SELECT
+            a.idpersonalasig,
+            a.idtipoalcance,
+            p.nombres||' '||p.apellidos AS asistentes,
+            t.descripcion
+            FROM
+            capacitacion.capacitacion AS c
+            INNER JOIN capacitacion.capacitacion_asignacion AS a ON a.idcapacitacion = c.idcapacitacion
+            LEFT JOIN public.personal AS p ON a.idpersonalasig = p.idpersonal
+            INNER JOIN capacitacion.tipoalcance AS t ON a.idtipoalcance = t.idtipoalcance
+            WHERE c.idcapacitacion = :id ");
+
+        $stmt->bindParam(':id', $id , PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
     function getAcuerdos($id)
     {
 
         $stmt = $this->db->prepare("SELECT
             ca.acuerdo,
             ca.idasistente,
-            p.nombres||' '||p.apellidos AS asistente
+            asistente
             FROM
             capacitacion.capacitacion AS c
             INNER JOIN capacitacion.capacitacion_acuerdos AS ca ON c.idcapacitacion = ca.idcapacitacion
@@ -110,17 +130,20 @@ class desarrollocap extends Main
             $exec->execute();                    
                
             $sqlac= "INSERT INTO capacitacion.capacitacion_acuerdos (
-                idcapacitacion, acuerdo, idasistente ) 
-                VALUES ( :p1, :p2, :p3)";
+                idcapacitacion, acuerdo, idasistente, asistente ) 
+                VALUES ( :p1, :p2, :p3, :p4)";
             $stmt2 = $this->db->prepare($sqlac);
 
-            if($_P['idasistente'][0]!= ''){
+            if($_P['acuerdocap'][0]!= ''){
                 foreach($_P['idasistente'] as $i => $idasistente)
                 {   
                     //print_r($_P['acuerdocap']);
+                    if($idasistente=='')
+                    {$idasistente=0;}
                     $stmt2->bindParam(':p1',$id,PDO::PARAM_INT);                    
                     $stmt2->bindParam(':p2',$_P['acuerdocap'][$i],PDO::PARAM_STR);
                     $stmt2->bindParam(':p3', $idasistente ,PDO::PARAM_INT);
+                    $stmt2->bindParam(':p4',$_P['asistentedet'][$i],PDO::PARAM_STR);
                     $stmt2->execute();                
 
                 }
@@ -179,8 +202,7 @@ class desarrollocap extends Main
         $acuerdo= "SELECT
             ca.acuerdo,
             ca.idasistente,
-            p.nombres,
-            p.apellidos
+            ca.asistente
             FROM
             capacitacion.capacitacion AS c
             INNER JOIN capacitacion.capacitacion_acuerdos AS ca ON c.idcapacitacion = ca.idcapacitacion

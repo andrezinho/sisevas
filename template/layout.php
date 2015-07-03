@@ -10,6 +10,7 @@
     <link href="css/style_forms.css" rel="stylesheet" type="text/css" />
     <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+    
     <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>    
     <script type="text/javascript" src="js/menus.js"></script>
@@ -22,20 +23,12 @@
     <script type="text/javascript" src="js/jquery.jqGrid.min.js"></script> 
     <!-- <script type="text/javascript" src="js/jquery.jqGrid.src.js"></script> -->
     <script type="text/javascript" src="js/grid.locale-es.js"></script>
-    <!-- prefix free to deal with vendor prefixes -->
-    <script src="http://thecodeplayer.com/uploads/js/prefixfree-1.0.7.js" type="text/javascript" type="text/javascript"></script>    
+    <!-- prefix free to deal with vendor prefixes-->
+    <script src="js/prefixfree-1.0.7.js" type="text/javascript" type="text/javascript"></script>    
     <script src="js/jquery.uploadify.min.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="css/uploadify.css"></link>
-<!--
-    <script type="text/javascript">        
-        
-        $(function () {
-            $("#tabsindex").tabs({ collapsible: false });
-        });
-
-    </script>
- -->
- 
+    
+  
  <script type="text/javascript">
     jQuery(document).ready(function($) {
     
@@ -87,7 +80,7 @@
     .tabsindex li { 
         position: relative; 
         display: inline-block; 
-        margin: 1px .2em 0 0; 
+        //margin: 1px .2em 0 0; 
         padding: 0;
         list-style: none; white-space: nowrap;
     }
@@ -103,11 +96,11 @@
      
     /*tabs a*/
     .tabsindex a{
-        font-size: 12px;
+        //font-size: 12px;
         font-weight: bold !important;
         display: inline-block;
         margin-bottom: -5px;
-        padding: 7px;
+        padding: 6px;
         padding-bottom: 10px;
         border: 1px solid #DFDFDF;
         border-bottom: none;
@@ -140,7 +133,8 @@
     }
      
     .tabsindex .content{
-        padding: 20px;        
+        padding: 20px;
+        width: 795px;        
         min-height: 300px;
     }
     
@@ -161,16 +155,16 @@
     ?>
     <header id="site_head">
         <div class="header_cont">
-            <h1><a href="#">Romero</a></h1> 
+            <h1><a href="#">CORPOMEDIC</a></h1> 
             <nav class="head_nav"></nav>
         </div>
     </header>
     <div id="body">
         <div id="banner"></div>        
         <div id="left">
-            <h6 class="ui-widget-header ui-state-hover">BIENVENIDO  </h6>
+            <h6 class="ui-widget-header ui-state-hover">BIENVENIDO</h6>
             <br />
-            <p>USER</p>
+            <p>USUARIO</p>
             <div id="barra-session">
                 <span class="item-top"><?php echo strtoupper($_SESSION['name']); ?></span>                
             </div><br />
@@ -200,12 +194,17 @@
                  </div> 
                         
             </div>
-            --> 
+            -->
+            <div>
+                <center>
+                    <img src="../web/images/index/<?php echo $_SESSION['logoemp']; ?>" width="180" height="130" />
+                </center>
+            </div>
             <div id="barra-session">
                 <br />             
                 <a href="index.php?controller=user&action=logout" class="logout">CERRAR SESION</a>                
             </div>
-
+            
         </div>        
         <div id="content">
             <?php echo $content; ?>
@@ -213,7 +212,7 @@
         <div  class="spacer"></div>
         <div id="foot" class="ui-corner-bottom">
             SISTEMA DE EVALUACION DE DESEMPEÑO
-            <br/>2013
+            <br/><?=date('Y');?>
         </div>
         <div  class="spacer"></div>        
     </div>

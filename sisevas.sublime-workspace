@@ -4,11 +4,19 @@
 		"selected_items":
 		[
 			[
-				"as",
-				"asig"
+				"fun",
+				"function"
+			],
+			[
+				"A",
+				"alt	Attr"
 			],
 			[
 				"prin",
+				"print_r"
+			],
+			[
+				"pri",
 				"print_r"
 			]
 		]
@@ -16,20 +24,55 @@
 	"buffers":
 	[
 		{
-			"contents": "Searching 632 files for \"$obejtivosemp\" (case sensitive)\n\nE:\\xampp\\htdocs\\sisevas\\model\\index.php:\n   33          $stmt1 = $this->db->prepare($objemp);\n   34          $stmt1->execute();\n   35:         $obejtivosemp=$stmt1->fetchAll();\n   36          \n   37          $objcal=\"SELECT\n   ..\n   76          $politica=$stmt4->fetchAll();\n   77          \n   78:         return array($mv, $obejtivosemp, $obejtivoscal, $valoresemp, $politica, $objetempimg);\n   79      }\n   80  \n\nE:\\xampp\\htdocs\\sisevas\\model\\sistema.php:\n   92          $stmt1 = $this->db->prepare($objemp);\n   93          $stmt1->execute();\n   94:         $obejtivosemp=$stmt1->fetchAll();\n   95          \n   96          $objcal=\"SELECT\n   ..\n  135          $politica=$stmt4->fetch();\n  136          \n  137:         return array($mv, $obejtivosemp, $obejtivoscal, $valoresemp, $politica);\n  138      }\n  139  }\n\nE:\\xampp\\htdocs\\sisevas\\view\\_index.php:\n   49                                     \n   50                                  \n   51:                                     if(count($obejtivosemp)>0)\n   52                                      {    $cn=0;\n   53:                                         foreach ($obejtivosemp as $i => $r) \n   54                                          {   \n   55                                              $cn ++;\n   ..\n   58                                      }\n   59                                      \n   60:                                      print_r($obejtivosemp);\n   61                                  ?>\n   62                                 \n   ..\n   66                              <?php\n   67                                  $c=0;\n   68:                                     foreach ($obejtivosemp as $i => $img) \n   69                                      {  \n   70                                          $c ++;\n\n8 matches across 3 files\n",
+			"file": "web/js/app/evt_form_capacitacionasig.js",
 			"settings":
 			{
-				"buffer_size": 1863,
-				"line_ending": "Windows",
-				"name": "Find Results",
-				"scratch": true
+				"buffer_size": 12516,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "web/css/cssmenu.css",
+			"settings":
+			{
+				"buffer_size": 2685,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/xampp/htdocs/cnsm-std/cInterfaseUsuario_SITD/index.php",
+			"settings":
+			{
+				"buffer_size": 157,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/xampp/htdocs/srnw/servicios/libros/generaword.php",
+			"settings":
+			{
+				"buffer_size": 4298,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/xampp/htdocs/srnw/servicios/cartas/imprimir.php",
+			"settings":
+			{
+				"buffer_size": 3286,
+				"line_ending": "Windows"
 			}
 		}
 	],
 	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
 	"command_palette":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -53,72 +96,98 @@
 	},
 	"expanded_folders":
 	[
-		"/E/xampp/htdocs/sisevas"
+		"/D/xampp/htdocs/sisevas",
+		"/D/xampp/htdocs/sisevas/web/css"
 	],
 	"file_history":
 	[
-		"/E/xampp/htdocs/sisevas/controller/capacitacionasigController.php",
-		"/E/xampp/htdocs/sisevas/model/capacitacionasig.php",
-		"/E/xampp/htdocs/sisevas/view/capacitacionasig/_form.php",
-		"/E/xampp/htdocs/sisevas/web/js/app/evt_form_capacitacionasig.js",
-		"/E/xampp/htdocs/sisevas/view/capacitacionasig/_cappdf.php",
-		"/C/xampp/htdocs/sisevas/web/process.php",
-		"/C/xampp/htdocs/sisevas/web/testing.php",
-		"/C/xampp/htdocs/sisevas/web/upup.php",
-		"/C/xampp/htdocs/sisevas/lib/Spdo.php",
-		"/C/xampp/htdocs/sisevas/model/reportes.php",
-		"/C/xampp/htdocs/sisevas/view/personal/_form.php",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_form_ventas.js",
-		"/C/xampp/htdocs/sisevas/view/recepcion/_otrospdf.php",
-		"/C/xampp/htdocs/sisevas/view/tipodocumento/_informerec.php",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_index_capacitacionasig.js",
-		"/C/xampp/htdocs/siinco_sedahuanuco_/js/funciones.js",
-		"/C/xampp/htdocs/siinco_sedahuanuco/include/claseindex.php",
-		"/C/xampp/htdocs/sisevas/controller/capacitacionController.php",
-		"/C/xampp/htdocs/sisevas/model/capacitacion.php",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_index_envio.js",
-		"/C/xampp/htdocs/sisevas/model/recepcion.php",
-		"/C/xampp/htdocs/sisevas/controller/recepcionController.php",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_form_envio.js",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_form_capacitacionasig.js",
-		"/C/xampp/htdocs/sisevas/web/css/layout.css",
-		"/C/xampp/htdocs/sisevas/model/envio.php",
-		"/C/xampp/htdocs/sisevas/controller/personalController.php",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_index_capacitacion.js",
-		"/C/xampp/htdocs/sisevas/controller/politicacalController.php",
-		"/C/xampp/htdocs/sisevas/model/politicacal.php",
-		"/C/xampp/htdocs/sisevas/view/politicacal/_form.php",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_form_politicacal.js",
-		"/C/xampp/htdocs/siinco_sedahuanuco_/ajax/clientes.php",
-		"/C/xampp/htdocs/siinco_sedahuanuco_/objetos/clsSql.php",
-		"//10.2.0.50/Encriptados/SEDA/siinco_sedahuanuco/objetos/clsSql.php",
-		"/C/xampp/htdocs/romero/model/produccion.php",
-		"/C/xampp/htdocs/romero/controller/produccionController.php",
-		"/C/xampp/htdocs/romero/controller/ventasController.php",
-		"/C/xampp/htdocs/romero/model/ventas.php",
-		"/C/xampp/htdocs/sisevas/model/personal.php",
-		"/C/xampp/htdocs/romero/web/js/app/evt_form_ventas.js",
-		"/C/xampp/htdocs/romero/lib/Spdo.php",
-		"/C/xampp/htdocs/romero/controller/personalController.php",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_index_verificacion.js",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_form_ejecap.js",
-		"/C/xampp/htdocs/romero/view/ventas/_form.php",
-		"/C/xampp/htdocs/romero/view/ingresosm/_form.php",
-		"/H/Encriptados/siinco_sedahuanuco/sigco/solicitudes/operaciones/registro/generar/index.php",
-		"/C/xampp/htdocs/sisevas/web/js/app/evt_form_capacitacion.js",
-		"/C/xampp/htdocs/sisevas/view/capacitacion/_form.php",
-		"/C/Users/NT/Desktop/Botica/Capacitacion/capacitacion.php",
-		"/C/xampp/htdocs/sisevas/model/capacitacionasig.php",
-		"/C/Users/NT/Desktop/Botica/Capacitacion/capacitacionController.php",
-		"/C/xampp/htdocs/sisevas/controller/capacitacionasigController.php",
-		"/C/Users/NT/Desktop/Botica/Capacitacion/evt_form_capacitacion.js",
-		"/C/Users/NT/Desktop/Botica/Capacitacion/capacitacion/_form.php",
-		"/C/xampp/htdocs/sisevas/controller/envioController.php",
-		"/C/xampp/htdocs/sisevas/model/tipodocumento.php",
-		"/C/xampp/htdocs/sisevas/view/tipodocumento/_memorando.php",
-		"/C/xampp/htdocs/sisevas/controller/correlativosController.php",
-		"/C/xampp/htdocs/sisevas/model/correlativos.php",
-		"/C/xampp/htdocs/sisevas/model/consultas.php"
+		"/D/xampp/htdocs/sisevas/view/capacitacionasig/_cappdf.php",
+		"/D/xampp/htdocs/sisevas/controller/envioController.php",
+		"/D/xampp/htdocs/sisevas/model/envio.php",
+		"/D/xampp/htdocs/sisevas/view/tipodocumento/_actareunion.php",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_form_envio.js",
+		"/D/xampp/htdocs/sisevas/controller/personalController.php",
+		"/D/xampp/htdocs/sisevas/model/personal.php",
+		"/D/xampp/htdocs/sisevas/view/personal/_form.php",
+		"/D/xampp/htdocs/sisevas/view/capacitacionasig/_form.php",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_form_personal.js",
+		"/D/xampp/htdocs/sisevas/lib/fpdf/fpdf.php",
+		"/D/xampp/htdocs/sisevas/view/capacitacion/_form.php",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_form_capacitacion.js",
+		"/D/xampp/htdocs/sisevas/lib/Spdo.php",
+		"/D/xampp/htdocs/sisevas/model/capacitacionasig.php",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_form_informeme.js",
+		"/D/xampp/htdocs/cnsm-std/cInterfaseUsuario_SITD/CmbResponsable.php",
+		"/D/xampp/htdocs/cnsm-std/cInterfaseUsuario_SITD/index.php",
+		"/D/xampp/htdocs/cnsm-std/cInterfaseUsuario_SITD/iu_multiple_remitentes_seleccion.php",
+		"/D/xampp/htdocs/cnsm-std/cInterfaseUsuario_SITD/iu_grupo_oficina_seleccion.php",
+		"/D/xampp/htdocs/cnsm-std/cInterfaseUsuario_SITD/iu_grupo_remitentes_seleccion.php",
+		"/D/xampp/htdocs/sisevas/controller/cargoController.php",
+		"/D/xampp/htdocs/sisevas/controller/cajaController.php",
+		"/D/xampp/htdocs/sisevas/controller/areasController.php",
+		"/D/xampp/htdocs/av/controller/moduloController.php",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_form_capacitacionasig.js",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_form_caja.js",
+		"/D/xampp/htdocs/sisevas/view/desarrollocap/_actapdf.php",
+		"/D/xampp/htdocs/sisevas/model/reportes.php",
+		"/D/xampp/htdocs/sisevas/controller/capacitacionasigController.php",
+		"/D/xampp/htdocs/sisevas/model/desarrollocap.php",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_form_desarrollocap.js",
+		"/D/xampp/htdocs/sisevas/model/sistema.php",
+		"/D/NiptonDoc/Otros.txt",
+		"/D/NiptonDoc/tia toty.txt",
+		"/D/xampp/htdocs/sisevas/view/reportes/_rep05.php",
+		"/D/xampp/htdocs/sisevas/view/reportes/_reporte_rep05.php",
+		"/D/xampp/htdocs/sisevas/view/reportes/_reporte_rep05_pdf.php",
+		"/D/xampp/htdocs/sisevas/view/reportes/_reporte_rep08_pdf.php",
+		"/D/xampp/htdocs/sisevas/view/reportes/_reporte_rep07_pdf.php",
+		"/D/xampp/htdocs/sisevas/view/reportes/_reporte_rep06_pdf.php",
+		"/D/xampp/htdocs/sisevas/view/reportes/_reporte_rep02.php",
+		"/D/xampp/htdocs/sisevas/view/reportes/_rep02.php",
+		"/D/xampp/htdocs/sisevas/view/reportes/_rep03.php",
+		"/D/xampp/htdocs/sisevas/template/layout.php",
+		"/D/xampp/htdocs/sisevas/view/recepcion/_actpdf.php",
+		"/D/xampp/htdocs/sisevas/view/tareas/_form.php",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_form_tareas.js",
+		"/D/xampp/htdocs/sisevas/controller/funcionesuopController.php",
+		"/D/xampp/htdocs/sisevas/model/funcionesuop.php",
+		"/D/xampp/htdocs/sisevas/model/fuentecap.php",
+		"/D/xampp/htdocs/sisevas/view/informeme/_form.php",
+		"/D/xampp/htdocs/sisevas/model/ventas.php",
+		"/D/xampp/htdocs/sisevas/model/recepcion.php",
+		"/D/xampp/htdocs/sisevas/model/proformas.php",
+		"/D/xampp/htdocs/sisevas/model/pagopersonal.php",
+		"/D/xampp/htdocs/sisevas/model/movimiento.php",
+		"/D/xampp/htdocs/sisevas/model/innovacion.php",
+		"/D/xampp/htdocs/sisevas/model/evaluacion.php",
+		"/D/xampp/htdocs/corpmedic_/admision/citas/script.js",
+		"/D/xampp/htdocs/corpmedic_/hc/citas_dia/index.php",
+		"/D/xampp/htdocs/corpmedic_/hc/citas_dia/citasp.php",
+		"/D/xampp/htdocs/sisevas/view/recepcion/_mempdf.php",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_index_envio.js",
+		"/D/xampp/htdocs/sisevas/controller/recepcionController.php",
+		"/D/xampp/htdocs/sisevas/view/recepcion/_otrospdf.php",
+		"/D/xampp/htdocs/sisevas/view/recepcion/_carfecpdf.php",
+		"/D/xampp/htdocs/sisevas/view/reportes/_reporte_rep02_pdf.php",
+		"/D/xampp/htdocs/sisevas/view/recepcion/_carcumpdf.php",
+		"/D/xampp/htdocs/sisevas/view/recepcion/_consulproforma.php",
+		"/D/xampp/htdocs/sisevas/view/tipodocumento/_memorando.php",
+		"/D/xampp/htdocs/sisevas/view/envio/_devform.php",
+		"/D/xampp/htdocs/sisevas/view/tipodocumento/_servicio.php",
+		"/D/xampp/htdocs/sisevas/web/js/app/evt_form_tipodocumento.js",
+		"/D/xampp/htdocs/sisevas/model/tipodocumento.php",
+		"/D/xampp/htdocs/sisevas/model/informeme.php",
+		"/D/xampp/htdocs/sisevas/controller/tareasController.php",
+		"/D/xampp/htdocs/sisevas/model/tareas.php",
+		"/D/xampp/htdocs/sisevas/controller/informemeController.php",
+		"/D/xampp/htdocs/sisevas/model/capacitacion.php",
+		"/D/xampp/htdocs/sisevas/model/calendario.php",
+		"/D/xampp/htdocs/sisevas/model/consultas.php",
+		"/D/xampp/htdocs/corpmedic/reportes/rptenfermedad/Consulta.php",
+		"/D/xampp/htdocs/corpmedic/reportes/rptatencion/Consulta.php",
+		"/D/xampp/htdocs/sisevas/view/desarrollocap/_form.php",
+		"/C/Program Files (x86)/PostgreSQL/8.4/data/postgresql.conf",
+		"/C/Program Files (x86)/PostgreSQL/8.4/data/pg_hba.conf"
 	],
 	"find":
 	{
@@ -129,119 +198,126 @@
 		"height": 90.0,
 		"where_history":
 		[
-			"E:\\xampp\\htdocs\\sisevas"
+			"D:\\xampp\\htdocs\\sisevas"
 		]
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
-			"$obejtivosemp",
+			"Completar",
+			"');\n",
+			"getPersonalxArea",
+			"loadPersonal",
+			"loadTareas",
+			"getPersonalxArea",
+			"loadTareas",
+			"load_conceptos",
+			"Row",
+			"capac",
+			"loadTemas",
+			"MultiCell",
+			"getFuncionesxArea",
+			"nrominutos",
+			"verificar",
+			"ventana_agregar_horario",
+			"fuxion",
+			"todosvalor",
+			"loadTareas",
 			"\"t\"",
-			"\"c\"",
-			"\"p\"",
-			"delete",
-			"addDetail",
-			"\"public\"",
-			"\"p\"",
-			"printer_mem",
-			"delete",
-			"echo",
-			"getEstado",
-			"\"t\"",
-			"\"a\"",
-			"\"p\"",
-			"\"c\"",
-			"\"a\"",
-			"producto",
-			"producto.listar",
-			"producto.nuevo",
-			"addnewproducto",
-			"add",
-			"adde",
-			"dni",
-			"pla",
-			"codigo",
-			"Codigo"
+			"fechaini"
 		],
 		"highlight": true,
 		"in_selection": false,
-		"preserve_case": true,
+		"preserve_case": false,
 		"regex": false,
 		"replace_history":
 		[
 			"t",
-			"c",
-			"p",
-			"public",
-			"p",
-			"t",
-			"a",
-			"p",
-			"c",
-			"a"
+			"fechareg"
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
-		"wrap": false
+		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "web/js/app/evt_form_capacitacionasig.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1863,
+						"buffer_size": 12516,
 						"regions":
 						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										201,
-										214
-									],
-									[
-										382,
-										395
-									],
-									[
-										618,
-										631
-									],
-									[
-										796,
-										809
-									],
-									[
-										1050,
-										1063
-									],
-									[
-										1179,
-										1192
-									],
-									[
-										1465,
-										1478
-									],
-									[
-										1706,
-										1719
-									]
-								],
-								"scope": ""
-							}
+						},
+						"selection":
+						[
+							[
+								305,
+								325
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "web/css/cssmenu.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2685,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1633,
+								1633
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 3,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 42.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/D/xampp/htdocs/cnsm-std/cInterfaseUsuario_SITD/index.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 157,
+						"regions":
+						{
 						},
 						"selection":
 						[
@@ -252,17 +328,68 @@
 						],
 						"settings":
 						{
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 1,
-							"result_base_dir": "",
-							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+							"syntax": "Packages/PHP/PHP.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/xampp/htdocs/srnw/servicios/libros/generaword.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4298,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2429,
+								2429
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 378.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/xampp/htdocs/srnw/servicios/cartas/imprimir.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3286,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2347,
+								2350
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 621.0,
+						"translation.y": 252.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -273,7 +400,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 0.0
+		"height": 23.0
 	},
 	"input":
 	{
@@ -306,6 +433,7 @@
 	{
 		"height": 0.0
 	},
+	"pinned_build_system": "",
 	"project": "sisevas.sublime-project",
 	"replace":
 	{
@@ -315,6 +443,7 @@
 	"select_file":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -323,6 +452,7 @@
 	"select_project":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -331,6 +461,7 @@
 	"select_symbol":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -344,7 +475,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 243.0,
+	"side_bar_width": 274.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

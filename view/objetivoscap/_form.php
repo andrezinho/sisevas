@@ -9,7 +9,7 @@
     <input id="idobejtivoscap" name="idobejtivoscap"  value="<?php echo $obj->idobejtivoscap; ?>" type="hidden" />       
         
         <label for="descripcion" class="labels">Descripcion:</label>
-        <input id="descripcion" maxlength="100" name="descripcion" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 400px; text-align: left;" value="<?php echo $obj->descripcion; ?>" />
+        <input id="descripcion" name="descripcion" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 400px; text-align: left;" value="<?php echo $obj->descripcion; ?>" />
         <br />
         
         <label for="estado" class="labels">Activo:</label>

@@ -157,17 +157,6 @@ class PersonalController extends Controller
     //Ver historial de pagos
     public function VerPagos()
     {
-        /*$obj = new Personal();
-        $data = array();
-        $view = new View();
-        $ro = $obj->viewPag($_GET);
-        $data['produccion'] = $ro[0];
-        $data['acabado'] = $ro[1];
-        $view->setData($data);
-        $view->setTemplate( '../view/pagopersonal/_datoshist.php' );
-        $view->setLayout( '../template/empty.php' );
-        echo $view->renderPartial();*/
-
         $obj = new Personal();
         $data = array();
         $view = new View();
@@ -312,6 +301,29 @@ class PersonalController extends Controller
             echo "KO";
         }
     }
+    
+    public function getListaAsig()
+    {
+        $obj = new Personal();        
+        $rows = $obj->getList();
+        print_r(json_encode($rows));
+    }
+    
+    public function getListaAsist()
+    {
+        $obj = new Personal();        
+        $rows = $obj->getListAsist($_GET['idcap']);
+        print_r(json_encode($rows));
+    }
+    
+    public function getPersonalxArea()
+    {
+        $obj = new Personal();        
+        $rows = $obj->getPersonalxArea($_GET);
+        print_r(json_encode($rows));
+    }
+    
+    
 }
  
 

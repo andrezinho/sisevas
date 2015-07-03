@@ -105,5 +105,12 @@ class periodoController extends Controller
         else $result = array(2,$p[1]);
         print_r(json_encode($result));
     }
+    
+    public function getPeriodos()
+    {
+        $obj = new periodo();
+        $options = $obj->getPeriodos($_GET['anio']);
+        print_r(json_encode($options));
+    }
 }
 ?>

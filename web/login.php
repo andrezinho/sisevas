@@ -73,7 +73,7 @@
             </div>
         </div>       
         <div id="foot">
-            <span>2014 - NTCsystem</span>
+            <span><?=date('Y');?> - NT-System</span>
             <span style="float:right">SISTEMA DE EVALUACION DE DESEMPEÑO</span>
         </div>
     </div>               

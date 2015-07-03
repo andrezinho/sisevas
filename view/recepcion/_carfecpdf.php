@@ -2,7 +2,8 @@
 session_start();
 require("../lib/fpdf/fpdf.php");
 class PDF extends FPDF
-{
+{   
+    
     function Header()
     {
         //global ;
@@ -25,20 +26,77 @@ class PDF extends FPDF
        
     }
     
-    function cuerpo($cab)
+    function cuerpo($cab, $det)
     {
-        $hoy = date("Y"); 
+        $hoy = date("Y");
+        $fechadoc= $cab[0]['fecha'];
+        $fecha_separada=explode("/", $fechadoc);
+        
+        switch ($fecha_separada[1]) {
+        
+        case "01":
+            $mes="Enero";
+          break;
+        case "02":
+            $mes="Febrero";
+          break;
+        case "03":
+            $mes="Marzo";
+          break;
+        case "04":
+            $mes="Abril";
+          break;
+        case "05":
+            $mes="Mayo";
+          break;
+        case "06":
+            $mes="Junio";
+          break;
+        case "07":
+            $mes="Julio";
+          break;
+        case "08":
+            $mes="Agosto";
+          break;
+        case "09":
+            $mes="Septiembre";
+          break;
+        case "10":
+            $mes="Octubre";
+          break;
+        case "11":
+            $mes="Noviembre";
+          break;
+        case "12":
+            $mes="Diciembre";
+          break;
+        
+        default:
+          break;
+        }
+        
         //N° de documento
         $this->SetFont('Arial','B',9);
-        $this->Cell(0, 5, strtoupper(utf8_decode('TARAPOTO, 12 de MAYO del '.$hoy)), 0, 1, 'R');
+        $this->Cell(0, 5, strtoupper(utf8_decode('TARAPOTO, '.$fecha_separada[0].' de '.$mes.' del '.$fecha_separada[2])), 0, 1, 'R');
         $this->Ln(4);
                
-        $this->SetFont('Arial','',9);
-        $this->Cell(14, 5, 'Sr (a) :', 0, 1, 'L');
-        //$this->Cell(2, 5, ':', 0, 0, 'R');
+        $this->SetFont('Arial','B',9);
+        $c=0;
+        foreach ($det as $rs){ $c++; }
+        if($c>1){$trato='Sres :';}  else {$trato='Sr (a) :'; }
+        $this->Cell(15, 5, $trato, 0, 1, 'L');
         $this->SetFont('Arial','B',10);
-        $this->Cell(10, 5, strtoupper(utf8_decode($cab[0]['destinatario'])), 0, 1, 'L');
+        //REMITENTE
+        foreach ($det as $rs){
+            $this->SetFont('Arial','',8);
+            $this->SetX(26);
+            $this->Cell(10, 5, strtoupper(utf8_decode($rs['destinatarios'])), 0, 1, 'L');
+            
+                        
+        }
         $this->Ln(3);
+        /*$this->Cell(10, 5, strtoupper(utf8_decode($cab[0]['destinatario'])), 0, 1, 'L');
+        $this->Ln(3);*/
         /*$this->SetX(26);
         $this->SetFont('Arial','',8);
         $this->Cell(0, 5, strtoupper(utf8_decode($cab[0]['cargo_d'])), 0, 1, 'L');*/
@@ -59,10 +117,10 @@ class PDF extends FPDF
         $this->SetFont('Arial','B',8);
         //$this->Cell(2, 5, utf8_decode($rowPaso['asunto_origen']), 0, 1, 'J');
         $this->MultiCell(0,4,strtoupper(utf8_decode($cab[0]['asunto'])),0,'J');*/
-        $this->Ln(4);
+        $this->Ln(5);
         
         //FECHA DE EMISION
-        $this->SetFont('Arial','',7);
+        $this->SetFont('Arial','B',8);
         $this->Cell(14, 5, 'FECHA', 0, 0, 'L');
         $this->Cell(2, 5, ':', 0, 0, 'R');
         $this->SetFont('Arial','B',8);
@@ -98,7 +156,7 @@ $pdf->AliasNbPages();
 $pdf->AddPage('P','A5');
 $pdf->AliasNbPages();
 //$pdf->AddPage();
-$pdf->cuerpo($cab);
+$pdf->cuerpo($cab, $det);
 //$pdf->Header($cab);
 $pdf->Output();	
 

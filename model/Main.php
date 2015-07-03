@@ -15,7 +15,7 @@ class Main extends Spdo {
     }
     public function IdlastInsert($table,$id)
     {
-        $stmt = $this->db->prepare("select max(".$id.") as codigo from ".$table);
+        $stmt = $this->db->prepare("SELECT max(".$id.") as codigo FROM ".$table);
         $stmt->execute();
         $r = $stmt->fetchObject();
         return $r->codigo;
@@ -34,7 +34,7 @@ class Main extends Spdo {
 
         if($filtro!="") 
         {
-            if(stripos($sql,"where ")!==false||stripos($sql,"WHERE ")!==false) $sql .= " and ";
+            if(stripos($sql,"where ")!==false||stripos($sql,"WHERE ")!==false) $sql .= " AND ";
             else $sql .= " WHERE ";
             $sql .= " cast(".$filtro." as varchar) ilike :query ";
         }
@@ -68,7 +68,7 @@ class Main extends Spdo {
     }
     function getEstado($tabla,$campo,$id)
     {
-        $sql = "SELECT estado from {$tabla} where {$campo} = {$id}";
+        $sql = "SELECT estado FROM {$tabla} where {$campo} = {$id}";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $r = $stmt->fetchObject();
@@ -77,19 +77,18 @@ class Main extends Spdo {
 
     function more_options($name_controller)
     {
-        $sql = "select idpadre from modulo where controlador = :name ";
+        $sql = "SELECT idpadre FROM modulo where controlador = :name ";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':name', $name_controller , PDO::PARAM_STR);
         $stmt->execute();
         $r = $stmt->fetchObject();
         $idpadre = $r->idpadre;
         
-        $sql = "select  
-                        m.descripcion AS descripcion,
+        $sql = "SELECT m.descripcion AS descripcion,
                         m.url AS url,        
                         m.controlador AS controlador,
                         m.accion AS accion
-                from    (modulo m join permiso p on((m.idmodulo = p.idmodulo))) 
+                FROM (modulo m join permiso p on((m.idmodulo = p.idmodulo))) 
                 where ((m.estado = 1) and (p.acceder = 1) and (m.backend = 1)) 
                 and idpadre = {$idpadre}  and p.idperfil = ".$_SESSION['id_perfil']." 
                 order by m.descripcion";

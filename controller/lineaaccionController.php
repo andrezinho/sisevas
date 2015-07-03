@@ -113,10 +113,10 @@ class lineaaccionController extends Controller
         print_r(json_encode($result));
     }
     
-    public function Reclineaaccion()
+    public function getTemas()
     {
         $obj = new lineaaccion();        
-        $rows = $obj->Rlineaaccion($_GET['idfinanc']);                               
+        $rows = $obj->getTemas($_GET);
         print_r(json_encode($rows));
     }
 

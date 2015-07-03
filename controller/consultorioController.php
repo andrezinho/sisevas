@@ -1,7 +1,7 @@
 <?php
 require_once '../lib/controller.php';
 require_once '../lib/view.php';
-require_once '../model/Consultorio.php';
+require_once '../model/consultorio.php';
 
 class ConsultorioController extends Controller 
 {   

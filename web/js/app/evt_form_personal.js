@@ -2,10 +2,10 @@ $(function()
 {   
     $("#tabs").tabs({ collapsible: false }); 
     $( "#nombres" ).focus();
-    $( "#sexo" ).css({'width':'210px'});
+    $( "#sexo" ).css({'width':'170px'});
     $( "#idgradinstruccion, #idespecialidad,#idtipopersonal, #idperfil" ).css({'width':'210px'});
     $( "#idcargo, #idestado_civil,#idconsultorio, #iddocumento_identidad" ).css({'width':'210px'});
-    $("#estados").buttonset();
+    $("#estados, #perexterno").buttonset();
     $("#fechanaci, #fechaing, #cumpleesposa, #cumplehijo, #asumircargo, #vacacionesinicio, #vacacionesfin").datepicker({
         dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true
       });

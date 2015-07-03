@@ -21,23 +21,37 @@
         <div class="mp-level">		
             <div style=" padding:0 10px;">				
                 <span class="box-options-top"><a id="btn-logo" class="options-icons" href="index.php" title="Sistema"><b>SISEVAS</b></a></span>
-                <span class="box-options-top"><a id="btn-periodo" class="options-icons" href="#" title="Periodo"><?php echo $_SESSION['periodo'] ?></a></span>
-                <span class="box-options-top"><a id="btn-search-personal" class="options-icons" href="#" title="Buscar y/o Cambiar de Personal">Buscar Personal</a></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="box-options-top"><a id="btn-periodo" class="options-icons" href="#" title="Periodo"><?php echo $_SESSION['periodo'] ?></a></span><br /><br />
+                <span class="box-options-top"><a id="btn-search-personal" class="options-icons" href="#" title="Buscar y/o Cambiar de Personal">BUSCAR PERSONAL</a></span>
+                
+                <input type="hidden" id="idperiodoactual" value="<?=$_SESSION['idperiodo']; ?>" />
             </div>
             <div id="box-search-personal">
 
             </div>
             <div class="title-head">
                 <input type="hidden" name="idpersonal" id="idpersonal" value="<?php echo $rows->idpersonal; ?>" />
-                <h1><?php echo $rows->nombres . " " . $rows->apellidos; ?>					
+                <input type="hidden" name="evaluado" id="evaluado" value="<?php echo $rows->nombres." ".$rows->apellidos; ?>" />
+                <h1><?php echo $rows->nombres." ".$rows->apellidos; ?>					
                     <span><?php echo strtoupper($rows->perfil); ?><br/></span>
                     <p>Evaluador: <?php echo $_SESSION['name']; ?></p>
+                    <input type="hidden" name="evaluador" id="evaluador" value="<?=$_SESSION['idusuario']; ?>" />
                 </h1>
             </div>
             <div style="border-top:1px dotted #666;"></div>
             <div style="display:none">
                 <?php echo $competencias; ?>
             </div>
+            <div id="barra-session">
+                <br>             
+                <span class="box-options-top">
+                    <a id="btn-logo" class="options-icons delete" href="#" title="Borrar Evaluacion"><b>BORRAR EVALUACION</b></a>
+                </span>
+                <br> 
+            </div>
+            <br> 
+            <div style="border-top:1px dotted #666;"></div>
             <h2>Competencias</h2>
             <ul>
                 <?php
@@ -51,7 +65,8 @@
             <div style="text-align:center; padding:10px 0;">
                 <a href="#" id="reporte_in" class="myButton">Innovaciones</a>
                 <a href="#" id="reporte_me" class="myButton">Memos</a>
-                <a href="#" id="reporte_as" class="myButton">Reporte</a>
+                <a href="#" id="reporte_as" class="myButton">Reporte</a><br/>
+                <a href="#" id="reporte_ca" class="myButton">Cartas de Felicitaciones</a>
                 <br/><br/>
                 <a href="#" id="save_as" class="myButton">&nbsp;&nbsp;&nbsp;&nbsp;Grabar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
             </div>

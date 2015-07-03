@@ -53,6 +53,7 @@ class evaluacion extends Main
         }
         return $data;
     }
+    
     function getEvaluaciones()
     {
         
@@ -159,23 +160,48 @@ class evaluacion extends Main
     function reporte_detallado($g)
     {
         //$periodo = (!isset($_SESSION['periodo'])) ? 'PERIODO 2014-I' : $_SESSION['periodo'];
-
+        $idpersonal= $g['idp'];
         if(isset($g['idperiodo'])&&$g['idperiodo']!="")
             $idperiodo = $g['idperiodo'];
         else 
             $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
 
-        $s = "SELECT descripcion from evaluacion.periodo where idperiodo = ".$idperiodo;
+        $s = "SELECT idperiodo, descripcion from evaluacion.periodo where idperiodo = ".$idperiodo;
         $stmt = $this->db->prepare($s);
         $stmt->execute();
         $rec = $stmt->fetchObject();
-
+        $idperiodo = $rec->idperiodo;
         $periodo = $rec->descripcion;
-
-        $sql = "SELECT p.idperfil,p.nombres,p.apellidos,c.descripcion as perfil 
-                FROM personal as p inner join seguridad.perfil as c on 
-                    c.idperfil = p.idperfil
-                WHERE p.idpersonal = :id ";
+        
+        $eva="SELECT DISTINCT r.idperiodo,
+            ev.nombres||' '||ev.apellidos AS evaluador
+            FROM
+            evaluacion.resultados AS r
+            INNER JOIN public.personal AS p ON p.idpersonal = r.idpersonal
+            INNER JOIN public.personal AS ev ON ev.idpersonal = r.idevaluador
+            WHERE
+            r.idperiodo=".$idperiodo." AND r.idpersonal= ".$idpersonal;
+        $stmt1 = $this->db->prepare($eva);
+        $stmt1->execute();
+        $eva = $stmt1->fetchObject();
+        
+        $evaluador= $eva->evaluador;
+        
+        $sql = "SELECT
+            p.idperfil,
+            p.nombres,
+            p.apellidos,
+            pe.descripcion AS perfil,
+            c.descripcion AS cargo,
+            a.descripcion AS unidadop,
+            
+            substr(cast(p.asumircargo as text),9,2)||'/'||substr(cast(p.asumircargo as text),6,2)||'/'||substr(cast(p.asumircargo as text),1,4) AS asumircargo
+            FROM
+            public.personal AS p
+            INNER JOIN seguridad.perfil AS pe ON pe.idperfil = p.idperfil
+            INNER JOIN public.cargo AS c ON c.idcargo = p.idcargo
+            INNER JOIN public.consultorio AS a ON a.idconsultorio = p.idarea
+            WHERE p.idpersonal = :id ";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
         $stmt->execute();
@@ -183,11 +209,14 @@ class evaluacion extends Main
         $idperfil = $r->idperfil;
         $personal = $r->nombres.' '.$r->apellidos;
         $perfil = $r->perfil;
-
-        $datos = array($personal, $perfil, $periodo);
+        $cargo = $r->cargo;
+        $unidadop = $r->unidadop;
+        $asumircargo = $r->asumircargo;
+        
+        $datos = array($personal, $perfil, $periodo, $cargo, $unidadop, $asumircargo, $evaluador);
 
         $sql = "SELECT idcompetencia,descripcion 
-                from evaluacion.competencias order by idcompetencia";
+                FROM evaluacion.competencias order by idcompetencia";
                 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
@@ -257,5 +286,20 @@ class evaluacion extends Main
         }
         return array($data,$datos);
     }
+    
+    function deleteevaluacion($_P) {
+        
+        $idevaluado= $_P['idtabs'];
+        $idperiodo= $_P['idper'];        
+        
+        $sql="DELETE FROM evaluacion.resultados WHERE idpersonal = ".$idevaluado." AND idperiodo= ".$idperiodo;
+        $stmt = $this->db->prepare($sql);
+        //$stmt->bindParam(':p1', $idevaluado , PDO::PARAM_INT);
+        //$stmt->bindParam(':p2', $idperiodo , PDO::PARAM_INT);
+        $p1 = $stmt->execute();
+        $p2 = $stmt->errorInfo();
+        return array($p1 , $p2[2]);
+    }
+    
 }
 ?>

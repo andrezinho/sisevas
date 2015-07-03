@@ -55,5 +55,15 @@ class evaluacionController extends Controller
         $view->setLayout('../template/empty.php');
         return $view->render();
     }
+    
+    public function deleteeva()
+    {
+        $obj = new evaluacion();
+        $result = array();        
+        $p = $obj->deleteevaluacion($_POST);
+        if ($p[0]) $result = array(1,$p[1]);
+        else $result = array(2,$p[1]);
+        print_r(json_encode($result));
+    }
 }
 ?>

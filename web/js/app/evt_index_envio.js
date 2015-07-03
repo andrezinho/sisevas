@@ -21,7 +21,7 @@ $(function()
         i = i.split('-');
         id = i[1];
         td = i[2];
-        idper= i[3];
+        idper= '';
 
         if(td== 2 || td== 3)
         {
@@ -44,6 +44,12 @@ $(function()
         if(td== 5)
         {
             var ventana=window.open('index.php?controller=recepcion&action=printer_cartcum&id='+id+'&idper='+idper, 'scrollbars=yes, status=yes,location=yes'); 
+            ventana.focus();
+        }
+        
+        if(td== 10 || td== 11 || td== 12)
+        {
+            var ventana=window.open('index.php?controller=recepcion&action=printer_actareu&id='+id+'&idper='+idper+'&idtpdoc='+td, 'scrollbars=yes, status=yes,location=yes'); 
             ventana.focus();
         }
         

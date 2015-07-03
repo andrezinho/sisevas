@@ -258,7 +258,47 @@ class Recepcion extends Main
         $id= $_G['id'];
         $idper= $_G['idper'];
         
-        $cab= "SELECT
+        if($idper=='')
+        {
+            $cab= "SELECT
+                t.idtramite,
+                r.nombres||' '||r.apellidos AS remitente,
+                substr(cast(t.fechainicio as text),9,2)||'/'||substr(cast(t.fechainicio as text),6,2)||'/'||substr(cast(t.fechainicio as text),1,4) AS fecha,
+                t.problema,
+                t.asunto,
+                t.docref,
+                t.codigo,
+                td.descripcion,
+                cr.descripcion AS cargo_r
+                FROM
+                evaluacion.tramite AS t
+                LEFT JOIN public.personal AS r ON r.idpersonal = t.idpersonalresp
+                INNER JOIN public.tipo_documento AS td ON td.idtipo_documento = t.idtipo_documento
+                LEFT JOIN public.cargo AS cr ON cr.idcargo = r.idcargo
+                LEFT JOIN evaluacion.derivaciones AS de ON t.idtramite = de.idtramite
+                LEFT JOIN public.personal AS d ON d.idpersonal = de.idpersonal
+                LEFT JOIN public.cargo AS cd ON cd.idcargo = d.idcargo
+
+                WHERE t.idtramite= ".$id;
+            $stmt = $this->db->prepare($cab);
+            $stmt->execute();
+            $cab= $stmt->fetchAll();
+            
+            $det="SELECT p.nombres||' '||p.apellidos AS destinatarios,
+                cd.descripcion
+                FROM evaluacion.derivaciones AS de
+                LEFT JOIN public.personal AS p ON p.idpersonal = de.idpersonal
+                LEFT JOIN public.cargo AS cd ON cd.idcargo = p.idcargo
+                WHERE
+                de.idtramite= ".$id." ORDER BY p.nombres";
+            $det = $this->db->prepare($det);
+            $det->execute();
+            $det= $det->fetchAll();
+            
+        }
+        else
+        {
+            $cab= "SELECT
             t.idtramite,
             r.nombres||' '||r.apellidos AS remitente,
             d.nombres||' '||d.apellidos AS destinatario,
@@ -275,20 +315,29 @@ class Recepcion extends Main
             LEFT JOIN public.personal AS r ON r.idpersonal = t.idpersonalresp
             INNER JOIN public.tipo_documento AS td ON td.idtipo_documento = t.idtipo_documento
             LEFT JOIN public.cargo AS cr ON cr.idcargo = r.idcargo
-            INNER JOIN evaluacion.derivaciones AS de ON t.idtramite = de.idtramite
+            LEFT JOIN evaluacion.derivaciones AS de ON t.idtramite = de.idtramite
             LEFT JOIN public.personal AS d ON d.idpersonal = de.idpersonal
             LEFT JOIN public.cargo AS cd ON cd.idcargo = d.idcargo
     
-            WHERE
-            de.idpersonal=".$idper." AND t.idtramite= ".$id;
+            WHERE t.idtramite= ".$id;
 
             $stmt = $this->db->prepare($cab);
-            //$stmt->bindParam(':id', $id , PDO::PARAM_INT);
- 
             $stmt->execute();
             $cab= $stmt->fetchAll();
-
-            return array($cab);
+            
+            $det="SELECT p.nombres||' '||p.apellidos AS destinatarios,
+                cd.descripcion
+                FROM evaluacion.derivaciones AS de
+                LEFT JOIN public.personal AS p ON p.idpersonal = de.idpersonal
+                LEFT JOIN public.cargo AS cd ON cd.idcargo = p.idcargo
+                WHERE
+                de.idtramite= ".$id." AND de.idpersonal=".$idper." ORDER BY p.nombres";
+            $det = $this->db->prepare($det);
+            $det->execute();
+            $det= $det->fetchAll();
+        }
+        
+        return array($cab, $det);
     }
     
     //Imrprimir Servicio de no conformidad y Informe de reclamos
@@ -344,21 +393,17 @@ class Recepcion extends Main
             return array($cab,$rowsc);
     }
    
-   //Imprimir carta de cumpleaños
+   //Imprimir carta de cumpleaï¿½os
     function printDoc3($_G)
     {   
         $id= $_G['id'];
-        $idper= $_G['idper'];
         
-        $cab= "SELECT
-            t.idtramite,
+        $cab= "SELECT t.idtramite,
             r.nombres||' '||r.apellidos AS remitente,
             d.nombres||' '||d.apellidos AS destinatario,
             substr(cast(t.fechainicio as text),9,2)||'/'||substr(cast(t.fechainicio as text),6,2)||'/'||substr(cast(t.fechainicio as text),1,4) AS fecha,
-            t.problema,
-            t.asunto,
-            t.docref,
-            t.codigo,
+            t.problema, t.asunto,
+            t.docref, t.codigo,
             td.descripcion,
             cd.descripcion AS cargo_d,
             cr.descripcion AS cargo_r
@@ -369,18 +414,25 @@ class Recepcion extends Main
             LEFT JOIN public.cargo AS cr ON cr.idcargo = r.idcargo
             INNER JOIN evaluacion.derivaciones AS de ON t.idtramite = de.idtramite
             LEFT JOIN public.personal AS d ON d.idpersonal = de.idpersonal
-            LEFT JOIN public.cargo AS cd ON cd.idcargo = d.idcargo
-    
-            WHERE
-            de.idpersonal=".$idper." AND t.idtramite= ".$id;
+            LEFT JOIN public.cargo AS cd ON cd.idcargo = d.idcargo    
+            WHERE t.idtramite= ".$id;
 
-            $stmt = $this->db->prepare($cab);
-            //$stmt->bindParam(':id', $id , PDO::PARAM_INT);
- 
+            $stmt = $this->db->prepare($cab);        
             $stmt->execute();
             $cab= $stmt->fetchAll();
-
-            return array($cab);
+            
+            $det="SELECT p.nombres||' '||p.apellidos AS destinatarios,
+                cd.descripcion
+                FROM evaluacion.derivaciones AS de
+                LEFT JOIN public.personal AS p ON p.idpersonal = de.idpersonal
+                LEFT JOIN public.cargo AS cd ON cd.idcargo = p.idcargo
+                WHERE
+                de.idtramite= ".$id." ORDER BY p.nombres";
+            $det = $this->db->prepare($det);
+            $det->execute();
+            $det= $det->fetchAll();
+            
+            return array($cab, $det);
     }
     
     //Imprimir carta de felicitaciones
@@ -420,6 +472,49 @@ class Recepcion extends Main
             $cab= $stmt->fetchAll();
 
             return array($cab);
+    }
+    
+    //Imrprimir Actas y Rondas
+    function printDoc5($_G)
+    {   
+        $id= $_G['id'];
+        $idper= $_G['idper'];
+        
+        $cab= "SELECT
+            t.idtramite,
+            t.idtipo_documento,
+            t.horainicio,
+            t.horafin,
+            substr(cast(t.fechainicio as text),9,2)||'/'||substr(cast(t.fechainicio as text),6,2)||'/'||substr(cast(t.fechainicio as text),1,4) AS fecha,
+            t.problema, t.asunto,
+            t.anio, t.codigo,
+            td.descripcion,
+            t.lugarreu
+            FROM
+            evaluacion.tramite AS t
+            INNER JOIN public.tipo_documento AS td ON td.idtipo_documento = t.idtipo_documento           
+    
+            WHERE t.idtramite= ".$id;
+
+            $stmt = $this->db->prepare($cab);
+
+            $stmt->execute();
+            $cab= $stmt->fetchAll();
+            
+            $verc="SELECT
+            d.nombres||' '||d.apellidos AS asistentes,
+            c.descripcion
+            FROM
+            evaluacion.tramite AS t
+            INNER JOIN evaluacion.derivaciones AS de ON t.idtramite = de.idtramite
+            LEFT JOIN public.personal AS d ON d.idpersonal = de.idpersonal
+            LEFT JOIN public.cargo AS c ON c.idcargo = d.idcargo
+            WHERE t.idtramite= ".$id;
+            $stmt = $this->db->prepare($verc);
+            $stmt->execute();
+            $rowsc= $stmt->fetchAll();
+            
+            return array($cab,$rowsc);
     }
     
     function InsertDerivar($_P)

@@ -94,11 +94,12 @@ function deleting(i)
         </ul>
         <div id="tabs-1">
             <div id="table-per">
+                <input type="hidden" id="idtemaselect" name="idtemaselect"  value="<?php echo $obj->idtemas; ?>" />
                 
                 <label for="fuente" class="labeless">Fuente de cap.:</label> 
                 <?php echo $fuente; ?>
                 
-                <label for="eje" class="labeless">Eje de capac.:</label> 
+                <label for="eje" class="labeless">Ejes Tiempo de Dedic.:</label> 
                 <?php echo $eje; ?>
                 <br />
                 
@@ -108,7 +109,10 @@ function deleting(i)
                 <br />
                   
                 <label for="tem" class="labeless">Tema:</label>
-                <input id="tema" name="tema" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 520px; text-align: left;" value="<?php echo $obj->tema; ?>" />
+                <!--<div id="SelectedTema">-->
+                <select name="idtema" id="idtema" class="text ui-widget-content ui-corner-all">
+                    <option value="0">.:: Seleccione ::.</option>
+                </select>
                 <br />
                 
                 <label for="objcap" class="labeless">Objetivo de capac.:</label> 
@@ -117,6 +121,7 @@ function deleting(i)
                 
                 <label for="objemp" class="labeless">Objetivo de emp.:</label> 
                 <?php echo $objemp; ?>
+                <!--
                 <a href="javascript:" id="addDetail" class="nuevo" title="Nuevo Registro"><span class="box-boton boton-new"></span></a>       
                 
                 <table id="table-detalle" class="ui-widget ui-widget-content" style="margin: 0 auto; width:640px" border="0" >
@@ -149,22 +154,31 @@ function deleting(i)
                        
                     </tfoot>
                 </table>
+                -->
                 <br />
                 
                 <label for="objcap" class="labeless">Metodo:</label> 
                 <?php echo $metodo; ?>
+                <br />
                 
-                <label for="objcap" class="labels">Tipo Evaluacion:</label> 
+                <label for="objcap" class="labeless">Tipo Evaluacion:</label> 
                 <?php echo $tipoeva; ?>
                 <br />                
                 
+                <label for="objcap" class="labeless">Tipo Alcance General:</label> 
+                <?php echo $tipoalcancegen; ?>
+                
+                <label for="fechanaci" class="labels">Fecha Cap:</label>
+                <input type="text" id="fechacap" name="fechacap" value="<?php if($obj->fecha=='') echo date('d/m/Y'); else echo fdate($obj->fecha,'ES'); ?>" class="text ui-widget-content ui-corner-all" style=" width: 70px; text-align: center;" />
+                <br />
+                
                 <label for="estado" class="labeless">Expositor:</label>
-                <input id="expositordni" name="expositordni" onkeypress="return permite(event,'num');" class="text ui-widget-content ui-corner-all" style=" width: 60px; text-align: left;" value="<?php echo $obj->dni; ?>" placeholder="DNI" />
-                <input id="nombresexpositor" name="nombresexpositor" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 150px; text-align: left;" value="<?php echo $obj->nombres; ?>" placeholder="NOMBRES" /> 
+                <input id="expositordni" name="expositordni" class="text ui-widget-content ui-corner-all" value="<?php echo $obj->dni; ?>" style=" width: 60px; text-align: left;" onkeypress="return permite(event,'num');" placeholder="DNI" />
+                <input id="nombresexpositor" name="nombresexpositor" class="text ui-widget-content ui-corner-all" value="<?php echo $obj->nombres; ?>" style=" width: 150px; text-align: left;" onkeypress="return permite(event,'num_car');" placeholder="NOMBRES" /> 
                 <input id="apellidosexpositor" name="apellidosexpositor" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" value="<?php echo $obj->apellidos; ?>" placeholder="APELLIDOS" /> 
                 <input type="hidden" id="idpersonal" name="idpersonal" value="<?php echo $obj->idpersonal; ?>" />
                 <div id="estados" style="display:inline">
-                Externo
+                &nbsp;&nbsp;<b>Externo ?</b>&nbsp;&nbsp;
                 <?php                   
                     if($obj->externo==1 || $obj->externo==0)
                     {
@@ -182,16 +196,12 @@ function deleting(i)
                 <label for="estado" class="labeless">Email Expositor:</label>
                 <input id="emailexp" name="emailexp" value="<?php echo $obj->mail; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 200px; text-align: left;" />  
                 
-                <label for="fechanaci" class="labels">Fecha Cap:</label>
-                <input type="text" id="fechacap" name="fechacap" value="<?php if($obj->fecha=='') echo date('d/m/Y'); else echo fdate($obj->fecha,'ES'); ?>" class="text ui-widget-content ui-corner-all" style=" width: 70px; text-align: center;" />
-                
-                <label for="hora" class="labels">Hora cap. :</label>
+                <label for="hora" class="labels">Hora Ini. :</label>
                 <input type="text" name="horacap" id="horacap" value="<?php if($obj->hora!=""){echo $obj->hora; } else {echo date('H:i');} ?>" class="ui-widget-content ui-corner-all text" style="width:60px; text-align:center" />
                 
-                <br />
-                
-                <label for="estado" class="labeless">N° de horas:</label>
+                <label for="estado" class="labels">N° de horas:</label>
                 <input id="nrohoras" name="nrohoras" value="<?php echo $obj->nrohoras; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 50px; text-align: left;" />  
+                <br />
                 
             </div>
             
@@ -221,52 +231,70 @@ function deleting(i)
             	<label for="destinatario" class="labels">Destinatario:</label>
             	<input id="personalasig" name="personalasig" value="<?php echo $obj->personalasig; ?>" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 250px; text-align: left;" />  
                 <input type="hidden" name="idpersonalasig" id="idpersonalasig" value="" />
-
-                <label for="objcap" class="labels">Tipo Alcance:</label> 
-                <?php echo $tipoalc; ?><!--<input name="todos" id="todos" class="capacitacion" type="checkbox">&nbsp;Todos-->&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:" id="addDetails" class="fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset"><span class="ui-icon ui-icon-plusthick"></span>Agregar</a>
-                    
+                <input type="hidden" name="todosvalor" id="todosvalor" value="0" />
+                <?php                    
+                    if($filtroest==1 || $filtroest==0)
+                        {
+                            if($filtroest==1){$act="checked='checked' ";
+                            }
+                            else {$inac="checked='checked' ";}
+                        }
+                        else {$act = "checked='checked' ";}
+                ?>
+                <div id="todosp" style="display: inline;">
+                Todos
+                    <input type="radio" id="todos1" name="todos" value='1' <?php echo $act; ?> onclick="verificar(1);" />
+                    <label for="todos1">SI</label>
+                    <input type="radio" id="todos0" name="todos" value='0' <?php echo $inac; ?> onclick="verificar(0);" />
+                    <label for="todos0">NO</label>
+                </div>
+                
+                <label for="objcap" class="labeless">Tipo Alcance:</label> 
+                <?php echo $tipoalc; ?>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:" id="addDetails" class="fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset"><span class="ui-icon ui-icon-plusthick"></span>Agregar</a>
             
             </div>
 
-            <table id="table-detalles" class="ui-widget ui-widget-content" style="margin: 0 auto; width:440px" border="0" >
-                <thead class="ui-widget ui-widget-content" >
-                    <tr class="ui-widget-header" style="height: 23px">
-                        <th align="center" width="200px">Destinatarios</th>
-                        <th align="center" width="150px">Tipo Alcance</th>
-                        <th width="20px">&nbsp;</th>
-                    </tr>
-                </thead>  
-                <tbody>
-                    <?php 
-                        if(count($rowsA)>0)
-                        {    
-                            foreach ($rowsA as $id => $rs) 
-                            {                                          
-                                ?>
-                                <tr class="tr-detalle" style="height: 21px">
-                                    <td align="left">
-                                        <?php echo $rs['asistentes']; ?>                                       
-                                        <input type="hidden" name="idpersonalasignado[]" value="<?php echo $rs['idpersonalasig']; ?>" />
-                                        
-                                    </td>                                        
-                                    <td>
-                                        <?php echo $rs['descripcion']; ?>
-                                        <input type="hidden" name="idtipoalcance[]" value="<?php echo $rs['idtipoalcance']; ?>" />
-                                    </td>
-                                    <td align="center"><a class="box-boton boton-deletes" href="#" title="Quitar" ></a></td>
-                                </tr>
-                                <?php    
-                                }  
-                        }
-                     ?>         
-                </tbody>
-                <tfoot>
-                    <tr>               
-                        <td colspan="2">&nbsp;</td>
-                    </tr>
-                   
-                </tfoot>
-            </table>
+            <div style="height: 220px; width:520px; overflow: auto; margin: 0 auto;">
+                <table id="table-detalles" class="ui-widget ui-widget-content" style="margin: 0 auto; width:480px" border="0" >
+                    <thead class="ui-widget ui-widget-content" >
+                        <tr class="ui-widget-header" style="height: 23px">
+                            <th align="center" width="300px">Destinatarios</th>
+                            <th align="center" width="180px">Tipo Alcance</th>
+                            <th width="20px">&nbsp;</th>
+                        </tr>
+                    </thead>  
+                    <tbody>
+                        <?php 
+                            if(count($rowsA)>0)
+                            {    
+                                foreach ($rowsA as $id => $rs) 
+                                {                                          
+                                    ?>
+                                    <tr class="tr-detalle" style="height: 21px">
+                                        <td align="left">
+                                            <?php echo $rs['asistentes']; ?>                                       
+                                            <input type="hidden" name="idpersonalasignado[]" value="<?php echo $rs['idpersonalasig']; ?>" />
+                                            
+                                        </td>                                        
+                                        <td>
+                                            <?php echo $rs['descripcion']; ?>
+                                            <input type="hidden" name="idtipoalcance[]" value="<?php echo $rs['idtipoalcance']; ?>" />
+                                        </td>
+                                        <td align="center"><a class="box-boton boton-deletes" href="#" title="Quitar" ></a></td>
+                                    </tr>
+                                    <?php    
+                                    }  
+                            }
+                         ?>         
+                    </tbody>
+                    <tfoot>
+                        <tr>               
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                       
+                    </tfoot>
+                </table>
+            </div>
             
         </div>
         <div id="tabs-4">

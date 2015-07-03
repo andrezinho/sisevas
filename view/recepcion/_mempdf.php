@@ -21,11 +21,11 @@ class PDF extends FPDF
         $this->Cell(0,4,'1.0',0,1,'L');
         $this->Line(7, 28, 142, 28);            
         
-        $this->Ln(15);       
+        $this->Ln(10);       
        
     }
     
-    function cuerpo($cab)
+    function cuerpo($cab, $det)
     {
         $hoy = date("Y"); 
         //N° de documento
@@ -36,12 +36,14 @@ class PDF extends FPDF
         $this->SetFont('Arial','',8);
         $this->Cell(14, 5, 'A', 0, 0, 'L');
         $this->Cell(2, 5, ':', 0, 0, 'R');
-        $this->SetFont('Arial','B',8);
-        $this->Cell(10, 5, strtoupper(utf8_decode($cab[0]['destinatario'])), 0, 1, 'L');
-        $this->SetX(26);
-        $this->SetFont('Arial','',8);
-        $this->Cell(0, 5, strtoupper(utf8_decode($cab[0]['cargo_d'])), 0, 1, 'L');
-
+                
+        //REMITENTE
+        foreach ($det as $rs){
+            $this->SetFont('Arial','',8);
+            $this->SetX(26);
+            $this->Cell(10, 5, strtoupper(utf8_decode($rs['destinatarios'])), 0, 1, 'L');                        
+        }
+        
         //SOLICITANTE
         $this->SetFont('Arial','',8);
         $this->Cell(14, 5, 'DE', 0, 0, 'L');
@@ -57,7 +59,7 @@ class PDF extends FPDF
         $this->Cell(2, 5, ':', 0, 0, 'R');
         $this->SetFont('Arial','B',8);
         //$this->Cell(2, 5, utf8_decode($rowPaso['asunto_origen']), 0, 1, 'J');
-        $this->MultiCell(0,4,strtoupper(utf8_decode($cab[0]['asunto'])),0,'J');
+        $this->MultiCellp(0,4,strtoupper(utf8_decode($cab[0]['asunto'])),0,'J');
         $this->Ln(4);
         
         //FECHA DE EMISION
@@ -74,12 +76,13 @@ class PDF extends FPDF
         $this->SetFont('Arial','',9);
         $this->MultiCell(0,4,utf8_decode($cab[0]['problema']),0,'J');
     } 
-
+    
     function Footer()
     {
-         $this->SetY(-10);
+        $this->SetY(-10);
         $this->SetFont('Arial','',6);
-        $this->Cell(0, 4, utf8_decode('Prohibida la Reproducción Total o Parcial de este documento sin la autorización del Representante de la Dirección.'), 0, 1, 'C');
+        
+        $this->Cell(0,10,'Pagina '.$this->PageNo().' de {nb}',0,0,'C');
        
     }
 
@@ -89,15 +92,15 @@ class PDF extends FPDF
 //$nombre = $cabecera[0]['nombres'];
 //print_r( $cab);
 $pdf= new PDF('P','mm', 'A5');
-$pdf->SetAutoPageBreak(1 ,0.5);
+//$pdf->SetAutoPageBreak(1 ,0.5);
 //$pdf->SetTitle($title);
 $pdf->SetTitle(':: CMSM TRAMITE DOCUMENTARIO ::');
-//$pdf->SetMargins(2,3,7);
+$pdf->SetMargins(10,10,7);
 $pdf->AliasNbPages();
 $pdf->AddPage('P','A5');
 $pdf->AliasNbPages();
 //$pdf->AddPage();
-$pdf->cuerpo($cab);
+$pdf->cuerpo($cab, $det);
 //$pdf->Header($cab);
 $pdf->Output();	
 

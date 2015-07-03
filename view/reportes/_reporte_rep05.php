@@ -47,41 +47,56 @@
                         <?php    
                     }
                     ?>
-                    
-                    <tr>
-                        <td colspan="5">
-                            <?php
-                                $es1=0; $es2=0; $es3=0;
-                                foreach ($rows as $i => $rs) 
-                                {
-                                    if($rs['estado']==0)
-                                    {
-                                        $es1++;
-                                    }
-                                    if($rs['estado']==1)
-                                    {
-                                        $es2++;
-                                    }
-                                    if($rs['estado']==2)
-                                    {
-                                        $es3++;
-                                    }
-                                    /*switch ($rs['estado']) {
-                                        case 0:                                            
-                                            $es1++;
-                                        case 1:                                            
-                                            $es2++;
-                                        case 2:                                            
-                                            $es3++;
-                                    }*/
-                                }
-                            ?>
-                            <label for="dni" class="labeless">Total de cap.:</label><?php echo $tc; ?><br/>
-                            <label for="dni" class="labeless">Cap. Asignada:</label><?php echo $es1; ?><br/>
-                            <label for="dni" class="labeless">Cap. en Proc.:</label><?php echo $es2; ?><br/>
-                            <label for="dni" class="labeless">Cap. Finaliz.:</label><?php echo $es3; ?><br/>
-                        </td>
-                    </tr>                     
+                        <tr>
+                            <td colspan="5" align="center">
+                                
+                                <table width="700px">
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr align="center" style="font-size: 13px;">
+                                        <td>
+                                            <?php
+                                                $es1=0; $es2=0; $es3=0;
+                                                foreach ($rows as $i => $rs) 
+                                                {
+                                                    if($rs['estado']==0)
+                                                    {
+                                                        $es1++;
+                                                    }
+                                                    if($rs['estado']==1)
+                                                    {
+                                                        $es2++;
+                                                    }
+                                                    if($rs['estado']==2)
+                                                    {
+                                                        $es3++;
+                                                    }
+                                                    
+                                                }
+                                            ?>
+                                            <p style="color: orange; font-weight: bold;">Cap. Asignada:</p>
+                                        </td>
+                                        <td><p style="color: red; font-weight: bold;">Cap. en Proc.:</p></td>
+                                        <td><p style="color: green; font-weight: bold;">Cap. Finaliz.:</p></td>
+                                        <td><b>Total de cap.:</b></td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr  align="center" style="font-size: 13px;">
+                                        <td><p style="color: orange; font-weight: bold;"><?php echo $es1; ?></p></td>
+                                        <td><p style="color: red; font-weight: bold;"><?php echo $es2; ?></p></td>
+                                        <td><p style="color: green; font-weight: bold;"><?php echo $es3; ?></p></td>
+                                        <td>&nbsp;&nbsp;<?php echo $tc; ?></td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </table>
+                                
+                            </td>
+                        </tr>
                    <?php
                 }
              ?>                      

@@ -27,11 +27,32 @@
 	<br />
 
 	<label for="destinatario" class="labels">Destinatario:</label>
-	<?php echo $personal; ?><input name="todos" id="todos" class="capacitacion" type="checkbox">&nbsp;Todos&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:" id="addDetail" class="fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset"><span class="ui-icon ui-icon-plusthick"></span>Agregar Destiantarios</a>
+	<?php echo $personal; ?>
+
+        <input type="hidden" name="todosvalor" id="todosvalor" value="0" />
+        <?php 
+
+            if($filtroest==1 || $filtroest==0)
+                {
+                    if($filtroest==1){$act="checked='checked' ";
+                    }
+                    else {$inac="checked='checked' ";}
+                }
+                else {$act = "checked='checked' ";}
+        ?>
+        <div id="todosp" style="display: inline;">
+        Todos
+            <input type="radio" id="todos1" name="todos" value='1' <?php echo $act; ?> onclick="verificar(1);" />
+            <label for="todos1">SI</label>
+            <input type="radio" id="todos0" name="todos" value='0' <?php echo $inac; ?> onclick="verificar(0);" />
+            <label for="todos0">NO</label>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:" id="addDetail" class="fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset"><span class="ui-icon ui-icon-plusthick"></span>Agregar</a>
         
 
 </div>
-
+<div style="height: 220px; width:470px; overflow: auto; margin: 0 auto;">
 	<table id="table-detalle" class="ui-widget ui-widget-content" style="margin: 0 auto; width:440px" border="0" >
         <thead class="ui-widget ui-widget-content" >
             <tr class="ui-widget-header" style="height: 23px">
@@ -49,3 +70,4 @@
            
         </tfoot>
     </table>
+</div>

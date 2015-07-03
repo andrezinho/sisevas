@@ -17,7 +17,7 @@ class ejecapController extends Controller
         $data['colsModels'] = $this->getColsModel($this->cols);        
         $data['cmb_search'] = $this->Select(array('id'=>'fltr','name'=>'fltr','text_null'=>'','table'=>$this->getColsSearch($this->cols)));
         $data['controlador'] = $_GET['controller'];
-        $data['titulo'] = "Ejes de Capacitación";
+        $data['titulo'] = "Ejes Tiempo de Dedicacion";
         
         $data['actions'] = array(true,true,true,false);
 

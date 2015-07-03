@@ -107,6 +107,19 @@ class periodo extends Main
         return array($p1, 1);
 
     }
+    
+    function getPeriodos($anio)
+    {
+        $stmt = $this->db->prepare("SELECT idperiodo, descripcion  FROM evaluacion.periodo WHERE anio= :anio");
+        $stmt->bindParam(':anio',$anio,PDO::PARAM_INT);
+        $stmt->execute();
+        $data = array();
+        foreach ($stmt->fetchAll() as $r) 
+        {            
+            $data[] = array('id'=>$r['idperiodo'],'descripcion'=>$r['descripcion']);
+        }        
+        return $data;
+    }
    
 }
 ?>

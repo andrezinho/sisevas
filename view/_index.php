@@ -6,7 +6,7 @@
         <p class="titleind"><strong><a href="">VISI&Oacute;N</strong></a></p>
         <p class="titleind"><strong><a href="">ORGANIGRAMA</strong></a></p>-->
         <br /><br />
-        <img border="0" src="images/Leyendo.gif" />
+        <img border="0" src="images/Leyendo.gif" width="150" height="150" />
     </div>
     <div class="contain-der">
                
@@ -15,23 +15,24 @@
                 <li><a href="#tab-1">MISI&Oacute;N Y VISI&Oacute;N</a></li>
                 <li><a href="#tab-2">OBJETIVOS DE LA EMPRESA</a></li>
                 <li><a href="#tab-3">OBJETIVOS DE LA CALIDAD</a></li>
-                <li><a href="#tab-4">VALORES</a></li>
-                <li><a href="#tab-5">POL&IacuteTICA DE CALIDAD</a></li>
+                <li><a href="#tab-4">OBJETIVOS DE LA CAPACITACI&Oacute;N</a></li>
+                <li><a href="#tab-5">VALORES</a></li>
+                <li><a href="#tab-6">POL&IacuteTICA DE CALIDAD</a></li>
             </ul>
             <div class="tabscontent">
                 <div id="tab-1">
                     <div class="content">
                         <div style="float: left;">
                             <h3 class="titleind">Misi&oacute;n</h3>                        
-                            <p style="text-align: justify;width: 400px;margin-right: 10px;"><?php echo $mv['mision']; ?></p>
+                            <p style="text-align: justify;width: 510px;margin-right: 10px;"><?php echo $mv['mision']; ?></p>
                         </div>
                         <div style="float: left;margin-bottom: 10px;">
                             <img src="../web/images/index/<?php echo $mv['img_m']; ?>" width="257" height="165" style="float: left;" />
                         </div>
                         <div style="width: 100%; height: 2px;"></div>
                         <div style="float: left;">
-            	        	<h3 class="titleind">Visi&oacute;n</h3>
-                            <p style="text-align: justify;width: 400px;margin-right: 10px;"><?php echo $mv['vision']; ?>.</p>
+                            <h3 class="titleind">Visi&oacute;n</h3>
+                            <p style="text-align: justify;width: 510px;margin-right: 10px;"><?php echo $mv['vision']; ?>.</p>
                         </div>
                         <div style="float: left;margin-bottom: 4%;">
                             <img src="../web/images/index/<?php echo $mv['img_v']; ?>" width="260" height="154" style="float: left;" />
@@ -43,7 +44,7 @@
                     <div class="content">
                         <h2>Ampliar la capacidad resolutiva asistencial con la certificaci&oacute;n </h2>
                         <br />
-                        <div style="text-align: justify;float: left;width: 420px;margin-right: 10px;">
+                        <div style="text-align: justify;float: left;width: 545px;margin-right: 10px;">
                             <p>
                                 <?php                                  
                                 
@@ -84,7 +85,7 @@
                 <div id="tab-3">
                     <div class="content">
                         <!-- <h3>Tab Two</h3> -->
-                        <div style="text-align: justify;float: left;width: 420px;margin-right: 10px;">
+                        <div style="text-align: justify;float: left;width: 545px;margin-right: 10px;">
                             <p>
                                 <?php
                                     if(count($obejtivoscal)>0)
@@ -127,37 +128,31 @@
                 </div>
                 <div id="tab-4">
                     <div class="content">
-                        <!--
-                        <h3 class="titleind">INNOVACI&oacute;N</h3>
-                        <p style="text-align: justify;"> 
-                            Hacer las cosas de manera diferente, aplicaci&oacute;n de nuevas ideas, conceptos, productos, servicios y pr&aacute;cticas, con la intenci&oacute;n de ser &uacute;tiles. Buscamos  la mejora continua de nuestros procesos y servicios y no nos conformamos con proponer ideas sino que las llevamos a la pr&aacute;ctica como parte de nuestro reto diario para el mejoramiento contin&uacute;o.
-                        </p>
-                        <div style="float: left;">
-                        <h3 class="titleind">CALIDEZ</h3>
-                            <p style="text-align: justify;width: 480px;"> 
-                                Nos esforzamos por conocer y comprender las necesidades de nuestros clientes, excediendo sus demandas y expectativas. Brindamos los servicios acompa&ntilde;ados de amabilidad y cortes&iacute;acute;a.
-                            </p>
-                            
-                            <h3 class="titleind">CONFIANZA</h3>
-                            <p style="text-align: justify;width: 480px;"> 
-                                Actuamos de acuerdo a los principios, normas y pol&iacute;ticas de la empresa. Realizamos nuestras labores aplicando protocolos institucionalizados por la empresa, con la finalidad de satisfacer a cada uno de nuestros clientes
-                            </p>
-                            <h3 class="titleind">TRABAJO EN EQUIPO</h3>
-                            <p style="text-align: justify;width: 480px;"> 
-                                Cooperamos dentro y entre &aacute;reas y unidades productivas porque estamos comprometidos y alineados con el logro de nuestros objetivos corporativos; priorizamos siempre los intereses de la empresa por sobre los intereses de cualquier &aacute;rea o persona.
-                            </p>
-                        </div>
-                        <div style="float: left;">
-                            <img src="../web/images/VALORESIN.png" style="float: left;" />
-                        </div>
-                        <br />
-                        <div style="float: left;">
-                            <h3 class="titleind">COMPROMISO</h3>
-                            <p style="text-align: justify;"> 
-                                Buscamos siempre la excelencia mediante la aplicaci&oacute;n de la mejora continua, mejoramos nuestras competencias personales y profesionales, cumplimos y excedemos los est&aacute;ndares de las normas de  calidad. Participamos en todas la etapas del proceso de calidad.
+                        <div style="text-align: justify;float: left;width: 545px;margin-right: 10px;">
+                            <p>
+                                <?php
+                                    if(count($obejtivoscap)>0)
+                                    {    $cnn=0;
+                                        foreach ($obejtivoscap as $i => $rs) 
+                                        {   
+                                            $cnn ++;
+                                            echo $cnn.'. '.$rs['descripcion'].'<br />';
+                                        }
+                                    }
+                                ?>
+                                <!--
+                                1.	Impulsar   la calidad de la atenci&oacute;n del servicio  de obstetricia, tomando como referencia la Norma BPMG.<br />
+                    			2.	Implementar los est&aacute;ndares de calidad en el  servicio de apoyo al tratamiento.<br />
+                    			3.	Promover el desarrollo de las competencias del recurso humano.<br />
+                    			4.	Medir la satisfacci&oacute;n de nuestros usuarios de acuerdo al servicio brindado.<br /><br />
+                                -->
                             </p>
                         </div>
-                        -->
+                    </div>
+                </div>
+                <div id="tab-5">
+                    <div class="content">
+                        
                         <?php
                             if(count($valoresemp)>0)
                             {    
@@ -175,9 +170,9 @@
                         ?>
                     </div>
                 </div>
-                <div id="tab-5">
+                <div id="tab-6">
                     <div class="content">
-                        <div style="text-align: justify;float: left;width: 420px;margin-right: 10px;">
+                        <div style="text-align: justify;float: left;width: 545px;margin-right: 10px;">
                             <p style="text-align: justify;"><?php echo $politica['descripcion']; ?> </p>
                         </div>
                         <div style="float: left;">

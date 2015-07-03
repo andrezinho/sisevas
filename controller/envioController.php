@@ -6,13 +6,13 @@ require_once '../model/envio.php';
 class EnvioController extends Controller 
 {   
     var $cols = array(
-                        1 => array('Name'=>'Codigo','NameDB'=>'t.idtramite','align'=>'center','width'=>40),
-                        2 => array('Name'=>'Tipo Documento','NameDB'=>'td.descripcion','width'=>90,'search'=>true),
-                        3 => array('Name'=>'Codigo','NameDB'=>'t.codigo','width'=>60),
-                        4 => array('Name'=>'Fecha Inicio','NameDB'=>'t.fechainicio','align'=>'center','width'=>50),                        
-                        5 => array('Name'=>'Destinatario','NameDB'=>"p.nombres||' '||p.apellidos",'align'=>'left','width'=>200),
-                        6 => array('Name'=>'','NameDB'=>'','align'=>'center','width'=>20)
-                     );
+        1 => array('Name'=>'Item','NameDB'=>'t.idtramite','align'=>'center','width'=>40),
+        2 => array('Name'=>'Tipo Documento','NameDB'=>'td.descripcion','width'=>90,'search'=>true),
+        3 => array('Name'=>'Codigo','NameDB'=>'t.codigo','search'=>true,'width'=>60),
+        4 => array('Name'=>'Fecha Emision','NameDB'=>'t.fechainicio','align'=>'center','width'=>50),                        
+        5 => array('Name'=>'Remitente','NameDB'=>"p.nombres||' '||p.apellidos",'align'=>'left','width'=>200),
+        6 => array('Name'=>'','NameDB'=>'','align'=>'center','width'=>20)
+    );
 
     public function index() 
     {
@@ -21,6 +21,8 @@ class EnvioController extends Controller
         $data['colsModels'] = $this->getColsModel($this->cols);        
         $data['cmb_search'] = $this->Select(array('id'=>'fltr','name'=>'fltr','text_null'=>'','table'=>$this->getColsSearch($this->cols)));
         $data['controlador'] = $_GET['controller'];
+        
+        $data['titulo'] = "Envio de Documentos";
         $data['script'] = "evt_index_envio.js";
         //(nuevo,editar,eliminar,ver)
         $data['actions'] = array(true,true,true,false);
@@ -126,6 +128,30 @@ class EnvioController extends Controller
         $obj = new Envio();
         print_r(json_encode($obj->nuevos()));
     }
+    
+    public function getDocumentos()
+    {
+        $obj = new Envio();
+        $data = array();        
+        $field = "asunto";
+        if($_GET['tipo']==1) $field = "codigo";
+        $value = $obj->get($_GET["term"],$field);
+
+        $result = array();
+        foreach ($value as $key => $val) 
+        {
+            array_push($result, array(
+                      "idtramite"=>$val['idtramite'],
+                      "idtpdoc"=>$val['idtipo_documento'],
+                      "codigo"=>$val['codigo'],
+                      "asunto"=> $val['asunto'] 
+                  )
+              );
+            if ( $key > 7 ) { break; }
+        }
+        print_r(json_encode($result));
+    }
+    
 
 
 }

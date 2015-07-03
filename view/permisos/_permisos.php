@@ -1,5 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
+        $("#idperfil").css({'width':'220px'});
         $("#idperfil").change(function(){
             vv = $(this).val();
             if(vv!=""){
@@ -31,13 +32,13 @@
     });   
 </script>
 <div class="div_container">
-<h6 class="ui-widget-header">Administracion de Accesos</h6>
+<h6 class="ui-widget-header ui-state-hover">Administracion de Accesos</h6>
 <div style=" width: 100%;">
     <div style="padding:20px;">
-    <span>Seleccione un Perfil :</span>
-    <span><?php echo $perfiles; ?></span>    
-    <a href="javascript:" id="save"  class="fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset"><span class="ui-icon ui-icon-search"></span>Guardar Cambios</a>
-    <span id="result" style="display:none;color:green; font-weight: bold;">Sus Cambios Fueron Registrados</span>
+        <span><b>Seleccione un Perfil :</b></span>
+        <span><?php echo $perfiles; ?></span>    
+        <a href="javascript:" id="save"  class="fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset"><span class="ui-icon ui-icon-search"></span>Guardar Cambios</a>
+        <span id="result" style="display:none;color:green; font-weight: bold;">Sus Cambios Fueron Registrados</span>
     </div>
 </div>
 <div style="clear:both"></div>

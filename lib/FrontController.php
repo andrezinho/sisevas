@@ -35,12 +35,12 @@ class FrontController
              header('NOT_AUTHORIZED: 499');
              die();
         }    
-        $controllerFile = $controllerDir . $controller . "Controller.php";
+        $controllerFile = $controllerDir.$controller."Controller.php";
         if( !file_exists( $controllerFile )) 
             header('location:../web/notfound.php?f='.$controller."Controller.php");    
         else
            require_once $controllerFile;    
-        $controllerClass = $controller . "Controller";
+        $controllerClass = $controller."Controller";
 
         if( !class_exists( $controllerClass,false) ) 
             throw new FrontControllerException( "El controlador fue cargado pero no se encontro la clase" );

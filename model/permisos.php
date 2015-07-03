@@ -5,10 +5,12 @@ class Permisos extends Main
     function index($query , $p ) {    }
     function Modulos($p)
     {
-        $stmt = $this->db->prepare("SELECT pe.descripcion,m.descripcion,m.idmodulo
-                                    from seguridad.permiso as p right outer join seguridad.perfil as pe on p.idperfil = pe.idperfil
-                                    right outer join seguridad.modulo as m on p.idmodulo = m.idmodulo and pe.idperfil = :p1
-                                    where m.idpadre is null and m.estado = true");
+        $stmt = $this->db->prepare("SELECT pe.descripcion, m.descripcion, m.idmodulo
+            FROM seguridad.permiso as p 
+            RIGHT OUTER JOIN seguridad.perfil as pe on p.idperfil = pe.idperfil
+            RIGHT OUTER JOIN seguridad.modulo as m on p.idmodulo = m.idmodulo and pe.idperfil = :p1
+            WHERE m.idpadre is null and m.estado = true 
+            ORDER BY m.orden ASC ");
         $stmt->bindValue(':p1', $p , PDO::PARAM_INT);
         $stmt->execute();        
         $items = $stmt->fetchAll();
@@ -29,9 +31,10 @@ class Permisos extends Main
     public function getMenus($idperfil,$idpadre)
     {
         $stmt = $this->db->prepare("SELECT pe.descripcion,m.descripcion,m.idmodulo
-                                        from seguridad.permiso as p right outer join seguridad.perfil as pe on p.idperfil = pe.idperfil
-                                        right outer join seguridad.modulo as m on p.idmodulo = m.idmodulo and pe.idperfil = :p1
-                                        where  m.idpadre=:p2 and m.estado = true");
+            FROM seguridad.permiso as p RIGHT OUTER JOIN seguridad.perfil as pe on p.idperfil = pe.idperfil
+            RIGHT OUTER JOIN seguridad.modulo as m on p.idmodulo = m.idmodulo and pe.idperfil = :p1
+            WHERE  m.idpadre=:p2 and m.estado = true
+            ORDER BY m.orden ASC");
         $stmt->bindValue(':p1', $idperfil , PDO::PARAM_INT);
         $stmt->bindValue(':p2', $idpadre , PDO::PARAM_INT);
         $stmt->execute();
@@ -47,9 +50,10 @@ class Permisos extends Main
         }
         return $menu;
     }
+    
     public function Save($p)
     {
-        $stmt = $this->db->prepare("DELETE FROM seguridad.permiso where idperfil = :p1");
+        $stmt = $this->db->prepare("DELETE FROM seguridad.permiso WHERE idperfil = :p1");
         $stmt2 = $this->db->prepare("INSERT INTO seguridad.permiso VALUES(:p2,:p3,true,true,true,true,true)");        
         try{
                 $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

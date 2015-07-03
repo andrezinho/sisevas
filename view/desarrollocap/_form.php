@@ -13,6 +13,7 @@
     <div id="tabs">
         <ul style="background:#DADADA !important; border:0 !important">
             <li><a href="#tabs-1">Informaci&oacute;n B&aacute;sica</a></li>
+            <li><a href="#tabs-2">Asistentes</a></li>
         </ul>
         <div id="tabs-1">
             <div id="table-per">
@@ -22,11 +23,31 @@
                 <br />
                 
                 <label for="tem" class="labeless">Acuerdo / Agenda:</label>
-                <input id="acuerdo" name="acuerdo" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 470px; text-align: left;" value="<?php echo $obj->acuerdo; ?>" />
+                <input id="acuerdo" name="acuerdo" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 470px; text-align: left;" value="" />
                 <br />
                 
                 <label for="objcap" class="labeless">Asistentes:</label> 
-                <?php echo $personalasis; ?>                
+                <input id="personalasist" name="personalasist" onkeypress="return permite(event,'num_car');" class="text ui-widget-content ui-corner-all" style=" width: 380px; text-align: left;" value="" />
+                <input type="hidden" name="todosvalor" id="todosvalor" value="0" />
+                <?php                     
+                    if($filtroest==1 || $filtroest==0)
+                        {
+                            if($filtroest==1){$act="checked='checked' "; //$inac="";
+                            }
+                            else {$inac="checked='checked' ";}
+                        }
+                        else {$act = "checked='checked' ";}
+                ?>
+                <!--
+                <div id="todosp" style="display: inline;">
+                Todos
+                    <input type="radio" id="todos1" name="todos" value='1' <?php echo $act; ?> onclick="verificar(1);" />
+                    <label for="todos1">SI</label>
+                    <input type="radio" id="todos0" name="todos" value='0' <?php echo $inac; ?> onclick="verificar(0);" />
+                    <label for="todos0">NO</label>
+                </div>
+                -->
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="javascript:" id="addDetail" class="fm-button ui-state-default ui-corner-all fm-button-icon-right ui-reset"><span class="ui-icon ui-icon-plusthick"></span>Agregar</a>
                 <br />
                 
@@ -50,14 +71,14 @@
                                 {    
                                     foreach ($rowsac as $i => $r) 
                                     {   
-                                        if($r['asistente']=='')
-                                        {
-                                            $r['asistente']= 'NINGUNO';
-                                        }
+                                        
                                         ?>
                                         <tr class="tr-detalle" style="height: 23px">
                                             <td align="left"><?php echo $r['acuerdo']; ?><input type="hidden" name="acuerdocap[]" value="<?php echo $r['acuerdo']; ?>" /></td>
-                                            <td align="left"><?php echo $r['asistente']; ?><input type="hidden" name="idasistente[]" value="<?php echo $r['idasistente']; ?>" /></td>
+                                            <td align="left"><?php echo $r['asistente']; ?>
+                                                <input type="hidden" name="idasistente[]" value="<?php echo $r['idasistente']; ?>" />
+                                                <input type="hidden" name="asistentedet[]" value="<?php echo $r['asistente']; ?>" />
+                                            </td>
                                             <td align="center"><a class="box-boton boton-delete" href="#" title="Quitar" ></a></td>
                                         </tr>
                                         <?php    
@@ -102,6 +123,47 @@
             
         </div>     
         
+        <div id="tabs-2">
+            <table id="detalles" class="ui-widget ui-widget-content" style="margin: 0 auto; width:600px" border="0" >
+                <thead class="ui-widget ui-widget-content" >
+                    <tr class="ui-widget-header" style="height: 23px">
+                        <th align="center" width="300px">Destinatarios</th>
+                        <th align="center" width="180px">Tipo Alcance</th>
+                        <th width="20px">&nbsp;</th>
+                    </tr>
+                </thead>  
+                <tbody>
+                    <?php 
+                        if(count($rowasis)>0)
+                        {    
+                            foreach ($rowasis as $id => $rs) 
+                            {                                          
+                                ?>
+                                <tr class="tr-detalle" style="height: 21px">
+                                    <td align="left">
+                                        <?php echo $rs['asistentes']; ?>                                       
+                                        <input type="hidden" name="idpersonalasignado[]" value="<?php echo $rs['idpersonalasig']; ?>" />
+
+                                    </td>                                        
+                                    <td>
+                                        <?php echo $rs['descripcion']; ?>
+                                        <input type="hidden" name="idtipoalcance[]" value="<?php echo $rs['idtipoalcance']; ?>" />
+                                    </td>
+                                    <td align="center"><a class="box-boton boton-deletes" href="#" title="Quitar" ></a></td>
+                                </tr>
+                                <?php    
+                                }  
+                        }
+                     ?>         
+                </tbody>
+                <tfoot>
+                    <tr>               
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+
+                </tfoot>
+            </table>
+        </div>
         
     </div>
     

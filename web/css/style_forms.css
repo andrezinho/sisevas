@@ -7,9 +7,11 @@
 */
 
 label { display: inline-block; font-size: 12px; }
-.labels { width: 100px; text-align: right; margin-right: 2px;color:#333;}
+.labels { width: 102px; text-align: right; margin-right: 2px;color:#333;}
 .labeles { width: 120px; text-align: right; margin-right: 2px;color:#333;}
 .labeless { width: 140px; text-align: right; margin-right: 2px;color:#333;}
+
+.labelsrep { width: 102px; text-align: right; margin-right: 2px;color:#333; font-size: 13px !important;}
 
 table{   font-size: 11px !important;display: table; }
 fieldset { padding: 10px 0 10px; border:1px solid #dadada; margin-bottom: 5px;}

@@ -16,7 +16,8 @@ class IndexController extends Controller
         $data['obejtivosemp'] = $ro[1];
         $data['obejtivoscal'] = $ro[2];
         $data['valoresemp'] = $ro[3];
-        $data['politica'] = $ro[4];      
+        $data['politica'] = $ro[4];
+        $data['obejtivoscap'] = $ro[5];
         $view->setData( $data );
         $view->setTemplate( '../view/_index.php' );
         $view->setLayout( '../template/layout.php');

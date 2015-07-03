@@ -28,7 +28,7 @@ class RecepcionController extends Controller
         $data['controlador'] = $_GET['controller'];
         $data['script'] = "evt_index_recepcion.js";
         //(nuevo,editar,eliminar,ver,anular,imprimir)
-        $data['actions'] = array(false,true,false,true,false,false);
+        $data['actions'] = array(false,true,false,false,false,false);
 
         $view = new View();
         $view->setData($data);
@@ -168,7 +168,7 @@ class RecepcionController extends Controller
         $view = new View();
         $ro = $obj->printDoc($_GET);
         $data['cab'] = $ro[0];
-        //$data['detalle'] = $ro[1];
+        $data['det'] = $ro[1];
         $view->setData($data);
         $view->setTemplate( '../view/recepcion/_mempdf.php' );
         $view->setLayout( '../template/empty.php' );
@@ -198,14 +198,14 @@ class RecepcionController extends Controller
         $view = new View();
         $ro = $obj->printDoc3($_GET);
         $data['cab'] = $ro[0];
-        //$data['rowsc'] = $ro[1];
+        $data['det'] = $ro[1];
         $view->setData($data);
         $view->setTemplate( '../view/recepcion/_carfecpdf.php' );
         $view->setLayout( '../template/empty.php' );
         echo $view->renderPartial();
     }
     
-    //Imprimir carta de cumpleaños
+    //Imprimir carta de cumpleaï¿½os
     public function printer_cartcum()
     {
         $obj = new Recepcion();
@@ -220,7 +220,20 @@ class RecepcionController extends Controller
         echo $view->renderPartial();
     }
     
-    
+    //Imprimir Actas de reunion y Rondas Medicas
+    public function printer_actareu()
+    {
+        $obj = new Recepcion();
+        $data = array();
+        $view = new View();
+        $ro = $obj->printDoc5($_GET);
+        $data['cab'] = $ro[0];
+        $data['det'] = $ro[1];
+        $view->setData($data);
+        $view->setTemplate( '../view/recepcion/_actpdf.php' );
+        $view->setLayout( '../template/empty.php' );
+        echo $view->renderPartial();
+    }
     
     public function derivar()
     { 

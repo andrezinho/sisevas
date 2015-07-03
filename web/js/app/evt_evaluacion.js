@@ -1,76 +1,84 @@
 $(document).ready(function()
 	{	
-		$("#dialog-reporte").dialog({
-			title:'Elija el Formato del Reporte',
-			autoOpen:false,
-			modal:true
-		});
-		$("#personal_name").focus();
-		$("#load_personal").click(function(){			
-			$("#form-search").submit();
-		})
+            $("#dialog-reporte").dialog({
+                    title:'Elija el Formato del Reporte',
+                    autoOpen:false,
+                    modal:true
+            });
+            $("#personal_name").focus();
+            $("#load_personal").click(function(){			
+                    $("#form-search").submit();
+            })
 
-		$("#btn-search-personal").click(function(){	$("header").fadeIn(); $("#personal_name").focus();});
-		$("#btn-close-search-personal").click(function(){	$("header").fadeOut(); });
-		$("#personal_name").autocomplete({
-	        minLength: 0,
-	        source: 'index.php?controller=personal&action=get&tipo=0',
-	        focus: function( event, ui ) 
-	        {
-	            return false;
-	        },
-	        select: function( event, ui )
-	        {
-	            $("#idp").val(ui.item.idpersonal);
-	            $("#personal_name" ).val( ui.item.nompersonal );
-	            $("#load_personal").focus();
-	            return false;
-	        }
-	     }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-	        return $( "<li></li>" )
-	            .data( "item.autocomplete", item )
-	            .append( "<a>"+ item.dni +" - " + item.nompersonal + "</a>" )
-	            .appendTo(ul);
-	      };
+            $("#btn-search-personal").click(function(){	$("header").fadeIn(); $("#personal_name").focus();});
+            $("#btn-close-search-personal").click(function(){	$("header").fadeOut(); });
+            $("#personal_name").autocomplete({
+            minLength: 0,
+            source: 'index.php?controller=personal&action=get&tipo=0',
+            focus: function( event, ui ) 
+            {
+                return false;
+            },
+            select: function( event, ui )
+            {
+                $("#idp").val(ui.item.idpersonal);
+                $("#personal_name" ).val( ui.item.nompersonal );
+                $("#load_personal").focus();
+                return false;
+            }
+         }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>"+ item.dni +" - " + item.nompersonal + "</a>" )
+                .appendTo(ul);
+          };
 
-		$("#idcompetencia").addClass('select');
-		$("#idcompetencia").change(function(){loadAspectos();});
-		$("#save_as").click(function(){
-			var v = new Array();
-			$('form').each(function(i,j){
-				var name_all = $(this).attr("id"),
-					name = name_all.replace('form','r-');									
-				valor = $("input[name='"+name+"']:checked").val();
-				if(typeof(valor)!="undefined")
-					v.push(valor);
-			});
-			var sendv = json_encode(v),
-				idp   = $("#idpersonal").val();
-			$.post('index.php','controller=evaluacion&action=save&v='+sendv+'&idp='+idp,function(data){
-				if(data[0]=='1')
-                	alert("Se ha grabado los cambios satisfactoriamente.");
-                else
-                	alert(data[1]);
-			},'json')
-		});
+            $("#idcompetencia").addClass('select');
+            $("#idcompetencia").change(function(){loadAspectos();});
+            $("#save_as").click(function(){
+                    var v = new Array();
+                    $('form').each(function(i,j){
+                            var name_all = $(this).attr("id"),
+                                    name = name_all.replace('form','r-');									
+                            valor = $("input[name='"+name+"']:checked").val();
+                            if(typeof(valor)!="undefined")
+                                    v.push(valor);
+                    });
+                    var sendv = json_encode(v),
+                            idp   = $("#idpersonal").val();
+                    $.post('index.php','controller=evaluacion&action=save&v='+sendv+'&idp='+idp,function(data){
+                            if(data[0]=='1')
+                    alert("Se ha grabado los cambios satisfactoriamente.");
+            else
+                    alert(data[1]);
+                    },'json')
+            });
 
-		$("#reporte_as").click(function()
-		{
-			$("#dialog-reporte").dialog('open');			
-		});
-		$("#reporte_as_excel").click(function(){
-			var idp   = $("#idpersonal").val();
-			popup('index.php?controller=evaluacion&action=reporte_detallado&tipo=excel&idp='+idp,500,500);
-		});
+            $("#reporte_as").click(function()
+            {
+                    $("#dialog-reporte").dialog('open');			
+            });
+            $("#reporte_as_excel").click(function(){
+                    var idp   = $("#idpersonal").val();
+                    popup('index.php?controller=evaluacion&action=reporte_detallado&tipo=excel&idp='+idp,500,500);
+            });
         
-        $("#reporte_in").click(function(){
-			var idp   = $("#idpersonal").val();
-			popup('index.php?controller=innovacion&action=reporte_detallado&idp='+idp,500,500);
+    $("#reporte_in").click(function(){
+  		var idp   = $("#idpersonal").val();
+  		popup('index.php?controller=innovacion&action=reporte_detallado&idp='+idp,650,500);
 		});
+
 		$("#reporte_me").click(function(){
 			var idp   = $("#idpersonal").val();
-			popup('index.php?controller=envio&action=reporte_detallado&idp='+idp,500,500);
+      var idtp = 1;
+			popup('index.php?controller=envio&action=reporte_detallado&idp='+idp+'&idtp='+idtp,650,500);
 		});
+
+    $("#reporte_ca").click(function(){
+      var idp   = $("#idpersonal").val();
+      var idtp = 4;
+      popup('index.php?controller=envio&action=reporte_detallado&idp='+idp+'&idtp='+idtp,650,500);
+    });
 
 		var $floatingbox = $('#mp-menu'); 
            if($('.container').length > 0)
@@ -100,14 +108,31 @@ $(document).ready(function()
                    }
               });
             }
-         $('.comp-option').click(function(){
-         	var id = $(this).attr("id");
-         		id = id.split('-');
-         		$("#idcompetencia").val(id[1]);
-         	loadAspectos();
-         	$('.comp-option').removeClass('com-option-select');
-         	$(this).addClass('com-option-select');
-         });
+
+		$('.comp-option').click(function(){
+			var id = $(this).attr("id");
+				id = id.split('-');
+				$("#idcompetencia").val(id[1]);
+			loadAspectos();
+			$('.comp-option').removeClass('com-option-select');
+			$(this).addClass('com-option-select');
+		});
+
+		$("#barra-session").on('click','.delete',function(){
+			
+                    var idp = $("#idpersonal").val();
+                    var idper = $("#idperiodoactual").val();
+
+                    if(confirm('Realmente deseas borrar la evaluacion?'))
+                    {			
+                        $.post('index.php','controller=evaluacion&action=deleteeva&idtabs='+idp+'&idper='+idper,function(r)
+                        {
+                                if(r[0]==1)	gridReload();
+                                        else alert('Ha ocurrido un error, vuelve a intentarlo.');
+                        },'json');
+                    }
+		});	
+
 
 	});
 	function loadAspectos()

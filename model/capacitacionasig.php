@@ -6,7 +6,7 @@ class capacitacionasig extends Main
     {
         $sql = "SELECT
             c.idcapacitacion,
-            c.tema,                        
+            te.descripcion AS temas,                        
             f.descripcion,
             UPPER(c.expositor),
             substr(cast(c.fecha as text),9,2)||'/'||substr(cast(c.fecha as text),6,2)||'/'||substr(cast(c.fecha as text),1,4),
@@ -24,27 +24,28 @@ class capacitacionasig extends Main
             capacitacion.capacitacion AS c
             INNER JOIN capacitacion.fuentecapacitacion AS f ON f.idfuentecapacitacion = c.idfuentecapacitacion
             INNER JOIN capacitacion.ejecapacitacion AS e ON e.idejecapacitacion = c.idejecapacitacion
-            INNER JOIN capacitacion.metodoscapacitacion AS m ON m.idmetodoscapacitacion = c.idmetodoscapacitacion
+            INNER JOIN capacitacion.temas AS te ON te.idtemas = c.idtemas
             WHERE c.anio='2015' "; 
                
         return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
     }
 
     function edit($id ) {
-        $stmt = $this->db->prepare("SELECT
+        $stmt = $this->db->prepare("SELECT c.codigo,
                 c.idcapacitacion, c.idfuentecapacitacion,
                 c.idejecapacitacion, c.tema,
                 c.idobejtivoscap, c.idmetodoscapacitacion,
-                c.idtipoevaluacion, 
+                c.idtipoevaluacion, c.nrohoras,
                 c.propuesta, c.referencias, c.palabrasclaves,
-                c.externo, c.idpersonal, c.expositor,    
-                c.fecha, substr(cast(c.hora as text),1,5) AS hora,          
-                d.idobejtivosemp, p.mail, p.dni,p.nombres, p.apellidos,
-                c.nrohoras, c.idlineaaccion, l.descripcion
+                c.externo, c.idpersonal, c.expositor, 
+                p.nombres, p.dni, p.apellidos,
+                p.mail, c.idlineaaccion, l.descripcion,
+                c.idalcancegeneral,
+                c.idtemas, c.idobejtivosemp
+                
                 FROM
                 capacitacion.capacitacion AS c
-                LEFT JOIN capacitacion.capacitacion_obejtivosemp AS d ON c.idcapacitacion = d.idcapacitacion
-                LEFT JOIN public.obejtivosemp AS oe ON oe.idobejtivosemp = d.idobejtivosemp
+                LEFT JOIN public.obejtivosemp AS oe ON oe.idobejtivosemp = c.idobejtivosemp
                 LEFT JOIN public.personal AS p ON p.idpersonal = c.idpersonal
                 LEFT JOIN capacitacion.lineaaccion AS l ON l.idlineaaccion = c.idlineaaccion
                 WHERE c.idcapacitacion = :id");
@@ -128,41 +129,45 @@ class capacitacionasig extends Main
         $idcapacitador= $_P['idpersonal'];
         $si           = $_P['activo'];
         $idlineaaccion= $_P['idlineaaccion'];
+        $idobejtivosemp = $_P['idobejtivosemp'];
+        $idtema         = $_P['idtema'];
         
         $estado       = 1;
+                        
         $sql = "UPDATE capacitacion.capacitacion SET 
             idfuentecapacitacion= :p1, idejecapacitacion= :p2, 
-            tema= :p3, idobejtivoscap= :p4, idmetodoscapacitacion= :p5, idtipoevaluacion= :p6, 
+            idobejtivoscap= :p4, idmetodoscapacitacion= :p5, idtipoevaluacion= :p6, 
             propuesta= :p8, referencias= :p9, palabrasclaves= :p10, externo= :p11, 
             idpersonal= :p12, expositor= :p13, fecha= :p14, hora= :p15, estado= :p16,
-            nrohoras= :p17, idlineaaccion= :p18
+            nrohoras= :p17, idlineaaccion= :p18,
+            idalcancegeneral= :p19, idtemas= :p20, idobejtivosemp= :p21
             WHERE idcapacitacion= :idcapacitacion";
 
-        $stmt = $this->db->prepare($sql);
-        
-        $sqlper= "INSERT INTO personal(dni, nombres, apellidos, mail) VALUES (:p1, :p2, :p3, :p4)";
-        $stmt1 = $this->db->prepare($sqlper);
+        $stmt = $this->db->prepare($sql);        
 
         try 
         {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->db->beginTransaction();
             //echo $_P['nrohoras'];
-            if($idcapacitador== '' || $_P['activo']== 1)
-            {
-                $stmt1->bindParam(':p1', $_P['expositordni'] , PDO::PARAM_INT);
-                $stmt1->bindParam(':p2', $_P['nombresexpositor'] , PDO::PARAM_INT);
-                $stmt1->bindParam(':p3', $_P['apellidosexpositor'] , PDO::PARAM_STR);
-                $stmt1->bindParam(':p3', $_P['emailexp'] , PDO::PARAM_STR);
+            if($si== 1)
+            {   
+                $dniepx= $_P['expositordni'];
+                $nomexp= $_P['nombresexpositor'];
+                $appexp= $_P['apellidosexpositor'];
+                $email= $_P['emailexp'];
+                $sqlper= "INSERT INTO public.personal(dni, nombres, apellidos, mail)
+                    VALUES ('$dniepx', '$nomexp', '$appexp', '$email')";
+                $stmt1 = $this->db->prepare($sqlper);
                 $stmt1->execute();
-
+                
                 $idpercar =  $this->IdlastInsert('personal','idpersonal');
                 $row = $stmt->fetchAll();
 
                 $nombresexpositor= $_P['nombresexpositor'].' '.$_P['apellidosexpositor'];
                 $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p2', $_P['idejecapacitacion'] , PDO::PARAM_INT);
-                $stmt->bindParam(':p3', $_P['tema'] , PDO::PARAM_STR);
+                //$stmt->bindParam(':p3', $_P['tema'] , PDO::PARAM_STR);
                 $stmt->bindParam(':p4', $_P['idobejtivoscap'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p5', $_P['idmetodoscapacitacion'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p6', $_P['idperfil'] , PDO::PARAM_INT);
@@ -178,6 +183,10 @@ class capacitacionasig extends Main
                 $stmt->bindParam(':p16', $estado , PDO::PARAM_INT);
                 $stmt->bindParam(':p17', $_P['nrohoras'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p18', $_P['idlineaaccion'] , PDO::PARAM_INT);
+                $stmt->bindParam(':p19', $_P['idalcancegeneral'] , PDO::PARAM_INT);
+                
+                $stmt->bindParam(':p20', $idtema , PDO::PARAM_INT);
+                $stmt->bindParam(':p21', $idobejtivosemp , PDO::PARAM_INT);
                 
                 $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
                 $stmt->execute();
@@ -189,7 +198,7 @@ class capacitacionasig extends Main
 
                     $stmt->bindParam(':p1', $_P['idfuentecapacitacion'] , PDO::PARAM_INT);
                     $stmt->bindParam(':p2', $_P['idejecapacitacion'] , PDO::PARAM_INT);
-                    $stmt->bindParam(':p3', $_P['tema'] , PDO::PARAM_STR);
+                    //$stmt->bindParam(':p3', $_P['tema'] , PDO::PARAM_STR);
                     $stmt->bindParam(':p4', $_P['idobejtivoscap'] , PDO::PARAM_INT);
                     $stmt->bindParam(':p5', $_P['idmetodoscapacitacion'] , PDO::PARAM_INT);
                     $stmt->bindParam(':p6', $_P['idperfil'] , PDO::PARAM_INT);
@@ -205,14 +214,16 @@ class capacitacionasig extends Main
                     $stmt->bindParam(':p16', $estado , PDO::PARAM_INT);
                     $stmt->bindParam(':p17', $_P['nrohoras'] , PDO::PARAM_INT);
                     $stmt->bindParam(':p18', $_P['idlineaaccion'] , PDO::PARAM_INT);
-                    
-                    $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);
-                    
-                    
-                    $stmt->execute();//print_r($stmt);
+                    $stmt->bindParam(':p19', $_P['idalcancegeneral'] , PDO::PARAM_INT);
+                    $stmt->bindParam(':p20', $idtema , PDO::PARAM_INT);
+                    $stmt->bindParam(':p21', $idobejtivosemp , PDO::PARAM_INT);
+                
+                    $stmt->bindParam(':idcapacitacion', $_P['idcapacitacion'] , PDO::PARAM_INT);                  
+                    $stmt->execute();
+                    //print_r($stmt);
                 }
             
-            /**** INSERTAMOS obejtivos del empresa ****/
+            /**** INSERTAMOS obejtivos del empresa 
             $sqldel="DELETE FROM capacitacion.capacitacion_obejtivosemp WHERE idcapacitacion= ".$id;
             $exec = $this->db->prepare($sqldel);                    
             $exec->execute();                    
@@ -223,15 +234,15 @@ class capacitacionasig extends Main
 
             if($_P['idobejtivosemp'][0]!= ''){
                 foreach($_P['idobejtivosemp'] as $i => $idobejtivosemp)
-                {   
-                    //print_r($_P['idobejtivosemp']);
+                {
                     $stmt2->bindParam(':p1',$id,PDO::PARAM_INT);                    
                     $stmt2->bindParam(':p2',$idobejtivosemp,PDO::PARAM_INT);
                     $stmt2->execute();                
 
                 }
             }
-           
+            ****/
+                
             /**** ASIGANACION de capacitación ****/
             $sqldasig="DELETE FROM capacitacion.capacitacion_asignacion WHERE idcapacitacion= ".$id;
             $stmt01 = $this->db->prepare($sqldasig);                    
@@ -240,12 +251,15 @@ class capacitacionasig extends Main
             $stmt3  = $this->db->prepare("INSERT INTO capacitacion.capacitacion_asignacion(
                                         idcapacitacion, idpersonalasig, idtipoalcance)
                                 VALUES (:p1, :p2, :p3) ");
-
+            
+            $c=0;
             if($_P['idpersonalasignado']!= '')
             {
                 foreach($_P['idpersonalasignado'] as $i => $idpersonalasig)
-                {                
-                    $stmt3->bindParam(':p1',$id,PDO::PARAM_INT);                    
+                {   
+                    $c++;
+                    
+                    $stmt3->bindParam(':p1',$_P['idcapacitacion'],PDO::PARAM_INT);                    
                     $stmt3->bindParam(':p2',$idpersonalasig,PDO::PARAM_INT);
                     $stmt3->bindParam(':p3',$_P['idtipoalcance'][$i],PDO::PARAM_INT);
                     $stmt3->execute();                
@@ -255,8 +269,7 @@ class capacitacionasig extends Main
             
             
             /**** PRESUPUESTO ****/
-            $sqlPre="DELETE FROM capacitacion.presupuesto
-                   WHERE idcapacitacion= ".$id;
+            $sqlPre="DELETE FROM capacitacion.presupuesto WHERE idcapacitacion= ".$id;
                 $stmt01 = $this->db->prepare($sqlPre);                    
                 $stmt01->execute();  
                 
@@ -264,7 +277,8 @@ class capacitacionasig extends Main
                 idcapacitacion, idcatpresupuesto, idconcepto, tiempo, idunidad_medida, 
                 cantidad, preciounitario, subtotal)
                 VALUES (:p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8) ");
-
+            
+            $tot=0;
             if($_P['idcatpresupuestodet']!= '')
             {
                 foreach($_P['idcatpresupuestodet'] as $i => $idcatpresupuestodet)
@@ -283,7 +297,9 @@ class capacitacionasig extends Main
                     {
                         $_P['idunidad_medidadet']=0;
                     }
-
+                    
+                    $subt= $_P['subtotal'][$i];
+                    $tot = $tot+$subt;
                     $stmt4->bindParam(':p1',$id,PDO::PARAM_INT);                    
                     $stmt4->bindParam(':p2',$idcatpresupuestodet,PDO::PARAM_INT);
                     $stmt4->bindParam(':p3',$_P['idconceptodet'][$i],PDO::PARAM_INT);
@@ -292,9 +308,17 @@ class capacitacionasig extends Main
                     $stmt4->bindParam(':p6',$_P['cantidaddet'][$i],PDO::PARAM_INT);
                     $stmt4->bindParam(':p7',$_P['preciodet'][$i],PDO::PARAM_INT);
                     $stmt4->bindParam(':p8',$_P['subtotal'][$i],PDO::PARAM_INT);
-                    $stmt4->execute();                
+                    $stmt4->execute();
 
                 }
+                
+                $TotProm= intval($tot)/ intval($c);
+                $TotProm= number_format($TotProm, 2);
+                $Upd="UPDATE capacitacion.capacitacion SET total='$tot', 
+                    totalpromediado='$TotProm', nroasignados=$c
+                    WHERE idcapacitacion= ".$id;
+                $stmt5 = $this->db->prepare($Upd);
+                $stmt5->execute();
             
             }
             
@@ -332,6 +356,7 @@ class capacitacionasig extends Main
         //echo $id;        
         $cab= "SELECT ca.idcapacitacion, ca.codigo,
             fu.descripcion AS fuente,
+            l.descripcion AS linea,
             ej.descripcion AS eje,
             ca.tema, me.descripcion AS metodo,
             ob.descripcion AS obejtivoscap,
@@ -347,6 +372,7 @@ class capacitacionasig extends Main
             FROM capacitacion.capacitacion AS ca
             INNER JOIN public.personal AS pe ON pe.idpersonal = ca.idpersonal
             INNER JOIN capacitacion.fuentecapacitacion AS fu ON ca.idfuentecapacitacion = fu.idfuentecapacitacion
+            LEFT JOIN capacitacion.lineaaccion AS l ON l.idlineaaccion = ca.idlineaaccion
             INNER JOIN capacitacion.ejecapacitacion AS ej ON ca.idejecapacitacion = ej.idejecapacitacion
             INNER JOIN capacitacion.obejtivoscap AS ob ON ca.idobejtivoscap = ob.idobejtivoscap
             INNER JOIN capacitacion.metodoscapacitacion AS me ON ca.idmetodoscapacitacion = me.idmetodoscapacitacion

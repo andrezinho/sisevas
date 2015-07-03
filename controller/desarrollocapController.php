@@ -63,6 +63,7 @@ class desarrollocapController extends Controller
             $data['personalasis'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>':: Seleccione ::','table'=>$rowsAsist));
             $data['tipoeva'] = $this->Select(array('id'=>'idperfil','name'=>'idperfil','text_null'=>':: Seleccione ::','table'=>'seguridad.vista_perfil','code'=>$rows->idtipoevaluacion));
             
+            $data['rowasis'] = $obj->getAsistentes($rows->idcapacitacion);
             $data['rowsac'] = $obj->getAcuerdos($rows->idcapacitacion);
             $view->setData($data);
             $view->setTemplate( '../view/desarrollocap/_form.php' );

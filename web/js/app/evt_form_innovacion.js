@@ -1,7 +1,7 @@
 $(function() 
 {    
-    $( "#descripcion" ).focus();
-    $( "#idpersonal" ).css({'width':'230px'});
+    $("#descripcion").focus();
+    $("#idpersonal").css({'width':'230px'});
     $("#fechain").datepicker({dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true});
     $("#div_activo").buttonset();
 });

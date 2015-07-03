@@ -91,17 +91,17 @@ class TipodocumentoController extends Controller
         print_r(json_encode($result));
     }
    
-   public function Correlativo()
-   {
-        $obj = new Tipodocumento();        
-        $rows = $obj->GCorrelativo($_GET['idtp']);                               
-        print_r(json_encode($rows));
-   }
+    public function Correlativo()
+    {
+         $obj = new Tipodocumento();        
+         $rows = $obj->GCorrelativo($_GET['idtp']);                               
+         print_r(json_encode($rows));
+    }
 
     public function formatos() {
         $obj = new Tipodocumento();        
         $view = new View();
-        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal'));        
+        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal'));
         $data['remitente'] = $this->Select(array('id'=>'idperremitente','name'=>'idperremitente','text_null'=>'Seleccione...','table'=>'vista_remitente'));        
         $data['consultorio'] = $this->Select(array('id'=>'idconsultorio','name'=>'idconsultorio','text_null'=>'Seleccione...','table'=>'vista_consultorio'));
         $view->setData($data);
@@ -156,11 +156,41 @@ class TipodocumentoController extends Controller
         $view = new View();
         $obj = $obj->edit($_GET['id']);
         $data['obj'] = $obj;
-        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal'));        
-         $data['remitente'] = $this->Select(array('id'=>'idperremitente','name'=>'idperremitente','text_null'=>'Seleccione...','table'=>'vista_remitente'));        
+        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'.:: Seleccione ::.','table'=>'vista_personal'));        
+        $data['remitente'] = $this->Select(array('id'=>'idperremitente','name'=>'idperremitente','text_null'=>'Seleccione...','table'=>'vista_remitente'));
         
         $view->setData($data);
         $view->setTemplate( '../view/tipodocumento/_carcumple.php' );
+        echo $view->renderPartial();
+        
+    }
+    
+    public function formatos5() {
+        $obj = new Tipodocumento();        
+        $view = new View();
+        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal'));
+        $view->setData($data);
+        $view->setTemplate( '../view/tipodocumento/_actareunion.php' );
+        echo $view->renderPartial();
+        
+    }
+    
+    public function formatos6() {
+        $obj = new Tipodocumento();        
+        $view = new View();
+        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal'));
+        $view->setData($data);
+        $view->setTemplate( '../view/tipodocumento/_rondamedica.php' );
+        echo $view->renderPartial();
+        
+    }
+    
+    public function formatos7() {
+        $obj = new Tipodocumento();        
+        $view = new View();
+        $data['personal'] = $this->Select(array('id'=>'idpersonal','name'=>'idpersonal','text_null'=>'Seleccione...','table'=>'vista_personal'));
+        $view->setData($data);
+        $view->setTemplate( '../view/tipodocumento/_rondaaro.php' );
         echo $view->renderPartial();
         
     }

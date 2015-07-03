@@ -2,17 +2,80 @@
 include_once("Main.php");
 class Consultas extends Main
 {    
-    function indexGrid($page,$limit,$sidx,$sord,$filtro,$query,$cols)
+    function data_informe($g)
     {
-       $sql = "SELECT
-            a.idalmacen,
-            a.descripcion,
-            a.direccion,
-            a.telefono,
-            case a.estado when 1 then 'ACTIVO' else 'INCANTIVO' end            
-            FROM
-            produccion.almacenes AS a ";
-        return $this->execQuery($page,$limit,$sidx,$sord,$filtro,$query,$cols,$sql);
+        if(isset($g['idperiodo'])&&$g['idperiodo']!="")
+            $idperiodo = $g['idperiodo'];
+        else 
+            $idperiodo = (!isset($_SESSION['idperiodo'])) ? '1' : $_SESSION['idperiodo'];
+
+        $anio = $g['anio'];
+        $todos= $g['todos'];
+        
+        $s = "SELECT descripcion from evaluacion.periodo where idperiodo = ".$idperiodo;
+        $stmt = $this->db->prepare($s);
+        $stmt->execute();
+        $rec = $stmt->fetchObject();
+        $periodo = $rec->descripcion;
+
+        $sql = "SELECT p.idperfil,p.nombres,p.apellidos,c.descripcion as perfil 
+                FROM personal as p inner join seguridad.perfil as c on 
+                    c.idperfil = p.idperfil
+                WHERE p.idpersonal = :id ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+        $stmt->execute();
+        $r = $stmt->fetchObject();
+        $idperfil = $r->idperfil;
+        $personal = $r->nombres.' '.$r->apellidos;
+        $perfil = $r->perfil;
+
+        $datos = array($personal, $perfil, $anio);
+        
+        if($todos!= 1)
+        {
+            $sql1 = "SELECT
+                ej.descripcion,
+                COUNT(inf.idejecapacitacion)
+                FROM
+                calidad.informememoria AS inf
+                INNER JOIN capacitacion.ejecapacitacion AS ej ON ej.idejecapacitacion = inf.idejecapacitacion
+                WHERE
+                inf.anio = :anio and inf.idpersonal=:id
+                GROUP BY
+                ej.descripcion
+                ORDER BY
+                ej.descripcion ASC ";
+                    
+                $stmt1 = $this->db->prepare($sql1);
+                $stmt1->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+                $stmt1->bindParam(':anio', $anio,PDO::PARAM_INT);
+                $stmt1->execute();
+                $data= $stmt1->fetchAll(); 
+        }else
+            {
+               $sql1 = "SELECT
+                ej.descripcion,
+                COUNT(inf.idejecapacitacion)
+                FROM
+                calidad.informememoria AS inf
+                INNER JOIN capacitacion.ejecapacitacion AS ej ON ej.idejecapacitacion = inf.idejecapacitacion
+                WHERE
+                inf.anio = :anio and inf.idpersonal=:id
+                GROUP BY
+                ej.descripcion
+                ORDER BY
+                ej.descripcion ASC ";
+                    
+                $stmt1 = $this->db->prepare($sql1);
+                $stmt1->bindParam(':id',$g['idp'],PDO::PARAM_INT);
+                $stmt1->bindParam(':anio', $anio,PDO::PARAM_INT);
+                $stmt1->execute();
+                $data= $stmt1->fetchAll(); 
+            }
+        
+        
+        return array($data,$datos);
     }
 
     function edit($id)

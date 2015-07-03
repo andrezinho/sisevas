@@ -63,6 +63,7 @@
         //alert(Op);
         if(Op==1)
         {
+            $("#personal_name").val('')
             $("#personal_name").attr('disabled',true)
             $("#idp").val('0')
         }
@@ -83,7 +84,7 @@
             <label class="labels" for="personal">Personal: </label>        
             <input type="hidden" name="idp" id="idp" value="" />        
             <input type="text" name="personal_name" id="personal_name" value="" placeholder="Nombre del Personal" style="width:45%" class="text ui-widget-content ui-corner-all" /> 
-             || Todos
+            || Todos
             <div id="estados" style="display: inline;">
                 <?php                                     
                     if($medfil==1 || $medfil==0)

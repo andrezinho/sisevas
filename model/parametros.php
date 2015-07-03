@@ -14,9 +14,7 @@ class parametros extends Main
     
     function edit($id)
     {   
-        $sql="SELECT *  
-              FROM  evaluacion.parametros
-              WHERE idparametro = :id ";
+        $sql="SELECT * FROM  evaluacion.parametros WHERE idparametro = :id ";
         $stmt = $this->db->prepare($sql);        
         $stmt->bindParam(':id', $id , PDO::PARAM_STR);
         $stmt->execute();
@@ -26,8 +24,7 @@ class parametros extends Main
     function insert($_P ) 
     {       
         $fecha_reg = date('Y-m-d');
-        $stmt = $this->db->prepare("INSERT INTO evaluacion.parametros(
-                                        descripcion,fecha_reg, estado)
+        $stmt = $this->db->prepare("INSERT INTO evaluacion.parametros(descripcion,fecha_reg, estado)
                                     VALUES (:p1, :p2, :p3);");
         $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);        
         $stmt->bindParam(':p2', $fecha_reg , PDO::PARAM_STR);

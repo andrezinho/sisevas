@@ -7,8 +7,8 @@ class capacitacionController extends Controller
 {
     var $cols = array(
                 1 => array('Name'=>'Item','NameDB'=>'s.idcapacitacion','align'=>'center','width'=>'20'),
-                2 => array('Name'=>'Codigo','NameDB'=>'codigo','search'=>true,'width'=>'60'),
-                3 => array('Name'=>'Tema','NameDB'=>'tema','width'=>'150'),
+                2 => array('Name'=>'Codigo','NameDB'=>'codigo','width'=>'60','search'=>true),
+                3 => array('Name'=>'Tema','NameDB'=>'tema','width'=>'150','search'=>true),
                 4 => array('Name'=>'Fuente','NameDB'=>'f.descripcion','width'=>'120'),
                 5 => array('Name'=>'Eje Cap.','NameDB'=>'e.descripcion ','width'=>'140','align'=>'left'),
                 6 => array('Name'=>'','NameDB'=>'','align'=>'center','width'=>'60')
@@ -79,7 +79,7 @@ class capacitacionController extends Controller
             //print_r($rows);
             $data['fuente'] = $this->Select(array('id'=>'idfuentecapacitacion','name'=>'idfuentecapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_fuentecap','code'=>$rows->idfuentecapacitacion));
             $data['eje'] = $this->Select(array('id'=>'idejecapacitacion','name'=>'idejecapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_ejecap','code'=>$rows->idejecapacitacion));
-            $data['objemp'] = $this->Select(array('id'=>'idobejtivosemp','name'=>'idobejtivosemp','text_null'=>':: Seleccione ::','table'=>' vista_obejtivosemp'));
+            $data['objemp'] = $this->Select(array('id'=>'idobejtivosemp','name'=>'idobejtivosemp','text_null'=>':: Seleccione ::','table'=>' vista_obejtivosemp','code'=>$rows->idobejtivosemp));
             $data['objcap'] = $this->Select(array('id'=>'idobejtivoscap','name'=>'idobejtivoscap','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_objetivoscap','code'=>$rows->idobejtivoscap));
             $data['perfilocup'] = $this->Select(array('id'=>'idtipopersonal','name'=>'idtipopersonal','text_null'=>':: Seleccione ::','table'=>'vista_tipopersonal','code'=>$rows->idalcance));
             $data['tipoeva'] = $this->Select(array('id'=>'idperfil','name'=>'idperfil','text_null'=>':: Seleccione ::','table'=>'seguridad.vista_perfil','code'=>$rows->idtipoevaluacion));

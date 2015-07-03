@@ -70,6 +70,23 @@
                 ?>
                 <option <?php echo $var; ?> value="F">Femenino</option>
             </select>
+            <br/>
+            <?php                    
+                if($obj->externo==1 || $obj->externo==0)
+                    {
+                        if($obj->externo==1){$act="checked='checked' ";
+                        }
+                        else {$inac="checked='checked' ";}
+                    }
+                    else {$act = "checked='checked' ";}
+            ?>
+            <label for="estado" class="labels">Externo:</label>        
+            <div id="perexterno" style="display: inline;">                
+                <input type="radio" id="externo1" name="externo" value='1' <?php echo $act; ?> onclick="verificar(1);" />
+                <label for="externo1">SI</label>
+                <input type="radio" id="externo0" name="externo" value='0' <?php echo $inac; ?> onclick="verificar(0);" />
+                <label for="externo0">NO</label>
+            </div>
 
         </div>
         <div id="tabs-2">

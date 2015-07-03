@@ -1,8 +1,7 @@
 $(function() 
 {    
-    $( "#descripcion" ).focus();
-    
-    $("#estados").buttonset();
+    $( "#descripcion" ).focus();    
+    $("#estados, #todosp").buttonset();
 });
 
 function save()

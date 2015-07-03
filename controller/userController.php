@@ -5,7 +5,7 @@ require_once '../model/user.php';
 require_once '../model/periodo.php';
 
 class UserController extends Controller {
-    public static function  login() 
+    public static function login() 
     {
         $obj = new User();    
         $objp = new periodo();
@@ -17,14 +17,16 @@ class UserController extends Controller {
             $_SESSION['idusuario'] = $obj->idpersonal;
             $_SESSION['dni'] = $obj->dni;   
             $_SESSION['user'] = $obj->login;
-            $_SESSION['name'] = $obj->nombres;            
+            $_SESSION['name'] = $obj->nombres;
+            $_SESSION['idcargoper']= $obj->idcargo;
             $_SESSION['id_perfil'] = $obj->idperfil;
             $_SESSION['perfil'] = $obj->perfil;
             $_SESSION['area'] = $obj->oficina;
             $_SESSION['idconsultorio'] = $obj->idoficina;
             $_SESSION['sucursal'] = $obj->sede;
             $_SESSION['idsucursal'] = $obj->idsucursal;
-
+            $_SESSION['idempresa'] = $obj->idempresa;
+            $_SESSION['logoemp'] = $obj->logo;
             //Obtenemos los datos del periodo
             $p = $objp->getPeriodo();
             $_SESSION['idperiodo'] = $p->idperiodo;

@@ -13,7 +13,7 @@
                 
         <label for="tipodoc" class="labels">Tipo documento:</label>
         <?php echo $tipodoc; ?>
-        <input type="text" id="correlativo" name="correlativo" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php echo $obj->codigo; ?>" readonly />
+        <input type="text" id="correlativo" name="correlativo" class="text ui-widget-content ui-corner-all" style=" width: 130px; text-align: center;" value="<?php echo $obj->codigo; ?>" readonly />
         
         <br/>
         <hr />

@@ -1,16 +1,22 @@
 $(function() 
 {    
     $("#tabs").tabs({ collapsible: false });
-    $( "#descripcion" ).focus();
+    var idcap=$("#idcapacitacion").val();
+    var idlin= $("#idlineaaccion").val();
+    if(idcap != '')
+    { loadTemas(idlin) }
+    $( "#idalcancegeneral" ).focus();
     $( "#dos" ).css({'width':'700px'});
-    $( "#idfuentecapacitacion, #idejecapacitacion, #idpersonalasig" ).css({'width':'200px'});
-    $( "#idmetodoscapacitacion, #idcatpresupuesto, #idconcepto" ).css({'width':'270px'});    
-    $( "#idperfil").css({'width':'200px'})
+    $( "#idejecapacitacion" ).css({'width':'250px'});
+    $( "#idfuentecapacitacion, #idpersonalasig" ).css({'width':'200px'});
+    $( "#idmetodoscapacitacion" ).css({'width':'430px'});
+    $( "#idcatpresupuesto, #idconcepto" ).css({'width':'270px'});    
+    $( "#idperfil, #idalcancegeneral").css({'width':'200px'})
     $( "#idtipoalcance").css({'width':'120px'})
     $( "#fechacap" ).datepicker({dateFormat:'dd/mm/yy','changeMonth':true,'changeYear':true});
     
-    $( "#idobejtivosemp,#idobejtivoscap" ).css({'width':'550px'});
-    $( "#estados").buttonset();
+    $( "#idobejtivosemp, #idobejtivoscap, #idtema" ).css({'width':'550px'});
+    $( "#estados, #todosp").buttonset();
     
     $("#table-per").on('click','#addDetail',function(){
         addDetail();
@@ -121,7 +127,7 @@ $(function()
     $("#table-detalles").on('click','.boton-deletes',function(){var v = $(this).parent().parent().remove();})
     
     $("#idcatpresupuesto").change(function(){load_conceptos($(this).val()); $("#idconcepto").focus();});
-    $("#idunidad_medida").change(function(){UnidadMed($(this).val());});   
+    $("#idunidad_medida").change(function(){ UnidadMed($(this).val()); });   
     
     /* DETALLE PRESUPUESTO */
     $("#Presupuesto").on('click','#addDetPre',function(){
@@ -133,6 +139,30 @@ $(function()
     /**/
     
 });
+
+function loadTemas(idl)
+{
+    var idt= $("#idtemaselect").val();
+    //alert(idl);
+    $.get('index.php','idlinea='+idl+'&controller=lineaaccion&action=getTemas',function(r){
+        var options = "<option value='0'>.:: Seleccione ::.</option>";
+        $.each(r,function(i,j){
+            var sel = '';
+            var id= j['id']; //alert(id);
+            if (idt == id){ sel = "selected='selected' "; }
+            options += "<option "+sel+" value='"+j['id']+"'>"+j['descripcion']+"</option>";
+        });						
+        $("#idtema").empty().append(options);
+    },'json');
+    
+}
+
+function verificar(v)
+{
+    $("#todosvalor").val(v)
+    if(v==1) { $("#personalasig").attr('disabled',true) }
+    else { $("#personalasig").attr('disabled',false) }
+}
 
 function addDetail()
 {
@@ -162,7 +192,28 @@ function addDetalle(idobjemp,desc)
 /**/
 function addDetails()
 {
-  
+    if($("#todosvalor").val()==1)
+    {
+        
+        bval = true;
+        bval = bval && $("#idtipoalcance").required();
+        if(!bval) return 0;
+            idalc =$("#idtipoalcance").val(),            
+            alc = $("#idtipoalcance option:selected").html(),
+        
+        $.get('index.php','controller=personal&action=getListaAsig',function(r){    
+            var html = '';
+            $.each(r,function(i,j){
+                html += '<tr class="tr-detalle" style="height: 20px">';
+                html += '<td>'+j.personal+'<input type="hidden" name="idpersonalasignado[]" value="'+j.idpersonal+'" /></td>'
+                html += '<td>'+alc+'<input type="hidden" name="idtipoalcance[]" value="'+idalc+'" /></td>';
+                html += '<td align="center"><a class="box-boton boton-deletes" href="#" title="Quitar" ></a></td>';
+                html += '</tr>';
+            });      
+            $("#table-detalles").find('tbody').append(html);
+        },'json');
+    
+    }
       bval = true;
       bval = bval && $("#idcapacitacion").required();
       bval = bval && $("#idpersonalasig").required();
@@ -189,7 +240,6 @@ function addDetalles(idcap,iddest,dest,idalc,alc)
     html += '<td align="center"><a class="box-boton boton-deletes" href="#" title="Quitar" ></a></td>';
     html += '</tr>';    
     $("#table-detalles").find('tbody').append(html);
-
     $("#idpersonalasig").val('');
     $("#personalasig").val('');
 
@@ -294,12 +344,15 @@ function addDetallesP(idcat,cat,idcon,con,cant,iduni,uni,tiem,pre)
 
 function save()
 {
-  bval = true;        
-  bval = bval && $("#descripcion" ).required();        
-  bval = bval && $("#lineaaccion").required();
-  var str = $("#frm_cap").serialize();
-  if ( bval ) 
-  {
+    bval = true;        
+    bval = bval && $("#descripcion" ).required();
+    bval = bval && $("#idalcancegeneral").required();       
+    bval = bval && $("#lineaaccion").required();
+    
+    
+    var str = $("#frm_cap").serialize();
+    if ( bval ) 
+    {
       $.post('index.php',str,function(res)
       {
         if(res[0]==1){
@@ -312,6 +365,6 @@ function save()
         }
         
       },'json');
-  }
-  return false;
+    }
+    return false;
 }

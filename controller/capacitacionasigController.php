@@ -61,17 +61,18 @@ class capacitacionasigController extends Controller
             //print_r($rows);
             $data['fuente'] = $this->Select(array('id'=>'idfuentecapacitacion','name'=>'idfuentecapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_fuentecap','code'=>$rows->idfuentecapacitacion));
             $data['eje'] = $this->Select(array('id'=>'idejecapacitacion','name'=>'idejecapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_ejecap','code'=>$rows->idejecapacitacion));
-            $data['objemp'] = $this->Select(array('id'=>'idobejtivosemp','name'=>'idobejtivosemp','text_null'=>':: Seleccione ::','table'=>' vista_obejtivosemp'));
+            $data['objemp'] = $this->Select(array('id'=>'idobejtivosemp','name'=>'idobejtivosemp','text_null'=>':: Seleccione ::','table'=>' vista_obejtivosemp','code'=>$rows->idobejtivosemp));
             $data['objcap'] = $this->Select(array('id'=>'idobejtivoscap','name'=>'idobejtivoscap','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_objetivoscap','code'=>$rows->idobejtivoscap));
             $data['tipoeva'] = $this->Select(array('id'=>'idperfil','name'=>'idperfil','text_null'=>':: Seleccione ::','table'=>'seguridad.vista_perfil','code'=>$rows->idtipoevaluacion));
             $data['tipoalc'] = $this->Select(array('id'=>'idtipoalcance','name'=>'idtipoalcance','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_tipoalcance','code'=>$rows->idtipoalcance));
             $data['metodo'] = $this->Select(array('id'=>'idmetodoscapacitacion','name'=>'idmetodoscapacitacion','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_metodoscap','code'=>$rows->idmetodoscapacitacion));
             $data['personal'] = $this->Select(array('id'=>'idpersonalasig','name'=>'idpersonalasig','text_null'=>'Seleccione...','table'=>'vista_personal')); 
+            $data['tipoalcancegen'] = $this->Select(array('id'=>'idalcancegeneral','name'=>'idalcancegeneral','text_null'=>':: Seleccione ::','table'=>'capacitacion.vista_tipoalcance','code'=>$rows->idalcancegeneral));
             
             $data['categoria'] = $this->Select(array('id'=>'idcatpresupuesto','name'=>'idcatpresupuesto','text_null'=>'Seleccione...','table'=>'capacitacion.vista_categoriap')); 
             $data['unidadmed'] = $this->Select(array('id'=>'idunidad_medida','name'=>'idunidad_medida','text_null'=>'Seleccione...','table'=>'vista_unidadmedida')); 
             
-            $data['rowsd'] = $obj->getDetails($rows->idcapacitacion);
+            //$data['rowsd'] = $obj->getDetails($rows->idcapacitacion);
             $data['rowsA'] = $obj->getDetailsAsig($rows->idcapacitacion);
             $data['rowsP'] = $obj->getDetailsPre($rows->idcapacitacion);
             $view->setData($data);

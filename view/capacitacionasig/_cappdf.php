@@ -41,6 +41,12 @@ class PDF extends FPDF
         $this->SetFont('Arial','',$f);
         $this->Cell(0, 5, utf8_decode($cab['fuente']), 0, 1, 'L');
         
+        $this->SetFont('Arial','B',8);        
+        $this->Cell($w, 5,strtoupper(utf8_decode('Lineas de acciÓn')), 0, 0, 'L');        
+        $this->Cell(3, 5, ' :', 0, 0, 'C');
+        $this->SetFont('Arial','',$f);
+        $this->Cell(0, 5, utf8_decode($cab['linea']), 0, 1, 'L');
+        
         $this->SetFont('Arial','B',8);
         $this->Cell($w, 5,strtoupper(utf8_decode('Eje de la capacitaciÓn')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 0, 'C');
@@ -93,24 +99,29 @@ class PDF extends FPDF
         $this->Cell(3, 5, ' :', 0, 1, 'C');
         $this->SetFont('Arial','',$f);
         $this->SetX(20);
-        $this->MultiCell(180,5,utf8_decode($cab['propuesta']),0,'J',false);
-        $this->Ln(20);
+        //$y1 = $this->GetY();
+        $this->MultiCellp(180,5,utf8_decode($cab['propuesta']),0,'J',false);
+        $this->Ln(5);
         
+        $y = $this->GetY();
+        $this->SetY($y+2);
         $this->SetFont('Arial','B',8);
         $this->Cell($w, 5,strtoupper(utf8_decode('Referencia Bibliográfica')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 1, 'C');
         $this->SetFont('Arial','',$f);
         $this->SetX(20);
-        $this->MultiCell(180,5,utf8_decode($cab['referencias']),0,'J',false);
-        $this->Ln(15);
+        $this->MultiCellp(180,5,utf8_decode($cab['referencias']),0,'J',false);
+        $this->Ln(7);
+        $y = $this->GetY();
         
         $this->SetFont('Arial','B',8);
         $this->Cell($w, 5,strtoupper(utf8_decode('Palabras Claves del Tema')), 0, 0, 'L');        
         $this->Cell(3, 5, ' :', 0, 1, 'C');
         $this->SetFont('Arial','',$f);
         $this->SetX(20);
-        $this->MultiCell(180,5,utf8_decode($cab['palabrasclaves']),0,'J',false);
-        $this->Ln(15);
+        $this->MultiCellp(180,5,utf8_decode($cab['palabrasclaves']),0,'J',false);
+        $this->Ln(7);
+        $y = $this->GetY();
         
         $this->SetFont('Arial','B',8);
         $this->Cell($w, 5,strtoupper(utf8_decode('Expositor')), 0, 0, 'L');        
@@ -152,7 +163,7 @@ class PDF extends FPDF
         
         $this->Cell($h1, $h0,strtoupper(utf8_decode('n° ')), 1, 0, 'C');
         $this->Cell($h2, $h0,strtoupper(utf8_decode('dni')), 1, 0, 'C');
-        $this->Cell($h3, $h0,strtoupper(utf8_decode('nombres y apellidos')), 1, 0, 'C');
+        $this->Cell($h3, $h0,strtoupper(utf8_decode('nombres y apellidos (015-006-f-ac-rrhh-bpmg)')), 1, 0, 'C');
         $this->Cell($h4, $h0,strtoupper(utf8_decode('tipo alcance')), 1, 0, 'C');
         $this->Cell($h5, $h0,strtoupper(utf8_decode('firma')), 1, 1, 'C');
         foreach ($asig as $rs){                

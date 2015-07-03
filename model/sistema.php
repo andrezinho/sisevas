@@ -78,8 +78,7 @@ class Sistema extends Main
         $stmt = $this->db->prepare($mv);            
         $stmt->execute();
         $mv= $stmt->fetch();
-        
-        
+                
         $objemp="SELECT
             obejtivosemp.idobejtivosemp,
             obejtivosemp.descripcion,
@@ -136,7 +135,19 @@ class Sistema extends Main
         $stmt4->execute();
         $politica=$stmt4->fetch();
         
-        return array($mv, $obejtivosemp, $obejtivoscal, $valoresemp, $politica);
+        $objcap="SELECT
+            idobejtivoscap,
+            descripcion
+            FROM
+            capacitacion.obejtivoscap
+            WHERE
+            estado=1 ORDER BY idobejtivoscap ASC";
+
+        $stmt5 = $this->db->prepare($objcap);
+        $stmt5->execute();
+        $obejtivoscap=$stmt5->fetchAll();
+        
+        return array($mv, $obejtivosemp, $obejtivoscal, $valoresemp, $politica, $obejtivoscap);
     }
 }
 

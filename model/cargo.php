@@ -36,6 +36,7 @@ class Cargo extends Main
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
     }
+    
     function delete($_P ) {
         $stmt = $this->db->prepare("DELETE FROM cargo WHERE idcargo = :p1");
         $stmt->bindParam(':p1', $_P , PDO::PARAM_INT);

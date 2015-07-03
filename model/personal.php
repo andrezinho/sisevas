@@ -212,15 +212,11 @@ class Personal extends Main
     
         $query = "%".$query."%";
         $statement = $this->db->prepare("SELECT 
-                                        idpersonal,
-                                        mail, 
-                                        dni,
-                                        nombres || ' ' || apellidos AS nompersonal,
-                                        nombres,
-                                        apellidos
-                                        FROM personal
-                                        WHERE {$field} ilike :query and dni <> ''
-                                         limit 10");
+            idpersonal, mail, 
+            dni, nombres || ' ' || apellidos AS nompersonal,
+            nombres, apellidos
+            FROM personal
+            WHERE {$field} ilike :query AND dni <> '' AND estado=1 limit 10");
         $statement->bindParam (":query", $query , PDO::PARAM_STR);        
         $statement->execute();
         return $statement->fetchAll();
@@ -299,8 +295,65 @@ class Personal extends Main
 
         $stmt1->execute();
         return $stmt1->fetchAll();
-
-
     }
+    
+    function getList()
+    {
+        $sql = "SELECT p.idpersonal, p.personal FROM public.vista_personal AS p ";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $data = array();
+        foreach($stmt->fetchAll() as $r)
+        {
+            $data[] = array('idpersonal'=>$r[0],'personal'=>$r[1]);
+        }
+        return $data;
+    }
+    
+    function getListAsist($id)
+    {
+        $sql = "SELECT ca.idpersonalasig,
+        p.nombres||' '|| p.apellidos
+        FROM capacitacion.capacitacion c
+            JOIN capacitacion.capacitacion_asignacion ca ON ca.idcapacitacion = c.idcapacitacion
+            JOIN personal p ON p.idpersonal = ca.idpersonalasig        
+        WHERE ca.idcapacitacion=".$id." ORDER BY p.nombres ";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $data = array();
+        foreach($stmt->fetchAll() as $r)
+        {
+            $data[] = array('idpersonal'=>$r[0],'personal'=>$r[1]);
+        }
+        return $data;
+    }
+    
+    function getPersonalxArea($G)
+    {
+        $idc = $G['idc'];
+        $idusu= $G['idusu'];
+        
+        if($idusu=='')
+        {
+            $sql = "SELECT * FROM vista_personal WHERE idconsultorio=".$idc;
+        }
+        else {
+            $sql = "SELECT * FROM vista_personal WHERE idconsultorio=".$idc;
+        }
+        
+       
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $data = array();
+        foreach($stmt->fetchAll() as $r)
+        {
+            $data[] = array('idpersonal'=>$r[0],'personal'=>$r[1]);
+        }
+        return $data;
+    }
+    
+    
 }
 ?>
